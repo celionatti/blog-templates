@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Article title - Read the full story on BlogName">
+    <meta name="author" content="John Doe">
+    <meta property="og:title" content="Breaking: Major Development Reshapes Global Economy">
+    <meta property="og:description" content="In-depth analysis of the latest developments...">
+    <meta property="og:image" content="https://example.com/article-image.jpg">
+    <meta property="og:type" content="article">
+    <title>Breaking: Major Development Reshapes Global Economy - BlogName</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <style>
+        /* ========== LOADING STATE ========== */
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .page-loader.dark {
+            background-color: #121212;
+        }
+
+        .page-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-content {
+            text-align: center;
+        }
+
+        .loader-logo {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .loader-logo .light-theme {
+            color: #1a1a1a;
+        }
+
+        .loader-logo .light-theme span {
+            color: #dc143c;
+        }
+
+        .loader-logo .dark-theme {
+            color: #f5f5f5;
+            display: none;
+        }
+
+        .loader-logo .dark-theme span {
+            color: #ff4f5a;
+        }
+
+        .page-loader.dark .loader-logo .light-theme {
+            display: none;
+        }
+
+        .page-loader.dark .loader-logo .dark-theme {
+            display: inline;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(220, 20, 60, 0.1);
+            border-top-color: #dc143c;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .page-loader.dark .spinner {
+            border: 4px solid rgba(255, 79, 90, 0.1);
+            border-top-color: #ff4f5a;
+        }
+
+        .loader-text {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #6c757d;
+            animation: fadeInOut 2s ease-in-out infinite;
+        }
+
+        .page-loader.dark .loader-text {
+            color: #b0b0b0;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
+        }
+
+        @keyframes fadeInOut {
+
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* Hide content while loading */
+        body.loading {
+            overflow: hidden;
+        }
+
+        .main-content {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .main-content.visible {
+            opacity: 1;
+        }
+
+        /* ========== CSS VARIABLES & THEME ========== */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6c757d;
+            --accent: #dc143c;
+            --accent-hover: #b01030;
+            --border-color: #dee2e6;
+            --card-shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-mode {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --text-primary: #f5f5f5;
+            --text-secondary: #b0b0b0;
+            --accent: #ff4f5a;
+            --accent-hover: #ff6b75;
+            --border-color: #333;
+            --card-shadow: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            line-height: 1.6;
+        }
+
+        /* ========== ANIMATIONS ========== */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .animate-on-scroll {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+        }
+
+        /* ========== TOP HEADER ========== */
+        .top-header {
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.75rem 0;
+            font-size: 0.9rem;
+        }
+
+        .top-header .btn-subscribe {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.4rem 1.2rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .top-header .btn-subscribe:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .top-header .brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .top-header .brand span {
+            color: var(--accent);
+        }
+
+        .top-header .auth-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            margin-left: 1rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .top-header .auth-links a:hover {
+            color: var(--accent);
+        }
+
+        /* ========== MAIN NAVBAR ========== */
+        .main-navbar {
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+        }
+
+        .main-navbar .navbar-nav .nav-link {
+            color: var(--text-primary);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .main-navbar .navbar-nav .nav-link:hover,
+        .main-navbar .navbar-nav .nav-link.active {
+            color: var(--accent);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            color: var(--accent);
+            transform: rotate(20deg);
+        }
+
+        /* ========== BREADCRUMB ========== */
+        .breadcrumb-section {
+            background-color: var(--bg-secondary);
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .breadcrumb {
+            background: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .breadcrumb-item a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb-item a:hover {
+            color: var(--accent);
+        }
+
+        .breadcrumb-item.active {
+            color: var(--text-primary);
+        }
+
+        .breadcrumb-item+.breadcrumb-item::before {
+            color: var(--text-secondary);
+        }
+
+        /* ========== ARTICLE HEADER ========== */
+        .article-header {
+            padding: 3rem 0 2rem;
+        }
+
+        .category-badge {
+            background-color: var(--accent);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+
+        .article-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .article-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .author-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .author-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .author-role {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* ========== ARTICLE CONTENT ========== */
+        .article-section {
+            padding: 2rem 0;
+        }
+
+        .featured-image {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .article-content {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: var(--text-primary);
+        }
+
+        .article-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .article-content h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 2.5rem 0 1rem;
+            color: var(--text-primary);
+        }
+
+        .article-content h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+            color: var(--text-primary);
+        }
+
+        .article-content blockquote {
+            border-left: 4px solid var(--accent);
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            background-color: var(--bg-secondary);
+            font-style: italic;
+            font-size: 1.2rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .article-content ul,
+        .article-content ol {
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+        }
+
+        .article-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .article-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+
+        /* ========== SOCIAL SHARE ========== */
+        .social-share {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 3rem 0;
+        }
+
+        .social-share h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .share-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .share-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .share-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--card-shadow);
+        }
+
+        .share-btn.twitter {
+            background-color: #1DA1F2;
+            color: white;
+        }
+
+        .share-btn.facebook {
+            background-color: #4267B2;
+            color: white;
+        }
+
+        .share-btn.linkedin {
+            background-color: #0077B5;
+            color: white;
+        }
+
+        .share-btn.copy {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        /* ========== AUTHOR BIO ========== */
+        .author-bio {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 3rem 0;
+            display: flex;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .author-bio-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .author-bio-content h4 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .author-bio-role {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .author-bio-text {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ========== RELATED ARTICLES ========== */
+        .related-articles {
+            padding: 3rem 0;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0;
+            padding-right: 1.5rem;
+            white-space: nowrap;
+        }
+
+        .section-header .line {
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(to right, var(--accent), transparent);
+        }
+
+        .related-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            height: 100%;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            color: inherit;
+        }
+
+        .related-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px var(--card-shadow);
+        }
+
+        .related-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .related-card .card-body {
+            padding: 1.25rem;
+        }
+
+        .related-card .category-badge {
+            background-color: var(--accent);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+
+        .related-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .related-card .meta {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        /* ========== SIDEBAR ========== */
+        .sidebar-sticky {
+            position: sticky;
+            top: 100px;
+        }
+
+        .sidebar-widget {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-widget h4 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .sidebar-post {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-post:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .sidebar-post:hover {
+            transform: translateX(4px);
+        }
+
+        .sidebar-post img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+
+        .sidebar-post-content h5 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .sidebar-post-meta {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .tag-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .tag:hover {
+            background-color: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 0 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .footer .brand {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .footer .brand span {
+            color: var(--accent);
+        }
+
+        .footer h5 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer ul li a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer ul li a:hover {
+            color: var(--accent);
+        }
+
+        .footer .copyright {
+            text-align: center;
+            color: var(--text-secondary);
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .article-title {
+                font-size: 1.75rem;
+            }
+
+            .article-content {
+                font-size: 1rem;
+            }
+
+            .author-bio {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .author-bio-avatar {
+                width: 80px;
+                height: 80px;
+            }
+
+            .sidebar-sticky {
+                position: static;
+            }
+        }
+    </style>
+
+    <!-- Structured Data / JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "NewsArticle",
+      "headline": "Breaking: Major Development Reshapes Global Economy",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200",
+      "datePublished": "2025-11-05T08:00:00+00:00",
+      "dateModified": "2025-11-05T09:30:00+00:00",
+      "author": {
+        "@type": "Person",
+        "name": "John Doe",
+        "url": "https://example.com/author/john-doe"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "BlogName",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://example.com/logo.png"
+        }
+      },
+      "description": "In-depth analysis of the latest global economic developments and their implications for markets worldwide."
+    }
+    </script>
+</head>
+
+<body class="loading">
+    <!-- ========== PAGE LOADER ========== -->
+    <div class="page-loader" id="pageLoader">
+        <div class="loader-content">
+            <div class="loader-logo">
+                <span class="light-theme">Blog<span>Name</span></span>
+                <span class="dark-theme">Blog<span>Name</span></span>
+            </div>
+            <div class="spinner"></div>
+            <p class="loader-text">Loading article...</p>
+        </div>
+    </div>
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <div class="main-content">
+        <!-- ========== TOP HEADER ========== -->
+        <header class="top-header">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <button class="btn btn-subscribe rounded-pill">
+                        <i class="bi bi-envelope-fill me-1"></i> Subscribe
+                    </button>
+                    <a href="/" class="brand">Blog<span>Name</span></a>
+                    <div class="auth-links">
+                        <a href="#"><i class="bi bi-person-circle me-1"></i> Login</a>
+                        <a href="#"><i class="bi bi-person-plus-fill me-1"></i> Sign Up</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ========== MAIN NAVBAR ========== -->
+        <nav class="navbar navbar-expand-lg main-navbar sticky-top">
+            <div class="container">
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#mainNav">
+                    <i class="bi bi-list" style="font-size: 1.5rem; color: var(--text-primary);"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="mainNav">
+                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="#">Articles</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">World</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Sports</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Politics</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Entertainment</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Nigeria</a></li>
+                    </ul>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                        <i class="bi bi-sun-fill" id="themeIcon"></i>
+                    </button>
+                    <button class="btn"
+                        style="background: none; border: none; color: var(--text-primary); font-size: 1.2rem;">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- ========== BREADCRUMB ========== -->
+        <section class="breadcrumb-section">
+            <div class="container">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">World</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Article Title</li>
+                    </ol>
+                </nav>
+            </div>
+        </section>
+
+        <!-- ========== ARTICLE HEADER ========== -->
+        <article class="article-header animate-on-scroll">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <span class="category-badge">World News</span>
+                        <h1 class="article-title">Breaking: Major Development Reshapes Global Economy</h1>
+
+                        <div class="article-meta">
+                            <div class="meta-item">
+                                <img src="https://i.pravatar.cc/80?img=12" alt="Author" class="author-avatar">
+                                <div class="author-info">
+                                    <span class="author-name">John Doe</span>
+                                    <span class="author-role">Senior Editor</span>
+                                </div>
+                            </div>
+                            <div class="meta-item">
+                                <i class="bi bi-calendar3"></i>
+                                <span>November 5, 2025</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="bi bi-clock"></i>
+                                <span>8 min read</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="bi bi-eye"></i>
+                                <span>12.5K views</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ========== ARTICLE CONTENT ========== -->
+        <section class="article-section animate-on-scroll">
+            <div class="container">
+                <div class="row">
+                    <!-- Main Content -->
+                    <div class="col-lg-8">
+                        <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=600&fit=crop"
+                            alt="Featured article image" class="featured-image" loading="lazy">
+
+                        <div class="article-content">
+                            <p>In a groundbreaking development that has sent shockwaves through financial markets
+                                worldwide, global economic leaders gathered today to announce unprecedented measures
+                                aimed at reshaping the international monetary system. The implications of these
+                                decisions will be felt for generations to come.</p>
+
+                            <p>The announcement comes at a critical juncture, as economies around the world grapple with
+                                inflationary pressures, supply chain disruptions, and the lingering effects of recent
+                                global challenges. Experts suggest that this coordinated effort represents the most
+                                significant economic policy shift since the post-war era.</p>
+
+                            <h3>Market Reactions</h3>
+
+                            <p>Financial markets responded swiftly to the announcement, with major indices experiencing
+                                significant volatility in early trading. The S&P 500 initially surged by 2.3% before
+                                settling into more moderate gains, while European and Asian markets showed mixed
+                                reactions as investors digested the implications of the new policies.</p>
+
+                            <p>Currency markets saw particularly dramatic movements, with the dollar strengthening
+                                against most major currencies. Gold prices initially spiked but later retreated as
+                                clarity emerged around the specifics of the proposed measures.</p>
+
+                            <h3>Expert Analysis</h3>
+
+                            <p>Leading economists have offered varying perspectives on the potential impact of these
+                                developments. Dr. Sarah Chen, Chief Economist at Global Financial Institute, emphasized
+                                that "while the short-term market reaction has been volatile, the long-term implications
+                                could fundamentally alter how we think about monetary policy coordination."</p>
+
+                            <p>However, not all experts are convinced. Professor Michael Roberts of Harvard Business
+                                School cautioned that "implementing such sweeping changes across diverse economic
+                                systems presents enormous practical challenges. The devil will be in the details of
+                                execution."</p>
+
+                            <h2>Looking Ahead</h2>
+
+                            <p>As nations move forward with implementation, attention now turns to how these policies
+                                will affect everyday consumers and businesses. Early indications suggest that borrowing
+                                costs may stabilize, but the full impact won't be clear for several quarters.</p>
+
+                            <p>The agreement also includes provisions for regular review and adjustment, acknowledging
+                                that flexibility will be crucial as the global economic landscape continues to evolve.
+                                Quarterly meetings of finance ministers and central bank governors have been scheduled
+                                to monitor progress and address emerging challenges.</p>
+
+                            <p>For businesses and investors, the message is clear: adaptability and careful attention to
+                                policy developments will be more important than ever. As these historic changes unfold,
+                                the ability to respond quickly to new information will separate successful strategies
+                                from those caught flat-footed.</p>
+
+                            <p>The coming months will be critical in determining whether this ambitious initiative can
+                                deliver on its promise of greater economic stability and prosperity. One thing is
+                                certain—the global economic landscape has been fundamentally altered, and the ripple
+                                effects will be felt far and wide.</p>
+                        </div>
+
+                        <!-- Social Share -->
+                        <div class="social-share">
+                            <h3>Share this article</h3>
+                            <div class="share-buttons">
+                                <button class="share-btn twitter" onclick="shareOnTwitter()">
+                                    <i class="bi bi-twitter"></i> Twitter
+                                </button>
+                                <button class="share-btn facebook" onclick="shareOnFacebook()">
+                                    <i class="bi bi-facebook"></i> Facebook
+                                </button>
+                                <button class="share-btn linkedin" onclick="shareOnLinkedIn()">
+                                    <i class="bi bi-linkedin"></i> LinkedIn
+                                </button>
+                                <button class="share-btn copy" onclick="copyLink()">
+                                    <i class="bi bi-link-45deg"></i> Copy Link
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Author Bio -->
+                        <div class="author-bio animate-on-scroll">
+                            <img src="https://i.pravatar.cc/200?img=12" alt="John Doe" class="author-bio-avatar">
+                            <div class="author-bio-content">
+                                <h4>John Doe</h4>
+                                <p class="author-bio-role">Senior Editor | Economic Affairs</p>
+                                <p class="author-bio-text">John is an award-winning journalist with over 15 years of
+                                    experience covering international economics and finance. He has reported from major
+                                    financial centers around the world and holds a Master's degree in Economics from
+                                    Oxford University.</p>
+                            </div>
+                        </div>
+
+                        <!-- Related Articles -->
+                        <div class="related-articles animate-on-scroll">
+                            <div class="section-header">
+                                <h2>Related Articles</h2>
+                                <div class="line"></div>
+                            </div>
+                            <div class="row g-4">
+                                <!-- PHP: Loop related posts here -->
+                                <div class="col-md-4">
+                                    <a href="#" class="related-card">
+                                        <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&h=200&fit=crop"
+                                            alt="Related article" loading="lazy">
+                                        <div class="card-body">
+                                            <span class="category-badge">Economy</span>
+                                            <h3>Central Banks Signal New Policy Direction</h3>
+                                            <div class="meta">
+                                                <span><i class="bi bi-clock me-1"></i> 2 days ago</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-md-4">
+                                    <a href="#" class="related-card">
+                                        <img src="https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=400&h=200&fit=crop"
+                                            alt="Related article" loading="lazy">
+                                        <div class="card-body">
+                                            <span class="category-badge">Markets</span>
+                                            <h3>Stock Markets Rally on Economic News</h3>
+                                            <div class="meta">
+                                                <span><i class="bi bi-clock me-1"></i> 3 days ago</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-md-4">
+                                    <a href="#" class="related-card">
+                                        <img src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=400&h=200&fit=crop"
+                                            alt="Related article" loading="lazy">
+                                        <div class="card-body">
+                                            <span class="category-badge">Analysis</span>
+                                            <h3>What These Changes Mean for You</h3>
+                                            <div class="meta">
+                                                <span><i class="bi bi-clock me-1"></i> 4 days ago</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar -->
+                    <div class="col-lg-4">
+                        <div class="sidebar-sticky">
+                            <!-- Popular Posts Widget -->
+                            <div class="sidebar-widget animate-on-scroll">
+                                <h4>Popular Posts</h4>
+                                <!-- PHP: Loop popular posts here -->
+                                <a href="#" class="sidebar-post">
+                                    <img src="https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=160&h=160&fit=crop"
+                                        alt="Popular post" loading="lazy">
+                                    <div class="sidebar-post-content">
+                                        <h5>AI Revolution Transforms Healthcare Industry</h5>
+                                        <div class="sidebar-post-meta">
+                                            <i class="bi bi-eye me-1"></i> 15.2K views
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="#" class="sidebar-post">
+                                    <img src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=160&h=160&fit=crop"
+                                        alt="Popular post" loading="lazy">
+                                    <div class="sidebar-post-content">
+                                        <h5>Champions League: Historic Comeback Victory</h5>
+                                        <div class="sidebar-post-meta">
+                                            <i class="bi bi-eye me-1"></i> 12.8K views
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="#" class="sidebar-post">
+                                    <img src="https://images.unsplash.com/photo-1495020689067-958852a7765e?w=160&h=160&fit=crop"
+                                        alt="Popular post" loading="lazy">
+                                    <div class="sidebar-post-content">
+                                        <h5>Climate Summit Reaches Breakthrough Deal</h5>
+                                        <div class="sidebar-post-meta">
+                                            <i class="bi bi-eye me-1"></i> 11.5K views
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="#" class="sidebar-post">
+                                    <img src="https://images.unsplash.com/photo-1483058712412-4245e9b90334?w=160&h=160&fit=crop"
+                                        alt="Popular post" loading="lazy">
+                                    <div class="sidebar-post-content">
+                                        <h5>Top Travel Destinations for 2025 Revealed</h5>
+                                        <div class="sidebar-post-meta">
+                                            <i class="bi bi-eye me-1"></i> 9.7K views
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <!-- Tags Widget -->
+                            <div class="sidebar-widget animate-on-scroll">
+                                <h4>Popular Tags</h4>
+                                <div class="tag-cloud">
+                                    <a href="#" class="tag">Economy</a>
+                                    <a href="#" class="tag">Finance</a>
+                                    <a href="#" class="tag">Markets</a>
+                                    <a href="#" class="tag">Business</a>
+                                    <a href="#" class="tag">Technology</a>
+                                    <a href="#" class="tag">Politics</a>
+                                    <a href="#" class="tag">World</a>
+                                    <a href="#" class="tag">Analysis</a>
+                                    <a href="#" class="tag">Breaking</a>
+                                    <a href="#" class="tag">Investment</a>
+                                </div>
+                            </div>
+
+                            <!-- Newsletter Widget -->
+                            <div class="sidebar-widget animate-on-scroll"
+                                style="background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%); color: white; border: none;">
+                                <h4 style="color: white; border-color: rgba(255,255,255,0.3);">Newsletter</h4>
+                                <p style="margin-bottom: 1rem; opacity: 0.95;">Get the latest news delivered directly to
+                                    your inbox.</p>
+                                <form
+                                    onsubmit="event.preventDefault(); alert('Newsletter subscription feature coming soon!');">
+                                    <div class="mb-3">
+                                        <input type="email" class="form-control" placeholder="Your email address"
+                                            required style="border-radius: 8px;">
+                                    </div>
+                                    <button type="submit" class="btn w-100"
+                                        style="background: white; color: var(--accent); font-weight: 600; border-radius: 8px;">
+                                        Subscribe Now
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== FOOTER ========== -->
+        <footer class="footer">
+            <div class="container">
+                <div class="row g-4">
+                    <div class="col-lg-4">
+                        <a href="/" class="brand d-block mb-3">Blog<span>Name</span></a>
+                        <p style="color: var(--text-secondary);">Your trusted source for breaking news, in-depth
+                            analysis, and compelling stories from around the world.</p>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <h5>Categories</h5>
+                        <ul>
+                            <li><a href="#">World</a></li>
+                            <li><a href="#">Politics</a></li>
+                            <li><a href="#">Sports</a></li>
+                            <li><a href="#">Entertainment</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <h5>Company</h5>
+                        <ul>
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">Careers</a></li>
+                            <li><a href="#">Advertise</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <h5>Legal</h5>
+                        <ul>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms of Service</a></li>
+                            <li><a href="#">Cookie Policy</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-2 col-md-12">
+                        <h5>Follow Us</h5>
+                        <div class="d-flex gap-3">
+                            <a href="#" style="color: var(--text-secondary); font-size: 1.5rem; transition: color 0.3s;"
+                                onmouseover="this.style.color='var(--accent)'"
+                                onmouseout="this.style.color='var(--text-secondary)'">
+                                <i class="bi bi-twitter"></i>
+                            </a>
+                            <a href="#" style="color: var(--text-secondary); font-size: 1.5rem; transition: color 0.3s;"
+                                onmouseover="this.style.color='var(--accent)'"
+                                onmouseout="this.style.color='var(--text-secondary)'">
+                                <i class="bi bi-facebook"></i>
+                            </a>
+                            <a href="#" style="color: var(--text-secondary); font-size: 1.5rem; transition: color 0.3s;"
+                                onmouseover="this.style.color='var(--accent)'"
+                                onmouseout="this.style.color='var(--text-secondary)'">
+                                <i class="bi bi-instagram"></i>
+                            </a>
+                            <a href="#" style="color: var(--text-secondary); font-size: 1.5rem; transition: color 0.3s;"
+                                onmouseover="this.style.color='var(--accent)'"
+                                onmouseout="this.style.color='var(--text-secondary)'">
+                                <i class="bi bi-youtube"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="copyright">
+                    <p>&copy; 2025 BlogName. All rights reserved. | Designed with <i class="bi bi-heart-fill"
+                            style="color: var(--accent);"></i></p>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!-- END MAIN CONTENT -->
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // ========== PAGE LOADER ==========
+        window.addEventListener('load', function () {
+            const pageLoader = document.getElementById('pageLoader');
+            const mainContent = document.querySelector('.main-content');
+            const body = document.body;
+
+            setTimeout(() => {
+                pageLoader.classList.add('hidden');
+                mainContent.classList.add('visible');
+                body.classList.remove('loading');
+
+                setTimeout(() => {
+                    pageLoader.style.display = 'none';
+                }, 500);
+            }, 800);
+        });
+
+        // ========== THEME TOGGLE & COOKIE MANAGEMENT ==========
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const body = document.body;
+
+        function setCookie(name, value, days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            document.cookie = `${name}=${value};expires=${date.toUTCString()};path=/;SameSite=Lax`;
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+
+        function initTheme() {
+            const savedTheme = getCookie('site_theme');
+            const pageLoader = document.getElementById('pageLoader');
+
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+                if (pageLoader) pageLoader.classList.add('dark');
+                updateThemeIcon(true);
+            } else if (savedTheme === 'light') {
+                body.classList.remove('dark-mode');
+                if (pageLoader) pageLoader.classList.remove('dark');
+                updateThemeIcon(false);
+            } else {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (prefersDark) {
+                    body.classList.add('dark-mode');
+                    if (pageLoader) pageLoader.classList.add('dark');
+                    updateThemeIcon(true);
+                    setCookie('site_theme', 'dark', 365);
+                } else {
+                    setCookie('site_theme', 'light', 365);
+                }
+            }
+        }
+
+        function updateThemeIcon(isDark) {
+            if (isDark) {
+                themeIcon.classList.remove('bi-sun-fill');
+                themeIcon.classList.add('bi-moon-stars-fill');
+            } else {
+                themeIcon.classList.remove('bi-moon-stars-fill');
+                themeIcon.classList.add('bi-sun-fill');
+            }
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            updateThemeIcon(isDark);
+            setCookie('site_theme', isDark ? 'dark' : 'light', 365);
+        });
+
+        initTheme();
+
+        // ========== SCROLL ANIMATIONS ==========
+        const animateOnScroll = () => {
+            const elements = document.querySelectorAll('.animate-on-scroll');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, index * 100);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            elements.forEach(element => {
+                observer.observe(element);
+            });
+
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                elements.forEach(element => {
+                    element.classList.add('visible');
+                });
+            }
+        };
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', animateOnScroll);
+        } else {
+            animateOnScroll();
+        }
+
+        // ========== NAVBAR SCROLL EFFECT ==========
+        let lastScroll = 0;
+        const navbar = document.querySelector('.main-navbar');
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll > 100) {
+                navbar.style.boxShadow = '0 2px 10px var(--card-shadow)';
+            } else {
+                navbar.style.boxShadow = 'none';
+            }
+
+            lastScroll = currentScroll;
+        });
+
+        // ========== SOCIAL SHARE FUNCTIONS ==========
+        function shareOnTwitter() {
+            const url = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent(document.title);
+            window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank', 'width=600,height=400');
+        }
+
+        function shareOnFacebook() {
+            const url = encodeURIComponent(window.location.href);
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank', 'width=600,height=400');
+        }
+
+        function shareOnLinkedIn() {
+            const url = encodeURIComponent(window.location.href);
+            window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank', 'width=600,height=400');
+        }
+
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                const btn = event.target.closest('.share-btn');
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<i class="bi bi-check-lg"></i> Copied!';
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                }, 2000);
+            });
+        }
+
+        // ========== SMOOTH SCROLL FOR ANCHOR LINKS ==========
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // ========== READING PROGRESS BAR (OPTIONAL) ==========
+        const progressBar = document.createElement('div');
+        progressBar.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--accent);
+            width: 0%;
+            z-index: 9998;
+            transition: width 0.1s ease;
+        `;
+        document.body.appendChild(progressBar);
+
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            progressBar.style.width = scrolled + '%';
+        });
+    </script>
+</body>
+
+</html>
