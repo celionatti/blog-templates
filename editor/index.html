@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Post - Traditional Form</title>
+    <link rel="stylesheet" href="richeditor.css">
+</head>
+<body>
+    <h1>Create New Post</h1>
+    
+    <form action="save_post.php" method="POST" id="postForm">
+        <div>
+            <label>Title:</label>
+            <input type="text" name="title" required>
+        </div>
+        
+        <div>
+            <label>Category:</label>
+            <select name="category">
+                <option value="news">News</option>
+                <option value="blog">Blog</option>
+                <option value="tutorial">Tutorial</option>
+            </select>
+        </div>
+        
+        <div>
+            <label>Content:</label>
+            <div id="editor"></div>
+            <!-- Hidden input to store editor content -->
+            <input type="hidden" name="content" id="content">
+        </div>
+        
+        <div>
+            <label>Tags:</label>
+            <input type="text" name="tags" placeholder="php, javascript, web">
+        </div>
+        
+        <div>
+            <label>Status:</label>
+            <input type="radio" name="status" value="draft" checked> Draft
+            <input type="radio" name="status" value="published"> Published
+        </div>
+        
+        <button type="submit">Save Post</button>
+    </form>
+
+    <script src="richeditor.js"></script>
+    <script>
+        // Initialize the editor
+        var editor = new RichEditor('#editor', {
+            height: '200px',
+            placeholder: 'Write your post content here...'
+        });
+        
+        // Before form submission, get editor content and put it in hidden input
+        document.getElementById('postForm').addEventListener('submit', function(e) {
+            // Get the HTML content from editor
+            var content = editor.getContent('html');
+            
+            // Put it in the hidden input
+            document.getElementById('content').value = content;
+            
+            // Form will now submit with all data including editor content
+        });
+    </script>
+</body>
+</html>

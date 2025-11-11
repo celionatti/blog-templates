@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RichTextEditor.js - Demo & Documentation</title>
+    
+    <style>
+        /* Demo Page Styles Only */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .demo-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .card h2 {
+            color: #2d3748;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 0.5rem;
+        }
+
+        .card h3 {
+            color: #4a5568;
+            margin: 1.5rem 0 1rem;
+            font-size: 1.3rem;
+        }
+
+        .demo-controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .demo-btn {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .demo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .demo-btn.secondary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin: 1rem 0;
+        }
+
+        .installation-steps {
+            list-style: none;
+            counter-reset: step-counter;
+        }
+
+        .installation-steps li {
+            counter-increment: step-counter;
+            margin-bottom: 1.5rem;
+            padding-left: 3rem;
+            position: relative;
+        }
+
+        .installation-steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .feature-item {
+            padding: 1rem;
+            background: #f7fafc;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .feature-item strong {
+            color: #667eea;
+        }
+
+        .php-example {
+            background: #f7fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border: 2px solid #e2e8f0;
+        }
+
+        #output-display {
+            background: #f7fafc;
+            padding: 1rem;
+            border-radius: 8px;
+            min-height: 100px;
+            margin-top: 1rem;
+            border: 2px dashed #cbd5e0;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="header">
+            <h1>📝 RichTextEditor.js</h1>
+            <p>A modern, lightweight, and fully customizable rich text editor for any project</p>
+        </div>
+
+        <!-- Demo Section -->
+        <div class="card">
+            <h2>Live Demo</h2>
+            
+            <div class="demo-controls">
+                <button class="demo-btn" onclick="getEditorContent()">Get Content</button>
+                <button class="demo-btn" onclick="setDemoContent()">Load Sample Content</button>
+                <button class="demo-btn secondary" onclick="clearEditor()">Clear Editor</button>
+            </div>
+
+            <!-- Editor Container -->
+            <div id="my-editor"></div>
+
+            <h3>Output Preview:</h3>
+            <div id="output-display"></div>
+        </div>
+
+        <!-- Installation -->
+        <div class="card">
+            <h2>Installation</h2>
+            <ul class="installation-steps">
+                <li>
+                    <strong>Download the library files</strong><br>
+                    Get <code>richtexteditor.css</code> and <code>richtexteditor.js</code>
+                </li>
+                <li>
+                    <strong>Include the library CSS and JS</strong><br>
+                    <div class="code-block">&lt;link rel="stylesheet" href="path/to/richtexteditor.css"&gt;
+&lt;script src="path/to/richtexteditor.js"&gt;&lt;/script&gt;</div>
+                </li>
+                <li>
+                    <strong>Initialize the editor</strong><br>
+                    <div class="code-block">const editor = new RichTextEditor('#my-editor', {
+    placeholder: 'Start writing...',
+    height: '400px'
+});</div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Features -->
+        <div class="card">
+            <h2>Features</h2>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <strong>📐 Responsive Design</strong><br>
+                    Adapts perfectly to any container size
+                </div>
+                <div class="feature-item">
+                    <strong>🎨 Modern UI</strong><br>
+                    Beautiful, clean interface with smooth animations
+                </div>
+                <div class="feature-item">
+                    <strong>✏️ Rich Formatting</strong><br>
+                    H1-H6, paragraphs, lists, colors, fonts, and more
+                </div>
+                <div class="feature-item">
+                    <strong>🔌 Easy Integration</strong><br>
+                    Works with vanilla JS, PHP, AJAX, and frameworks
+                </div>
+                <div class="feature-item">
+                    <strong>⚡ Lightweight</strong><br>
+                    Pure JavaScript with no external dependencies
+                </div>
+                <div class="feature-item">
+                    <strong>🎯 Customizable</strong><br>
+                    Configure toolbar, colors, and behavior
+                </div>
+            </div>
+        </div>
+
+        <!-- PHP Integration -->
+        <div class="card">
+            <h2>PHP Integration</h2>
+            
+            <h3>Traditional Form Submit</h3>
+            <div class="php-example">
+                <h4>HTML Form:</h4>
+                <div class="code-block">&lt;form action="save.php" method="POST"&gt;
+    &lt;input type="hidden" name="content" id="editor-content"&gt;
+    &lt;div id="my-editor"&gt;&lt;/div&gt;
+    &lt;button type="submit" onclick="saveContent(event)"&gt;Submit&lt;/button&gt;
+&lt;/form&gt;
+
+&lt;script&gt;
+const editor = new RichTextEditor('#my-editor');
+
+function saveContent(e) {
+    document.getElementById('editor-content').value = editor.getContent();
+}
+&lt;/script&gt;</div>
+
+                <h4>PHP Handler (save.php):</h4>
+                <div class="code-block">&lt;?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $content = $_POST['content'];
+    
+    // Sanitize HTML (recommended)
+    $content = htmlspecialchars($content, ENT_QUOTES, 'UTF-8');
+    
+    // Save to database
+    // $stmt = $pdo->prepare("INSERT INTO posts (content) VALUES (?)");
+    // $stmt->execute([$content]);
+    
+    echo "Content saved successfully!";
+}
+?&gt;</div>
+            </div>
+
+            <h3>AJAX Submit</h3>
+            <div class="php-example">
+                <h4>JavaScript:</h4>
+                <div class="code-block">const editor = new RichTextEditor('#my-editor');
+
+document.getElementById('save-btn').addEventListener('click', async () => {
+    const content = editor.getContent();
+    
+    try {
+        const response = await fetch('api/save.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ content: content })
+        });
+        
+        const result = await response.json();
+        console.log('Saved:', result);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+});</div>
+
+                <h4>PHP API (api/save.php):</h4>
+                <div class="code-block">&lt;?php
+header('Content-Type: application/json');
+
+$input = json_decode(file_get_contents('php://input'), true);
+$content = $input['content'] ?? '';
+
+// Sanitize and save
+$content = htmlspecialchars($content, ENT_QUOTES, 'UTF-8');
+
+echo json_encode([
+    'success' => true,
+    'message' => 'Content saved'
+]);
+?&gt;</div>
+            </div>
+        </div>
+
+        <!-- API Documentation -->
+        <div class="card">
+            <h2>API Documentation</h2>
+            
+            <h3>Initialization Options</h3>
+            <div class="code-block">new RichTextEditor(selector, {
+    placeholder: 'Start writing...',
+    height: '400px',
+    minHeight: '200px',
+    onChange: (content) => {
+        console.log('Content changed:', content);
+    }
+});</div>
+
+            <h3>Public Methods</h3>
+            <div class="code-block">// Get HTML content
+const html = editor.getContent();
+
+// Get plain text
+const text = editor.getText();
+
+// Set content
+editor.setContent('&lt;p&gt;Hello World&lt;/p&gt;');
+
+// Clear editor
+editor.clear();
+
+// Focus editor
+editor.focus();
+
+// Toggle code view
+editor.toggleCodeView();
+
+// Destroy editor
+editor.destroy();
+
+// Check if editor is empty
+const isEmpty = editor.isEmpty();</div>
+        </div>
+    </div>
+
+    <!-- Library JavaScript -->
+    <script>
+        // RichTextEditor.js Library
+        class RichTextEditor {
+            constructor(selector, options = {}) {
+                this.container = typeof selector === 'string' 
+                    ? document.querySelector(selector) 
+                    : selector;
+                
+                if (!this.container) {
+                    throw new Error('Container element not found');
+                }
+                
+                this.options = {
+                    placeholder: 'Start writing...',
+                    height: '400px',
+                    minHeight: '200px',
+                    onChange: null,
+                    ...options
+                };
+                
+                this.codeViewActive = false;
+                this.init();
+            }
+            
+            init() {
+                this.injectStyles();
+                this.createEditor();
+                this.setupEventListeners();
+            }
+            
+            injectStyles() {
+                if (document.getElementById('rte-styles')) return;
+                
+                const styles = `
+                    .rte-wrapper {
+                        width: 100%;
+                        border: 2px solid #e2e8f0;
+                        border-radius: 12px;
+                        overflow: hidden;
+                        background: white;
+                        transition: border-color 0.3s ease;
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+                    }
+                    
+                    .rte-wrapper.focused {
+                        border-color: #667eea;
+                        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+                    }
+                    
+                    .rte-toolbar {
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 0.5rem;
+                        padding: 0.75rem;
+                        background: linear-gradient(to bottom, #ffffff, #f7fafc);
+                        border-bottom: 2px solid #e2e8f0;
+                        align-items: center;
+                    }
+                    
+                    .rte-btn-group {
+                        display: flex;
+                        gap: 0.25rem;
+                        padding: 0 0.5rem;
+                        border-right: 1px solid #e2e8f0;
+                        align-items: center;
+                    }
+                    
+                    .rte-btn-group:last-child {
+                        border-right: none;
+                    }
+                    
+                    .rte-btn, .rte-select {
+                        background: white;
+                        border: 1px solid #e2e8f0;
+                        color: #4a5568;
+                        cursor: pointer;
+                        padding: 0.5rem;
+                        border-radius: 6px;
+                        transition: all 0.2s ease;
+                        font-size: 0.85rem;
+                        font-weight: 600;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        min-width: 36px;
+                        height: 36px;
+                    }
+                    
+                    .rte-select {
+                        min-width: 90px;
+                        padding: 0.5rem 0.75rem;
+                        cursor: pointer;
+                    }
+                    
+                    .rte-color-input {
+                        width: 36px;
+                        height: 36px;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 6px;
+                        cursor: pointer;
+                        padding: 2px;
+                        background: white;
+                    }
+                    
+                    .rte-btn:hover, .rte-select:hover {
+                        background: #edf2f7;
+                        border-color: #cbd5e0;
+                        transform: translateY(-1px);
+                    }
+                    
+                    .rte-btn.active {
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        color: white;
+                        border-color: #667eea;
+                    }
+                    
+                    .rte-content {
+                        min-height: ${this.options.minHeight};
+                        max-height: 800px;
+                        padding: 1.5rem;
+                        font-size: 1rem;
+                        line-height: 1.8;
+                        outline: none;
+                        overflow-y: auto;
+                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                    }
+                    
+                    .rte-content:empty:before {
+                        content: "${this.options.placeholder}";
+                        color: #a0aec0;
+                        font-style: italic;
+                    }
+                    
+                    .rte-code-view {
+                        min-height: ${this.options.minHeight};
+                        max-height: 800px;
+                        padding: 1.5rem;
+                        font-size: 0.9rem;
+                        line-height: 1.6;
+                        outline: none;
+                        overflow-y: auto;
+                        font-family: 'Courier New', monospace;
+                        background: #2d3748;
+                        color: #e2e8f0;
+                        border: none;
+                        width: 100%;
+                        resize: vertical;
+                        display: none;
+                    }
+                    
+                    .rte-code-view.active {
+                        display: block;
+                    }
+                    
+                    .rte-content.hidden {
+                        display: none;
+                    }
+                    
+                    .rte-content h1 { font-size: 2.5rem; font-weight: 700; margin: 1.5rem 0 1rem; color: #2d3748; line-height: 1.2; border: none !important; }
+                    .rte-content h2 { font-size: 2rem; font-weight: 700; margin: 1.5rem 0 1rem; color: #2d3748; line-height: 1.3; border: none !important; }
+                    .rte-content h3 { font-size: 1.75rem; font-weight: 600; margin: 1.25rem 0 0.75rem; color: #2d3748; line-height: 1.4; border: none !important; }
+                    .rte-content h4 { font-size: 1.5rem; font-weight: 600; margin: 1.25rem 0 0.75rem; color: #4a5568; line-height: 1.4; border: none !important; }
+                    .rte-content h5 { font-size: 1.25rem; font-weight: 600; margin: 1rem 0 0.5rem; color: #4a5568; line-height: 1.5; border: none !important; }
+                    .rte-content h6 { font-size: 1.1rem; font-weight: 600; margin: 1rem 0 0.5rem; color: #4a5568; line-height: 1.5; border: none !important; }
+                    
+                    .rte-content p { margin-bottom: 1rem; color: #2d3748; }
+                    .rte-content ul, .rte-content ol { margin: 1rem 0; padding-left: 2rem; }
+                    .rte-content li { margin-bottom: 0.5rem; color: #2d3748; }
+                    
+                    .rte-content a { color: #667eea; text-decoration: underline; transition: color 0.2s; }
+                    .rte-content a:hover { color: #764ba2; }
+                    
+                    .rte-content img { 
+                        max-width: 100%; 
+                        height: auto; 
+                        border-radius: 8px; 
+                        margin: 1rem 0;
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                    }
+                    
+                    .rte-content blockquote { 
+                        border-left: 4px solid #667eea; 
+                        padding-left: 1.5rem; 
+                        margin: 1.5rem 0; 
+                        font-style: italic; 
+                        color: #4a5568;
+                        background: #f7fafc;
+                        padding: 1rem 1rem 1rem 1.5rem;
+                        border-radius: 0 8px 8px 0;
+                    }
+                    
+                    .rte-content pre { 
+                        background: #2d3748; 
+                        color: #e2e8f0; 
+                        padding: 1.5rem; 
+                        border-radius: 8px; 
+                        overflow-x: auto;
+                        font-family: 'Courier New', monospace;
+                        margin: 1rem 0;
+                    }
+                    
+                    .rte-content code {
+                        background: #edf2f7;
+                        color: #d53f8c;
+                        padding: 0.2rem 0.4rem;
+                        border-radius: 4px;
+                        font-family: 'Courier New', monospace;
+                        font-size: 0.9em;
+                    }
+                    
+                    .rte-content pre code {
+                        background: transparent;
+                        color: inherit;
+                        padding: 0;
+                    }
+                    
+                    /* Responsive */
+                    @media (max-width: 768px) {
+                        .rte-toolbar { padding: 0.5rem; gap: 0.25rem; }
+                        .rte-btn { min-width: 32px; height: 32px; font-size: 0.8rem; }
+                        .rte-select { min-width: 70px; font-size: 0.8rem; }
+                        .rte-content { padding: 1rem; font-size: 0.95rem; }
+                        .rte-btn-group { padding: 0 0.25rem; }
+                    }
+                `;
+                
+                const styleSheet = document.createElement('style');
+                styleSheet.id = 'rte-styles';
+                styleSheet.textContent = styles;
+                document.head.appendChild(styleSheet);
+            }
+            
+            createEditor() {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'rte-wrapper';
+                wrapper.style.height = this.options.height;
+                
+                this.createToolbar(wrapper);
+                this.createContentArea(wrapper);
+                this.createCodeView(wrapper);
+                
+                this.container.innerHTML = '';
+                this.container.appendChild(wrapper);
+                this.wrapper = wrapper;
+            }
+            
+            createToolbar(wrapper) {
+                const toolbar = document.createElement('div');
+                toolbar.className = 'rte-toolbar';
+                
+                // Format dropdown group
+                const formatGroup = document.createElement('div');
+                formatGroup.className = 'rte-btn-group';
+                
+                const formatSelect = document.createElement('select');
+                formatSelect.className = 'rte-select';
+                formatSelect.innerHTML = `
+                    <option value="P">Paragraph</option>
+                    <option value="H1">Heading 1</option>
+                    <option value="H2">Heading 2</option>
+                    <option value="H3">Heading 3</option>
+                    <option value="H4">Heading 4</option>
+                    <option value="H5">Heading 5</option>
+                    <option value="H6">Heading 6</option>
+                `;
+                formatSelect.addEventListener('change', (e) => {
+                    this.content.focus();
+                    document.execCommand('formatBlock', false, e.target.value);
+                });
+                formatGroup.appendChild(formatSelect);
+                this.formatSelect = formatSelect;
+                
+                // Font family dropdown
+                const fontSelect = document.createElement('select');
+                fontSelect.className = 'rte-select';
+                fontSelect.innerHTML = `
+                    <option value="">Default</option>
+                    <option value="Arial">Arial</option>
+                    <option value="Georgia">Georgia</option>
+                    <option value="Times New Roman">Times</option>
+                    <option value="Courier New">Courier</option>
+                    <option value="Verdana">Verdana</option>
+                    <option value="Comic Sans MS">Comic Sans</option>
+                `;
+                fontSelect.addEventListener('change', (e) => {
+                    this.content.focus();
+                    if (e.target.value) {
+                        document.execCommand('fontName', false, e.target.value);
+                    }
+                });
+                formatGroup.appendChild(fontSelect);
+                
+                toolbar.appendChild(formatGroup);
+                
+                // Text style group
+                const styleGroup = document.createElement('div');
+                styleGroup.className = 'rte-btn-group';
+                this.addButton(styleGroup, 'B', 'Bold', () => document.execCommand('bold'));
+                this.addButton(styleGroup, 'I', 'Italic', () => document.execCommand('italic'));
+                this.addButton(styleGroup, 'U', 'Underline', () => document.execCommand('underline'));
+                this.addButton(styleGroup, 'S', 'Strikethrough', () => document.execCommand('strikeThrough'));
+                toolbar.appendChild(styleGroup);
+                
+                // Color group
+                const colorGroup = document.createElement('div');
+                colorGroup.className = 'rte-btn-group';
+                
+                const textColorInput = document.createElement('input');
+                textColorInput.type = 'color';
+                textColorInput.className = 'rte-color-input';
+                textColorInput.title = 'Text Color';
+                textColorInput.value = '#000000';
+                textColorInput.addEventListener('change', (e) => {
+                    this.content.focus();
+                    document.execCommand('foreColor', false, e.target.value);
+                });
+                colorGroup.appendChild(textColorInput);
+                
+                const bgColorInput = document.createElement('input');
+                bgColorInput.type = 'color';
+                bgColorInput.className = 'rte-color-input';
+                bgColorInput.title = 'Highlight Color';
+                bgColorInput.value = '#ffff00';
+                bgColorInput.addEventListener('change', (e) => {
+                    this.content.focus();
+                    document.execCommand('backColor', false, e.target.value);
+                });
+                colorGroup.appendChild(bgColorInput);
+                
+                toolbar.appendChild(colorGroup);
+                
+                // List group
+                const listGroup = document.createElement('div');
+                listGroup.className = 'rte-btn-group';
+                this.addButton(listGroup, '• List', 'Bullet List', () => document.execCommand('insertUnorderedList'));
+                this.addButton(listGroup, '1. List', 'Numbered List', () => document.execCommand('insertOrderedList'));
+                this.addButton(listGroup, '→', 'Indent', () => document.execCommand('indent'));
+                this.addButton(listGroup, '←', 'Outdent', () => document.execCommand('outdent'));
+                toolbar.appendChild(listGroup);
+                
+                // Align group
+                const alignGroup = document.createElement('div');
+                alignGroup.className = 'rte-btn-group';
+                this.addButton(alignGroup, '⊨', 'Align Left', () => document.execCommand('justifyLeft'));
+                this.addButton(alignGroup, '≡', 'Align Center', () => document.execCommand('justifyCenter'));
+                this.addButton(alignGroup, '⊩', 'Align Right', () => document.execCommand('justifyRight'));
+                toolbar.appendChild(alignGroup);
+                
+                // Insert group
+                const insertGroup = document.createElement('div');
+                insertGroup.className = 'rte-btn-group';
+                this.addButton(insertGroup, '🔗', 'Insert Link', () => {
+                    const url = prompt('Enter URL:');
+                    if (url) document.execCommand('createLink', false, url);
+                });
+                this.addButton(insertGroup, '🖼️', 'Insert Image', () => {
+                    const url = prompt('Enter image URL:');
+                    if (url) {
+                        document.execCommand('insertImage', false, url);
+                        setTimeout(() => {
+                            const imgs = this.content.querySelectorAll('img');
+                            imgs[imgs.length - 1]?.setAttribute('style', 'max-width: 100%; height: auto;');
+                        }, 10);
+                    }
+                });
+                this.addButton(insertGroup, '❝❞', 'Quote', () => document.execCommand('formatBlock', false, 'BLOCKQUOTE'));
+                toolbar.appendChild(insertGroup);
+                
+                // Utility group
+                const utilGroup = document.createElement('div');
+                utilGroup.className = 'rte-btn-group';
+                this.addButton(utilGroup, '</>', 'Toggle Code View', () => this.toggleCodeView());
+                this.addButton(utilGroup, '✕', 'Clear Format', () => document.execCommand('removeFormat'));
+                toolbar.appendChild(utilGroup);
+                
+                wrapper.appendChild(toolbar);
+                this.toolbar = toolbar;
+            }
+            
+            addButton(group, text, title, onClick) {
+                const btn = document.createElement('button');
+                btn.className = 'rte-btn';
+                btn.textContent = text;
+                btn.title = title;
+                btn.type = 'button';
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    onClick();
+                    this.updateToolbarState();
+                });
+                group.appendChild(btn);
+                return btn;
+            }
+            
+            createContentArea(wrapper) {
+                const content = document.createElement('div');
+                content.className = 'rte-content';
+                content.contentEditable = true;
+                
+                content.addEventListener('input', () => {
+                    if (this.options.onChange) {
+                        this.options.onChange(this.getContent());
+                    }
+                    this.updateToolbarState();
+                });
+                
+                content.addEventListener('focus', () => {
+                    wrapper.classList.add('focused');
+                });
+                
+                content.addEventListener('blur', () => {
+                    wrapper.classList.remove('focused');
+                });
+                
+                content.addEventListener('keydown', (e) => {
+                    if (e.key === 'Tab') {
+                        e.preventDefault();
+                        document.execCommand('insertText', false, '    ');
+                    }
+                });
+                
+                wrapper.appendChild(content);
+                this.content = content;
+            }
+            
+            createCodeView(wrapper) {
+                const codeView = document.createElement('textarea');
+                codeView.className = 'rte-code-view';
+                wrapper.appendChild(codeView);
+                this.codeView = codeView;
+            }
+            
+            setupEventListeners() {
+                this.content.addEventListener('paste', (e) => {
+                    e.preventDefault();
+                    const text = (e.clipboardData || window.clipboardData).getData('text/plain');
+                    document.execCommand('insertText', false, text);
+                });
+                
+                this.content.addEventListener('mouseup', () => this.updateToolbarState());
+                this.content.addEventListener('keyup', () => this.updateToolbarState());
+            }
+            
+            updateToolbarState() {
+                // Update format select
+                try {
+                    const formatBlock = document.queryCommandValue('formatBlock');
+                    if (formatBlock) {
+                        this.formatSelect.value = formatBlock.toUpperCase();
+                    }
+                } catch (e) {
+                    // Ignore
+                }
+                
+                // Update button states
+                const buttons = this.toolbar.querySelectorAll('.rte-btn');
+                buttons.forEach(btn => {
+                    const text = btn.textContent;
+                    try {
+                        if (text === 'B') btn.classList.toggle('active', document.queryCommandState('bold'));
+                        else if (text === 'I') btn.classList.toggle('active', document.queryCommandState('italic'));
+                        else if (text === 'U') btn.classList.toggle('active', document.queryCommandState('underline'));
+                        else if (text === 'S') btn.classList.toggle('active', document.queryCommandState('strikeThrough'));
+                    } catch (e) {
+                        // Ignore
+                    }
+                });
+            }
+            
+            toggleCodeView() {
+                this.codeViewActive = !this.codeViewActive;
+                
+                if (this.codeViewActive) {
+                    // Switch to code view
+                    this.codeView.value = this.content.innerHTML;
+                    this.content.classList.add('hidden');
+                    this.codeView.classList.add('active');
+                    this.codeView.focus();
+                } else {
+                    // Switch back to visual view
+                    this.content.innerHTML = this.codeView.value;
+                    this.content.classList.remove('hidden');
+                    this.codeView.classList.remove('active');
+                    this.content.focus();
+                }
+            }
+            
+            // Public API
+            getContent() {
+                if (this.codeViewActive) {
+                    return this.codeView.value;
+                }
+                return this.content.innerHTML;
+            }
+            
+            getText() {
+                return this.content.textContent || this.content.innerText;
+            }
+            
+            setContent(html) {
+                this.content.innerHTML = html;
+                if (this.codeViewActive) {
+                    this.codeView.value = html;
+                }
+            }
+            
+            clear() {
+                this.content.innerHTML = '';
+                this.codeView.value = '';
+            }
+            
+            focus() {
+                if (this.codeViewActive) {
+                    this.codeView.focus();
+                } else {
+                    this.content.focus();
+                }
+            }
+            
+            isEmpty() {
+                return this.content.textContent.trim() === '';
+            }
+            
+            destroy() {
+                this.container.innerHTML = '';
+            }
+        }
+
+        // Make it globally available
+        window.RichTextEditor = RichTextEditor;
+
+        // Demo Page Functions
+        let demoEditor;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize demo editor
+            demoEditor = new RichTextEditor('#my-editor', {
+                placeholder: 'Start writing your amazing content here... Try all the formatting options!',
+                height: '500px',
+                onChange: (content) => {
+                    console.log('Content changed');
+                }
+            });
+
+            // Add some sample content
+            demoEditor.setContent(`
+                <h1>Welcome to RichTextEditor.js</h1>
+                <p>This is a powerful and flexible rich text editor that you can use in any project. Try editing this text or use the toolbar above to format your content.</p>
+                <h2>Key Features</h2>
+                <ul>
+                    <li>Multiple heading levels (H1-H6) with dropdown selector</li>
+                    <li>Text formatting (bold, italic, underline, strikethrough)</li>
+                    <li>Text color and highlight options</li>
+                    <li>Font family selector</li>
+                    <li>Lists with indentation controls</li>
+                    <li>Text alignment options</li>
+                    <li>Code view toggle</li>
+                </ul>
+                <h3>Try It Out!</h3>
+                <p>Select some text and use the toolbar to format it. You can also paste content from other sources.</p>
+            `);
+        });
+
+        function getEditorContent() {
+            const content = demoEditor.getContent();
+            document.getElementById('output-display').innerHTML = content;
+            alert('Content copied to output display below!');
+        }
+
+        function setDemoContent() {
+            demoEditor.setContent(`
+                <h1>Sample Article Title</h1>
+                <h2>Introduction</h2>
+                <p>This is a sample article with various formatting options demonstrated. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                
+                <h3>Subheading Example</h3>
+                <p>You can use <strong>bold text</strong>, <em>italic text</em>, <u>underlined text</u>, and even <del>strikethrough text</del>.</p>
+                
+                <p style="color: #667eea;">This text has a custom color applied.</p>
+                <p style="background-color: #ffff00;">This text is highlighted.</p>
+                
+                <h4>Lists Are Supported</h4>
+                <ul>
+                    <li>First item in unordered list</li>
+                    <li>Second item with <strong>formatted text</strong></li>
+                    <li>Third item
+                        <ul>
+                            <li>Nested item 1</li>
+                            <li>Nested item 2</li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <ol>
+                    <li>First step in ordered list</li>
+                    <li>Second step</li>
+                    <li>Final step</li>
+                </ol>
+                
+                <blockquote>
+                    "This is a beautiful quote that stands out from the rest of the content. Quotes are great for highlighting important information."
+                </blockquote>
+                
+                <h5>Different Fonts</h5>
+                <p style="font-family: Georgia;">This paragraph uses Georgia font.</p>
+                <p style="font-family: Courier New;">This paragraph uses Courier New font.</p>
+                
+                <h6>Text Alignment</h6>
+                <p style="text-align: left;">This paragraph is left-aligned.</p>
+                <p style="text-align: center;">This paragraph is center-aligned.</p>
+                <p style="text-align: right;">This paragraph is right-aligned.</p>
+            `);
+        }
+
+        function clearEditor() {
+            if (confirm('Are you sure you want to clear all content?')) {
+                demoEditor.clear();
+                document.getElementById('output-display').innerHTML = '';
+            }
+        }
+    </script>
+
+    <!-- Downloadable Files Section -->
+    <div class="card">
+        <h2>Download Library Files</h2>
+        <p>Copy these files to use the editor in your project:</p>
+        
+        <h3>Usage Example</h3>
+        <div class="code-block">&lt;!-- Include the library --&gt;
+&lt;link rel="stylesheet" href="richtexteditor.css"&gt;
+&lt;script src="richtexteditor.js"&gt;&lt;/script&gt;
+
+&lt;!-- Create a container --&gt;
+&lt;div id="my-editor"&gt;&lt;/div&gt;
+
+&lt;!-- Initialize --&gt;
+&lt;script&gt;
+const editor = new RichTextEditor('#my-editor', {
+    placeholder: 'Start writing...',
+    height: '400px'
+});
+&lt;/script&gt;</div>
+        
+        <div class="demo-controls" style="margin-top: 2rem;">
+            <button class="demo-btn" onclick="downloadCSS()">📥 Download CSS</button>
+            <button class="demo-btn" onclick="downloadJS()">📥 Download JS</button>
+            <button class="demo-btn secondary" onclick="downloadBoth()">📦 Download Both</button>
+        </div>
+    </div>
+
+    <script>
+        function downloadCSS() {
+            const cssContent = document.getElementById('rte-styles').textContent;
+            const blob = new Blob([cssContent], { type: 'text/css' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'richtexteditor.css';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function downloadJS() {
+            const jsContent = `// RichTextEditor.js - Professional Rich Text Editor Library
+// Version 1.0.0
+
+${RichTextEditor.toString()}
+
+// Make it globally available
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = RichTextEditor;
+} else {
+    window.RichTextEditor = RichTextEditor;
+}`;
+            
+            const blob = new Blob([jsContent], { type: 'text/javascript' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'richtexteditor.js';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function downloadBoth() {
+            downloadCSS();
+            setTimeout(() => downloadJS(), 300);
+        }
+    </script>
+</body>
+</html>
