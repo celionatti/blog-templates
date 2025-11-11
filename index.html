@@ -14,7 +14,9 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
 
     <style>
         /* ========== CSS VARIABLES & THEME ========== */
@@ -150,10 +152,13 @@
         }
 
         @keyframes pulse {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: scale(1);
                 opacity: 1;
             }
+
             50% {
                 transform: scale(1.05);
                 opacity: 0.8;
@@ -161,9 +166,12 @@
         }
 
         @keyframes fadeInOut {
-            0%, 100% {
+
+            0%,
+            100% {
                 opacity: 0.5;
             }
+
             50% {
                 opacity: 1;
             }
@@ -295,7 +303,7 @@
             transform: rotate(20deg);
         }
 
-        /* ========== SEARCH BAR ========== */
+        /* ========== SEARCH BAR - FIXED FOR MOBILE ========== */
         .search-container {
             position: relative;
             display: flex;
@@ -310,6 +318,7 @@
             cursor: pointer;
             padding: 0.5rem;
             transition: color 0.3s ease;
+            z-index: 1001;
         }
 
         .search-toggle:hover {
@@ -327,6 +336,7 @@
             background-color: var(--bg-primary);
             border-radius: 50px;
             box-shadow: 0 2px 10px var(--card-shadow);
+            z-index: 1000;
         }
 
         .search-input-container.active {
@@ -357,6 +367,7 @@
             color: var(--text-secondary);
             cursor: pointer;
             font-size: 1rem;
+            z-index: 1002;
         }
 
         .search-close:hover {
@@ -610,8 +621,37 @@
         }
 
         @media (max-width: 576px) {
+            .search-input-container {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                width: 100% !important;
+                height: 60px;
+                transform: translateY(-100%);
+                border-radius: 0;
+                transition: transform 0.3s ease;
+                z-index: 9999;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+
             .search-input-container.active {
-                width: 150px;
+                transform: translateY(0);
+            }
+
+            .search-input {
+                height: 100%;
+                padding: 1rem 3rem 1rem 1rem;
+                font-size: 1rem;
+            }
+
+            .search-close {
+                right: 1rem;
+                font-size: 1.2rem;
+            }
+
+            .navbar-toggler {
+                z-index: 10000;
             }
         }
 
@@ -1195,21 +1235,30 @@
         const searchClose = document.getElementById('searchClose');
         const searchInput = document.querySelector('.search-input');
 
-        searchToggle.addEventListener('click', function() {
+        searchToggle.addEventListener('click', function () {
             searchInputContainer.classList.toggle('active');
             if (searchInputContainer.classList.contains('active')) {
                 searchInput.focus();
             }
         });
 
-        searchClose.addEventListener('click', function() {
+        searchClose.addEventListener('click', function () {
             searchInputContainer.classList.remove('active');
             searchInput.value = '';
         });
 
-        // Close search when clicking outside
-        document.addEventListener('click', function(event) {
-            if (!searchInputContainer.contains(event.target) && !searchToggle.contains(event.target)) {
+        // Close search when clicking outside (for desktop)
+        document.addEventListener('click', function (event) {
+            if (window.innerWidth > 576) {
+                if (!searchInputContainer.contains(event.target) && !searchToggle.contains(event.target)) {
+                    searchInputContainer.classList.remove('active');
+                }
+            }
+        });
+
+        // Close search on escape key
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
                 searchInputContainer.classList.remove('active');
             }
         });
