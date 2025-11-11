@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin analytics - BlogName">
+    <title>Analytics - BlogName Admin</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* ========== CSS VARIABLES & THEME ========== */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-tertiary: #e9ecef;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6c757d;
+            --accent: #dc143c;
+            --accent-hover: #b01030;
+            --accent-light: rgba(220, 20, 60, 0.1);
+            --border-color: #dee2e6;
+            --card-shadow: rgba(0, 0, 0, 0.1);
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --info: #17a2b8;
+            --sidebar-width: 280px;
+            --font-heading: 'Inter', sans-serif;
+            --font-brand: 'Dancing Script', cursive;
+        }
+
+        .dark-mode {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #f5f5f5;
+            --text-secondary: #b0b0b0;
+            --accent: #ff4f5a;
+            --accent-hover: #ff6b75;
+            --accent-light: rgba(255, 79, 90, 0.15);
+            --border-color: #333;
+            --card-shadow: rgba(255, 255, 255, 0.05);
+            --success: #4caf50;
+            --warning: #ffb300;
+            --danger: #f44336;
+            --info: #29b6f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            font-family: var(--font-heading);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            line-height: 1.6;
+        }
+
+        /* ========== SIDEBAR ========== */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            background-color: var(--bg-primary);
+            border-right: 1px solid var(--border-color);
+            padding: 1.5rem 0;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar.hidden {
+            transform: translateX(-100%);
+        }
+
+        .sidebar-brand {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-brand a {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-family: var(--font-brand);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sidebar-brand span {
+            color: var(--accent);
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-nav-item {
+            margin-bottom: 0.25rem;
+        }
+
+        .sidebar-nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.875rem 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            font-weight: 500;
+        }
+
+        .sidebar-nav-link i {
+            font-size: 1.2rem;
+            margin-right: 1rem;
+            min-width: 24px;
+        }
+
+        .sidebar-nav-link:hover {
+            background-color: var(--accent-light);
+            color: var(--accent);
+        }
+
+        .sidebar-nav-link.active {
+            background-color: var(--accent-light);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .sidebar-nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: var(--accent);
+        }
+
+        .sidebar-section-title {
+            padding: 1.5rem 1.5rem 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+        }
+
+        /* ========== MAIN CONTENT ========== */
+        .main-wrapper {
+            margin-left: var(--sidebar-width);
+            transition: margin-left 0.3s ease;
+        }
+
+        .main-wrapper.expanded {
+            margin-left: 0;
+        }
+
+        /* ========== TOP HEADER ========== */
+        .top-header {
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: color 0.3s ease;
+            display: none;
+        }
+
+        .menu-toggle:hover {
+            color: var(--accent);
+        }
+
+        .search-box {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-icon {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .header-icon:hover {
+            color: var(--accent);
+            transform: scale(1.1);
+        }
+
+        .header-icon .badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: var(--danger);
+            color: white;
+            font-size: 0.65rem;
+            padding: 0.2rem 0.4rem;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--bg-secondary);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .user-menu:hover {
+            background-color: var(--accent-light);
+        }
+
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* ========== ANALYTICS CONTENT ========== */
+        .analytics-content {
+            padding: 2rem 1.5rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        /* ========== DATE RANGE FILTER ========== */
+        .date-filter {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .date-presets {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .date-preset-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .date-preset-btn.active {
+            background-color: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .date-preset-btn:hover:not(.active) {
+            background-color: var(--bg-secondary);
+        }
+
+        .date-custom {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .date-input {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        .btn-custom {
+            padding: 0.6rem 1.25rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 20, 60, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        /* ========== OVERVIEW STATS ========== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px var(--card-shadow);
+        }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .stat-icon.blue {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .stat-icon.green {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .stat-icon.orange {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .stat-icon.purple {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .stat-change {
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+        }
+
+        .stat-change.up {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--success);
+        }
+
+        .stat-change.down {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: var(--danger);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* ========== CHARTS GRID ========== */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 992px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .chart-card {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .chart-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chart-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .chart-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chart-action {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .chart-action:hover {
+            background-color: var(--bg-secondary);
+            color: var(--accent);
+        }
+
+        .chart-body {
+            padding: 1.5rem;
+            height: 300px;
+        }
+
+        /* ========== TOP CONTENT ========== */
+        .top-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .top-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .top-list-card {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .top-list-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .top-list-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .top-list-body {
+            padding: 0;
+        }
+
+        .top-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .top-list-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.2s ease;
+        }
+
+        .top-list-item:last-child {
+            border-bottom: none;
+        }
+
+        .top-list-item:hover {
+            background-color: var(--accent-light);
+        }
+
+        .top-list-rank {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            background-color: var(--accent-light);
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .top-list-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .top-list-thumbnail {
+            width: 50px;
+            height: 35px;
+            border-radius: 6px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .top-list-details {
+            flex: 1;
+        }
+
+        .top-list-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .top-list-meta {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .top-list-value {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--accent);
+        }
+
+        /* ========== TRAFFIC SOURCES ========== */
+        .traffic-sources {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .traffic-sources {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .source-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+
+        .source-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: white;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .source-icon.organic {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .source-icon.social {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .source-icon.direct {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .source-icon.referral {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .source-details {
+            flex: 1;
+        }
+
+        .source-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .source-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .source-value {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .source-change {
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+        }
+
+        .source-change.up {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--success);
+        }
+
+        .source-change.down {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: var(--danger);
+        }
+
+        /* ========== GEO MAP ========== */
+        .geo-map-card {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .geo-map-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .geo-map-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .geo-map-body {
+            padding: 1.5rem;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--bg-secondary);
+            border-radius: 0 0 12px 12px;
+        }
+
+        .map-placeholder {
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .map-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 1199px) {
+            :root {
+                --sidebar-width: 250px;
+            }
+        }
+
+        @media (max-width: 991px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-wrapper {
+                margin-left: 0;
+            }
+
+            .search-box {
+                max-width: 100%;
+            }
+
+            .user-info {
+                display: none;
+            }
+
+            .date-filter {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .date-custom {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .analytics-content {
+                padding: 1.5rem 1rem;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-body {
+                height: 250px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .top-header {
+                padding: 1rem;
+            }
+
+            .search-box input {
+                font-size: 0.85rem;
+                padding: 0.65rem 1rem 0.65rem 2.5rem;
+            }
+
+            .header-right {
+                gap: 0.5rem;
+            }
+
+            .header-icon {
+                font-size: 1.2rem;
+            }
+
+            .date-presets {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .date-preset-btn {
+                flex: 1;
+                text-align: center;
+            }
+        }
+
+        /* ========== OVERLAY FOR MOBILE SIDEBAR ========== */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ========== SIDEBAR ========== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <a href="/">
+                <i class="bi bi-lightning-charge-fill"></i>
+                Blog<span>Admin</span>
+            </a>
+        </div>
+
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-speedometer2"></i>
+                    Dashboard
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-file-earmark-text"></i>
+                    Posts
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-folder"></i>
+                    Categories
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-chat-dots"></i>
+                    Comments
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-people"></i>
+                    Users
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-section-title">Analytics</div>
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link active">
+                    <i class="bi bi-graph-up"></i>
+                    Analytics
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-bar-chart"></i>
+                    Reports
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-section-title">Settings</div>
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-gear"></i>
+                    Settings
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-palette"></i>
+                    Appearance
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-box-arrow-right"></i>
+                    Logout
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- ========== SIDEBAR OVERLAY ========== -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <div class="main-wrapper" id="mainWrapper">
+        <!-- ========== TOP HEADER ========== -->
+        <header class="top-header">
+            <div class="header-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="bi bi-list"></i>
+                </button>
+                <div class="search-box">
+                    <i class="bi bi-search"></i>
+                    <input type="text" placeholder="Search analytics...">
+                </div>
+            </div>
+
+            <div class="header-right">
+                <button class="header-icon" id="themeToggle" aria-label="Toggle dark mode">
+                    <i class="bi bi-sun-fill" id="themeIcon"></i>
+                </button>
+                <button class="header-icon">
+                    <i class="bi bi-bell"></i>
+                    <span class="badge">3</span>
+                </button>
+                <div class="user-menu">
+                    <div class="user-avatar">JD</div>
+                    <div class="user-info">
+                        <div class="user-name">John Doe</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                    <i class="bi bi-chevron-down" style="color: var(--text-secondary);"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- ========== ANALYTICS CONTENT ========== -->
+        <main class="analytics-content">
+            <h1 class="page-title">Analytics Dashboard</h1>
+            <p class="page-subtitle">Track your blog performance and audience insights.</p>
+
+            <!-- ========== DATE RANGE FILTER ========== -->
+            <div class="date-filter">
+                <div class="date-presets">
+                    <button class="date-preset-btn active">Today</button>
+                    <button class="date-preset-btn">Yesterday</button>
+                    <button class="date-preset-btn">Last 7 days</button>
+                    <button class="date-preset-btn">Last 30 days</button>
+                    <button class="date-preset-btn">This month</button>
+                    <button class="date-preset-btn">Last month</button>
+                </div>
+                <div class="date-custom">
+                    <input type="date" class="date-input" value="2023-11-01">
+                    <span>to</span>
+                    <input type="date" class="date-input" value="2023-11-30">
+                    <button class="btn-custom btn-primary">
+                        <i class="bi bi-filter"></i>
+                        Apply
+                    </button>
+                </div>
+            </div>
+
+            <!-- ========== OVERVIEW STATS ========== -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon blue">
+                            <i class="bi bi-eye"></i>
+                        </div>
+                        <span class="stat-change up">+12.5%</span>
+                    </div>
+                    <div class="stat-value">24.8K</div>
+                    <div class="stat-label">Total Views</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon green">
+                            <i class="bi bi-people"></i>
+                        </div>
+                        <span class="stat-change up">+8.3%</span>
+                    </div>
+                    <div class="stat-value">8,742</div>
+                    <div class="stat-label">Unique Visitors</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon orange">
+                            <i class="bi bi-clock"></i>
+                        </div>
+                        <span class="stat-change up">+5.2%</span>
+                    </div>
+                    <div class="stat-value">2m 48s</div>
+                    <div class="stat-label">Avg. Session Duration</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon purple">
+                            <i class="bi bi-arrow-down-left"></i>
+                        </div>
+                        <span class="stat-change down">-2.1%</span>
+                    </div>
+                    <div class="stat-value">42.5%</div>
+                    <div class="stat-label">Bounce Rate</div>
+                </div>
+            </div>
+
+            <!-- ========== CHARTS GRID ========== -->
+            <div class="charts-grid">
+                <!-- Traffic Chart -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h2 class="chart-title">Traffic Overview</h2>
+                        <div class="chart-actions">
+                            <button class="chart-action" title="Download">
+                                <i class="bi bi-download"></i>
+                            </button>
+                            <button class="chart-action" title="Refresh">
+                                <i class="bi bi-arrow-clockwise"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="trafficChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Sources Chart -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h2 class="chart-title">Traffic Sources</h2>
+                        <div class="chart-actions">
+                            <button class="chart-action" title="Download">
+                                <i class="bi bi-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="sourcesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== TOP CONTENT ========== -->
+            <div class="top-content">
+                <!-- Top Posts -->
+                <div class="top-list-card">
+                    <div class="top-list-header">
+                        <h2 class="top-list-title">Top Performing Posts</h2>
+                    </div>
+                    <div class="top-list-body">
+                        <ul class="top-list">
+                            <li class="top-list-item">
+                                <div class="top-list-rank">1</div>
+                                <div class="top-list-content">
+                                    <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=80&h=60&fit=crop"
+                                        alt="Post" class="top-list-thumbnail">
+                                    <div class="top-list-details">
+                                        <div class="top-list-name">Breaking: Major Development Reshapes Global Economy</div>
+                                        <div class="top-list-meta">John Doe • 2 hours ago</div>
+                                    </div>
+                                </div>
+                                <div class="top-list-value">2,548</div>
+                            </li>
+                            <li class="top-list-item">
+                                <div class="top-list-rank">2</div>
+                                <div class="top-list-content">
+                                    <img src="https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=80&h=60&fit=crop"
+                                        alt="Post" class="top-list-thumbnail">
+                                    <div class="top-list-details">
+                                        <div class="top-list-name">AI Revolution: New Breakthrough Changes Everything</div>
+                                        <div class="top-list-meta">Sarah Adams • 4 hours ago</div>
+                                    </div>
+                                </div>
+                                <div class="top-list-value">1,892</div>
+                            </li>
+                            <li class="top-list-item">
+                                <div class="top-list-rank">3</div>
+                                <div class="top-list-content">
+                                    <img src="https://images.unsplash.com/photo-1483058712412-4245e9b90334?w=80&h=60&fit=crop"
+                                        alt="Post" class="top-list-thumbnail">
+                                    <div class="top-list-details">
+                                        <div class="top-list-name">10 Hidden Gems You Must Visit in 2025</div>
+                                        <div class="top-list-meta">Lisa Martinez • 1 day ago</div>
+                                    </div>
+                                </div>
+                                <div class="top-list-value">1,521</div>
+                            </li>
+                            <li class="top-list-item">
+                                <div class="top-list-rank">4</div>
+                                <div class="top-list-content">
+                                    <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=80&h=60&fit=crop"
+                                        alt="Post" class="top-list-thumbnail">
+                                    <div class="top-list-details">
+                                        <div class="top-list-name">Quantum Computing Makes Giant Leap Forward</div>
+                                        <div class="top-list-meta">David Wilson • 1 day ago</div>
+                                    </div>
+                                </div>
+                                <div class="top-list-value">1,234</div>
+                            </li>
+                            <li class="top-list-item">
+                                <div class="top-list-rank">5</div>
+                                <div class="top-list-content">
+                                    <img src="https://images.unsplash.com/photo-1495020689067-958852a7765e?w=80&h=60&fit=crop"
+                                        alt="Post" class="top-list-thumbnail">
+                                    <div class="top-list-details">
+                                        <div class="top-list-name">Climate Summit Reaches Historic Agreement</div>
+                                        <div class="top-list-meta">Emily Chen • 8 hours ago</div>
+                                    </div>
+                                </div>
+                                <div class="top-list-value">876</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Top Categories -->
+                <div class="top-list-card">
+                    <div class="top-list-header">
+                        <h2 class="top-list-title">Top Categories</h2>
+                    </div>
+                    <div class="top-list-body">
+                        <ul class="top-list">
+                            <li class="top-list-item">
+                                <div class="top-list-rank">1</div>
+                                <div class="top-list-content">
+                                    <div class="top-list-details">
+                                        <div class="top-list-name">Technology</div>
+                                        <div class="top-list-meta">24 posts • 12.5K views</div>
+                                    </div>
+                                </div>
+                                <div class="top-list-value">28%</div>
+                            </li>
+                            <li class="top-list-item">
+                                <div class="top-list-rank">2</div>
+                                <div class="top-list-content">
+                                    <div class="top-list-details">
+                                        <div class="top-list-name">World News</div>
+                                        <div class="top-list-meta">18 posts • 9.8K views</div>
+                                    </div>
+                                </div>
+                                <div class="top-list-value">22%</div>
+                            </li>
+                            <li class="top-list-item">
+                                <div class="top-list-rank">3</div>
+                                <div class="top-list-content">
+                                    <div class="top-list-details">
+                                        <div class="top-list-name">Travel</div>
+                                        <div class="top-list-meta">15 posts • 7.2K views</div>
+                                    </div>
+                                </div>
+                                <div class="top-list-value">18%</div>
+                            </li>
+                            <li class="top-list-item">
+                                <div class="top-list-rank">4</div>
+                                <div class="top-list-content">
+                                    <div class="top-list-details">
+                                        <div class="top-list-name">Lifestyle</div>
+                                        <div class="top-list-meta">12 posts • 5.4K views</div>
+                                    </div>
+                                </div>
+                                <div class="top-list-value">14%</div>
+                            </li>
+                            <li class="top-list-item">
+                                <div class="top-list-rank">5</div>
+                                <div class="top-list-content">
+                                    <div class="top-list-details">
+                                        <div class="top-list-name">Sports</div>
+                                        <div class="top-list-meta">8 posts • 3.1K views</div>
+                                    </div>
+                                </div>
+                                <div class="top-list-value">8%</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== TRAFFIC SOURCES ========== -->
+            <div class="traffic-sources">
+                <div class="source-item">
+                    <div class="source-icon organic">
+                        <i class="bi bi-search"></i>
+                    </div>
+                    <div class="source-details">
+                        <div class="source-name">Organic Search</div>
+                        <div class="source-stats">
+                            <div class="source-value">12,458</div>
+                            <div class="source-change up">+8.2%</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="source-item">
+                    <div class="source-icon social">
+                        <i class="bi bi-share"></i>
+                    </div>
+                    <div class="source-details">
+                        <div class="source-name">Social Media</div>
+                        <div class="source-stats">
+                            <div class="source-value">6,892</div>
+                            <div class="source-change up">+12.7%</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="source-item">
+                    <div class="source-icon direct">
+                        <i class="bi bi-type"></i>
+                    </div>
+                    <div class="source-details">
+                        <div class="source-name">Direct Traffic</div>
+                        <div class="source-stats">
+                            <div class="source-value">3,245</div>
+                            <div class="source-change down">-2.3%</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="source-item">
+                    <div class="source-icon referral">
+                        <i class="bi bi-link-45deg"></i>
+                    </div>
+                    <div class="source-details">
+                        <div class="source-name">Referral</div>
+                        <div class="source-stats">
+                            <div class="source-value">2,147</div>
+                            <div class="source-change up">+5.1%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== GEO MAP ========== -->
+            <div class="geo-map-card">
+                <div class="geo-map-header">
+                    <h2 class="geo-map-title">Audience Geography</h2>
+                </div>
+                <div class="geo-map-body">
+                    <div class="map-placeholder">
+                        <i class="bi bi-globe"></i>
+                        <p>Interactive world map visualization</p>
+                        <p class="text-muted">Map data would be displayed here with audience distribution</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // ========== SIDEBAR TOGGLE ==========
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const mainWrapper = document.getElementById('mainWrapper');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            sidebarOverlay.classList.toggle('active');
+        });
+
+        sidebarOverlay.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
+        });
+
+        // Close sidebar when clicking a link on mobile
+        document.querySelectorAll('.sidebar-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 991) {
+                    sidebar.classList.remove('active');
+                    sidebarOverlay.classList.remove('active');
+                }
+            });
+        });
+
+        // ========== THEME TOGGLE ==========
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const body = document.body;
+
+        function updateThemeIcon(isDark) {
+            if (isDark) {
+                themeIcon.classList.remove('bi-sun-fill');
+                themeIcon.classList.add('bi-moon-stars-fill');
+            } else {
+                themeIcon.classList.remove('bi-moon-stars-fill');
+                themeIcon.classList.add('bi-sun-fill');
+            }
+        }
+
+        function initTheme() {
+            const savedTheme = localStorage.getItem('admin_theme');
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+                updateThemeIcon(true);
+            } else if (savedTheme === 'light') {
+                body.classList.remove('dark-mode');
+                updateThemeIcon(false);
+            } else {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (prefersDark) {
+                    body.classList.add('dark-mode');
+                    updateThemeIcon(true);
+                }
+            }
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            updateThemeIcon(isDark);
+            localStorage.setItem('admin_theme', isDark ? 'dark' : 'light');
+            
+            // Update charts when theme changes
+            updateChartThemes();
+        });
+
+        initTheme();
+
+        // ========== DATE FILTER ==========
+        const datePresetBtns = document.querySelectorAll('.date-preset-btn');
+        
+        datePresetBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                datePresetBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                // In a real application, you would update the charts with new data
+                console.log('Date range changed to:', this.textContent);
+            });
+        });
+
+        // ========== CHARTS ==========
+        let trafficChart, sourcesChart;
+
+        function initCharts() {
+            const isDark = body.classList.contains('dark-mode');
+            const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+            const textColor = isDark ? '#f5f5f5' : '#1a1a1a';
+            const mutedTextColor = isDark ? '#b0b0b0' : '#6c757d';
+
+            // Traffic Chart
+            const trafficCtx = document.getElementById('trafficChart').getContext('2d');
+            trafficChart = new Chart(trafficCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Nov 1', 'Nov 5', 'Nov 10', 'Nov 15', 'Nov 20', 'Nov 25', 'Nov 30'],
+                    datasets: [
+                        {
+                            label: 'Page Views',
+                            data: [3200, 4100, 3800, 5200, 6100, 5800, 7200],
+                            borderColor: '#dc143c',
+                            backgroundColor: 'rgba(220, 20, 60, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Unique Visitors',
+                            data: [2400, 3200, 2900, 4100, 4800, 4500, 5600],
+                            borderColor: '#667eea',
+                            backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: textColor
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: gridColor
+                            },
+                            ticks: {
+                                color: mutedTextColor
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: gridColor
+                            },
+                            ticks: {
+                                color: mutedTextColor
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Sources Chart
+            const sourcesCtx = document.getElementById('sourcesChart').getContext('2d');
+            sourcesChart = new Chart(sourcesCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Organic Search', 'Social Media', 'Direct', 'Referral', 'Email'],
+                    datasets: [{
+                        data: [45, 25, 15, 10, 5],
+                        backgroundColor: [
+                            '#4facfe',
+                            '#667eea',
+                            '#f093fb',
+                            '#11998e',
+                            '#ffb300'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: textColor,
+                                padding: 15
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateChartThemes() {
+            if (trafficChart && sourcesChart) {
+                trafficChart.destroy();
+                sourcesChart.destroy();
+                initCharts();
+            }
+        }
+
+        // Initialize charts when page loads
+        document.addEventListener('DOMContentLoaded', initCharts);
+
+        // ========== RESPONSIVE HANDLING ==========
+        function handleResize() {
+            if (window.innerWidth > 991) {
+                sidebar.classList.remove('active');
+                sidebarOverlay.classList.remove('active');
+            }
+        }
+
+        window.addEventListener('resize', handleResize);
+    </script>
+</body>
+
+</html>

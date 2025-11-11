@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin settings - BlogName">
+    <title>Settings - BlogName Admin</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ========== CSS VARIABLES & THEME ========== */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-tertiary: #e9ecef;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6c757d;
+            --accent: #dc143c;
+            --accent-hover: #b01030;
+            --accent-light: rgba(220, 20, 60, 0.1);
+            --border-color: #dee2e6;
+            --card-shadow: rgba(0, 0, 0, 0.1);
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --info: #17a2b8;
+            --sidebar-width: 280px;
+            --font-heading: 'Inter', sans-serif;
+            --font-brand: 'Dancing Script', cursive;
+        }
+
+        .dark-mode {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #f5f5f5;
+            --text-secondary: #b0b0b0;
+            --accent: #ff4f5a;
+            --accent-hover: #ff6b75;
+            --accent-light: rgba(255, 79, 90, 0.15);
+            --border-color: #333;
+            --card-shadow: rgba(255, 255, 255, 0.05);
+            --success: #4caf50;
+            --warning: #ffb300;
+            --danger: #f44336;
+            --info: #29b6f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            font-family: var(--font-heading);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            line-height: 1.6;
+        }
+
+        /* ========== SIDEBAR ========== */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            background-color: var(--bg-primary);
+            border-right: 1px solid var(--border-color);
+            padding: 1.5rem 0;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar.hidden {
+            transform: translateX(-100%);
+        }
+
+        .sidebar-brand {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-brand a {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-family: var(--font-brand);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sidebar-brand span {
+            color: var(--accent);
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-nav-item {
+            margin-bottom: 0.25rem;
+        }
+
+        .sidebar-nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.875rem 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            font-weight: 500;
+        }
+
+        .sidebar-nav-link i {
+            font-size: 1.2rem;
+            margin-right: 1rem;
+            min-width: 24px;
+        }
+
+        .sidebar-nav-link:hover {
+            background-color: var(--accent-light);
+            color: var(--accent);
+        }
+
+        .sidebar-nav-link.active {
+            background-color: var(--accent-light);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .sidebar-nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: var(--accent);
+        }
+
+        .sidebar-section-title {
+            padding: 1.5rem 1.5rem 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+        }
+
+        /* ========== MAIN CONTENT ========== */
+        .main-wrapper {
+            margin-left: var(--sidebar-width);
+            transition: margin-left 0.3s ease;
+        }
+
+        .main-wrapper.expanded {
+            margin-left: 0;
+        }
+
+        /* ========== TOP HEADER ========== */
+        .top-header {
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: color 0.3s ease;
+            display: none;
+        }
+
+        .menu-toggle:hover {
+            color: var(--accent);
+        }
+
+        .search-box {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-icon {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .header-icon:hover {
+            color: var(--accent);
+            transform: scale(1.1);
+        }
+
+        .header-icon .badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: var(--danger);
+            color: white;
+            font-size: 0.65rem;
+            padding: 0.2rem 0.4rem;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--bg-secondary);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .user-menu:hover {
+            background-color: var(--accent-light);
+        }
+
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* ========== SETTINGS CONTENT ========== */
+        .settings-content {
+            padding: 2rem 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        /* ========== SETTINGS LAYOUT ========== */
+        .settings-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+        }
+
+        .settings-sidebar {
+            background-color: var(--bg-primary);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            padding: 1.5rem 0;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .settings-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .settings-nav-item {
+            margin-bottom: 0.25rem;
+        }
+
+        .settings-nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.875rem 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            font-weight: 500;
+        }
+
+        .settings-nav-link i {
+            font-size: 1.1rem;
+            margin-right: 0.75rem;
+            min-width: 20px;
+        }
+
+        .settings-nav-link:hover {
+            background-color: var(--accent-light);
+            color: var(--accent);
+        }
+
+        .settings-nav-link.active {
+            background-color: var(--accent-light);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .settings-nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background-color: var(--accent);
+        }
+
+        .settings-main {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* ========== SETTINGS CARD ========== */
+        .settings-card {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .settings-card-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .settings-card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .settings-card-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .settings-card-body {
+            padding: 1.5rem;
+        }
+
+        /* ========== FORM STYLES ========== */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .form-text {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* ========== SWITCH STYLES ========== */
+        .form-switch {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-switch input[type="checkbox"] {
+            width: 50px;
+            height: 26px;
+            appearance: none;
+            background-color: var(--bg-tertiary);
+            border-radius: 50px;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-switch input[type="checkbox"]:checked {
+            background-color: var(--accent);
+        }
+
+        .form-switch input[type="checkbox"]::before {
+            content: '';
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background-color: white;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s ease;
+        }
+
+        .form-switch input[type="checkbox"]:checked::before {
+            transform: translateX(24px);
+        }
+
+        .form-switch-label {
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        /* ========== BUTTON STYLES ========== */
+        .btn-custom {
+            padding: 0.6rem 1.25rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 20, 60, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .settings-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* ========== TAB CONTENT ========== */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* ========== DANGER ZONE ========== */
+        .danger-zone {
+            border: 1px solid var(--danger);
+            border-radius: 8px;
+            padding: 1.5rem;
+            background-color: rgba(220, 53, 69, 0.05);
+        }
+
+        .danger-zone-title {
+            color: var(--danger);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .danger-zone-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 1199px) {
+            :root {
+                --sidebar-width: 250px;
+            }
+        }
+
+        @media (max-width: 991px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-wrapper {
+                margin-left: 0;
+            }
+
+            .search-box {
+                max-width: 100%;
+            }
+
+            .user-info {
+                display: none;
+            }
+
+            .settings-container {
+                grid-template-columns: 1fr;
+            }
+
+            .settings-sidebar {
+                position: static;
+                margin-bottom: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .settings-content {
+                padding: 1.5rem 1rem;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .settings-actions {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .top-header {
+                padding: 1rem;
+            }
+
+            .search-box input {
+                font-size: 0.85rem;
+                padding: 0.65rem 1rem 0.65rem 2.5rem;
+            }
+
+            .header-right {
+                gap: 0.5rem;
+            }
+
+            .header-icon {
+                font-size: 1.2rem;
+            }
+
+            .settings-card-header,
+            .settings-card-body {
+                padding: 1rem;
+            }
+        }
+
+        /* ========== OVERLAY FOR MOBILE SIDEBAR ========== */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ========== SIDEBAR ========== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <a href="/">
+                <i class="bi bi-lightning-charge-fill"></i>
+                Blog<span>Admin</span>
+            </a>
+        </div>
+
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-speedometer2"></i>
+                    Dashboard
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-file-earmark-text"></i>
+                    Posts
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-folder"></i>
+                    Categories
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-chat-dots"></i>
+                    Comments
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-people"></i>
+                    Users
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-section-title">Analytics</div>
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-graph-up"></i>
+                    Analytics
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-bar-chart"></i>
+                    Reports
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-section-title">Settings</div>
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link active">
+                    <i class="bi bi-gear"></i>
+                    Settings
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-palette"></i>
+                    Appearance
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-box-arrow-right"></i>
+                    Logout
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- ========== SIDEBAR OVERLAY ========== -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <div class="main-wrapper" id="mainWrapper">
+        <!-- ========== TOP HEADER ========== -->
+        <header class="top-header">
+            <div class="header-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="bi bi-list"></i>
+                </button>
+                <div class="search-box">
+                    <i class="bi bi-search"></i>
+                    <input type="text" placeholder="Search settings...">
+                </div>
+            </div>
+
+            <div class="header-right">
+                <button class="header-icon" id="themeToggle" aria-label="Toggle dark mode">
+                    <i class="bi bi-sun-fill" id="themeIcon"></i>
+                </button>
+                <button class="header-icon">
+                    <i class="bi bi-bell"></i>
+                    <span class="badge">3</span>
+                </button>
+                <div class="user-menu">
+                    <div class="user-avatar">JD</div>
+                    <div class="user-info">
+                        <div class="user-name">John Doe</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                    <i class="bi bi-chevron-down" style="color: var(--text-secondary);"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- ========== SETTINGS CONTENT ========== -->
+        <main class="settings-content">
+            <h1 class="page-title">Settings</h1>
+            <p class="page-subtitle">Manage your blog configuration and preferences.</p>
+
+            <div class="settings-container">
+                <!-- Settings Sidebar Navigation -->
+                <div class="settings-sidebar">
+                    <ul class="settings-nav">
+                        <li class="settings-nav-item">
+                            <a href="#general" class="settings-nav-link active" data-tab="general">
+                                <i class="bi bi-gear"></i>
+                                General
+                            </a>
+                        </li>
+                        <li class="settings-nav-item">
+                            <a href="#writing" class="settings-nav-link" data-tab="writing">
+                                <i class="bi bi-pencil"></i>
+                                Writing
+                            </a>
+                        </li>
+                        <li class="settings-nav-item">
+                            <a href="#reading" class="settings-nav-link" data-tab="reading">
+                                <i class="bi bi-eye"></i>
+                                Reading
+                            </a>
+                        </li>
+                        <li class="settings-nav-item">
+                            <a href="#discussion" class="settings-nav-link" data-tab="discussion">
+                                <i class="bi bi-chat-dots"></i>
+                                Discussion
+                            </a>
+                        </li>
+                        <li class="settings-nav-item">
+                            <a href="#media" class="settings-nav-link" data-tab="media">
+                                <i class="bi bi-image"></i>
+                                Media
+                            </a>
+                        </li>
+                        <li class="settings-nav-item">
+                            <a href="#permalinks" class="settings-nav-link" data-tab="permalinks">
+                                <i class="bi bi-link-45deg"></i>
+                                Permalinks
+                            </a>
+                        </li>
+                        <li class="settings-nav-item">
+                            <a href="#advanced" class="settings-nav-link" data-tab="advanced">
+                                <i class="bi bi-tools"></i>
+                                Advanced
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Settings Main Content -->
+                <div class="settings-main">
+                    <!-- General Settings Tab -->
+                    <div class="tab-content active" id="general-tab">
+                        <div class="settings-card">
+                            <div class="settings-card-header">
+                                <h2 class="settings-card-title">General Settings</h2>
+                                <p class="settings-card-subtitle">Basic configuration for your blog</p>
+                            </div>
+                            <div class="settings-card-body">
+                                <div class="form-group">
+                                    <label for="siteTitle" class="form-label">Site Title</label>
+                                    <input type="text" id="siteTitle" class="form-control" value="BlogName">
+                                    <div class="form-text">The name of your blog as it appears to visitors.</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="siteTagline" class="form-label">Tagline</label>
+                                    <input type="text" id="siteTagline" class="form-control" value="Just another WordPress site">
+                                    <div class="form-text">In a few words, explain what your blog is about.</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="siteUrl" class="form-label">WordPress Address (URL)</label>
+                                    <input type="url" id="siteUrl" class="form-control" value="https://blogname.com">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="siteAddress" class="form-label">Site Address (URL)</label>
+                                    <input type="url" id="siteAddress" class="form-control" value="https://blogname.com">
+                                    <div class="form-text">Enter the address here if you want your site home page to be different from your WordPress installation directory.</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="adminEmail" class="form-label">Administration Email Address</label>
+                                    <input type="email" id="adminEmail" class="form-control" value="admin@blogname.com">
+                                    <div class="form-text">This address is used for admin purposes, like new user notification.</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="membership" class="form-label">Membership</label>
+                                    <div class="form-switch">
+                                        <input type="checkbox" id="membership" checked>
+                                        <label for="membership" class="form-switch-label">Anyone can register</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="timezone" class="form-label">Timezone</label>
+                                    <select id="timezone" class="form-control">
+                                        <option value="utc-12">UTC-12</option>
+                                        <option value="utc-8" selected>UTC-8 (Pacific Time)</option>
+                                        <option value="utc-5">UTC-5 (Eastern Time)</option>
+                                        <option value="utc+0">UTC+0</option>
+                                        <option value="utc+1">UTC+1</option>
+                                    </select>
+                                </div>
+
+                                <div class="settings-actions">
+                                    <button class="btn-custom btn-primary">Save Changes</button>
+                                    <button class="btn-custom btn-secondary">Reset to Defaults</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Writing Settings Tab -->
+                    <div class="tab-content" id="writing-tab">
+                        <div class="settings-card">
+                            <div class="settings-card-header">
+                                <h2 class="settings-card-title">Writing Settings</h2>
+                                <p class="settings-card-subtitle">Control how content is created and formatted</p>
+                            </div>
+                            <div class="settings-card-body">
+                                <div class="form-group">
+                                    <label for="defaultCategory" class="form-label">Default Post Category</label>
+                                    <select id="defaultCategory" class="form-control">
+                                        <option value="1" selected>Uncategorized</option>
+                                        <option value="2">News</option>
+                                        <option value="3">Technology</option>
+                                        <option value="4">Lifestyle</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="defaultPostFormat" class="form-label">Default Post Format</label>
+                                    <select id="defaultPostFormat" class="form-control">
+                                        <option value="standard" selected>Standard</option>
+                                        <option value="aside">Aside</option>
+                                        <option value="gallery">Gallery</option>
+                                        <option value="link">Link</option>
+                                        <option value="image">Image</option>
+                                        <option value="quote">Quote</option>
+                                        <option value="status">Status</option>
+                                        <option value="video">Video</option>
+                                        <option value="audio">Audio</option>
+                                        <option value="chat">Chat</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Post via email</label>
+                                    <div class="form-text">To post to WordPress by email you must set up a secret email account with POP3 access. Any mail received at this address will be posted, so it&#39;s a good idea to keep this address very secret.</div>
+                                    <div class="form-row" style="margin-top: 1rem;">
+                                        <div class="form-group">
+                                            <label for="mailServer" class="form-label">Mail Server</label>
+                                            <input type="text" id="mailServer" class="form-control" placeholder="mail.example.com">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="mailPort" class="form-label">Port</label>
+                                            <input type="number" id="mailPort" class="form-control" value="110">
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="mailLogin" class="form-label">Login Name</label>
+                                            <input type="text" id="mailLogin" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="mailPassword" class="form-label">Password</label>
+                                            <input type="password" id="mailPassword" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Update Services</label>
+                                    <textarea class="form-control" placeholder="http://rpc.pingomatic.com/">http://rpc.pingomatic.com/</textarea>
+                                    <div class="form-text">When you publish a new post, WordPress automatically notifies the following site update services. For more about this, see <a href="#">Update Services</a> on the Codex. Separate multiple service URLs with line breaks.</div>
+                                </div>
+
+                                <div class="settings-actions">
+                                    <button class="btn-custom btn-primary">Save Changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reading Settings Tab -->
+                    <div class="tab-content" id="reading-tab">
+                        <div class="settings-card">
+                            <div class="settings-card-header">
+                                <h2 class="settings-card-title">Reading Settings</h2>
+                                <p class="settings-card-subtitle">Control how your content is displayed to readers</p>
+                            </div>
+                            <div class="settings-card-body">
+                                <div class="form-group">
+                                    <label class="form-label">Your homepage displays</label>
+                                    <div class="form-switch" style="margin-bottom: 0.5rem;">
+                                        <input type="radio" id="homepageLatest" name="homepageDisplay" checked>
+                                        <label for="homepageLatest" class="form-switch-label">Your latest posts</label>
+                                    </div>
+                                    <div class="form-switch">
+                                        <input type="radio" id="homepageStatic" name="homepageDisplay">
+                                        <label for="homepageStatic" class="form-switch-label">A static page</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="homepagePage" class="form-label">Homepage</label>
+                                        <select id="homepagePage" class="form-control" disabled>
+                                            <option value="">— Select —</option>
+                                            <option value="1">Sample Page</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="postsPage" class="form-label">Posts page</label>
+                                        <select id="postsPage" class="form-control" disabled>
+                                            <option value="">— Select —</option>
+                                            <option value="1">Sample Page</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="blogPagesShow" class="form-label">Blog pages show at most</label>
+                                    <input type="number" id="blogPagesShow" class="form-control" value="10" min="1" max="100">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="syndicationFeedsShow" class="form-label">Syndication feeds show the most recent</label>
+                                    <input type="number" id="syndicationFeedsShow" class="form-control" value="10" min="1" max="100">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="feedShow" class="form-label">For each article in a feed, show</label>
+                                    <div class="form-switch" style="margin-bottom: 0.5rem;">
+                                        <input type="radio" id="feedFullText" name="feedShow" checked>
+                                        <label for="feedFullText" class="form-switch-label">Full text</label>
+                                    </div>
+                                    <div class="form-switch">
+                                        <input type="radio" id="feedSummary" name="feedShow">
+                                        <label for="feedSummary" class="form-switch-label">Summary</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="form-switch">
+                                        <input type="checkbox" id="searchEngineVisibility" checked>
+                                        <label for="searchEngineVisibility" class="form-switch-label">Discourage search engines from indexing this site</label>
+                                    </div>
+                                    <div class="form-text">It is up to search engines to honor this request.</div>
+                                </div>
+
+                                <div class="settings-actions">
+                                    <button class="btn-custom btn-primary">Save Changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Discussion Settings Tab -->
+                    <div class="tab-content" id="discussion-tab">
+                        <div class="settings-card">
+                            <div class="settings-card-header">
+                                <h2 class="settings-card-title">Discussion Settings</h2>
+                                <p class="settings-card-subtitle">Control how visitors interact with your content</p>
+                            </div>
+                            <div class="settings-card-body">
+                                <div class="form-group">
+                                    <label class="form-label">Default article settings</label>
+                                    <div class="form-switch">
+                                        <input type="checkbox" id="allowPings" checked>
+                                        <label for="allowPings" class="form-switch-label">Allow link notifications from other blogs (pingbacks and trackbacks)</label>
+                                    </div>
+                                    <div class="form-switch">
+                                        <input type="checkbox" id="allowComments" checked>
+                                        <label for="allowComments" class="form-switch-label">Allow people to submit comments on new posts</label>
+                                    </div>
+                                    <div class="form-text">(These settings may be overridden for individual articles.)</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Other comment settings</label>
+                                    <div class="form-switch">
+                                        <input type="checkbox" id="commentRegistration" checked>
+                                        <label for="commentRegistration" class="form-switch-label">Users must be registered and logged in to comment</label>
+                                    </div>
+                                    <div class="form-switch">
+                                        <input type="checkbox" id="commentModeration">
+                                        <label for="commentModeration" class="form-switch-label">Comment must be manually approved</label>
+                                    </div>
+                                    <div class="form-switch">
+                                        <input type="checkbox" id="commentNesting" checked>
+                                        <label for="commentNesting" class="form-switch-label">Enable threaded (nested) comments</label>
+                                    </div>
+                                    <div class="form-group" style="margin-top: 0.5rem;">
+                                        <label for="commentLevels" class="form-label">Max nesting levels</label>
+                                        <select id="commentLevels" class="form-control">
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5" selected>5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="commentsPerPage" class="form-label">Break comments into pages with</label>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <input type="number" id="commentsPerPage" class="form-control" value="50" min="1" max="100">
+                                        </div>
+                                        <div class="form-group">
+                                            <select class="form-control">
+                                                <option value="newest">newest</option>
+                                                <option value="oldest" selected>oldest</option>
+                                            </select>
+                                        </div>
+                                        <div style="align-self: end;">
+                                            comments per page and the
+                                        </div>
+                                        <div class="form-group">
+                                            <select class="form-control">
+                                                <option value="newest">last</option>
+                                                <option value="oldest" selected>first</option>
+                                            </select>
+                                        </div>
+                                        <div style="align-self: end;">
+                                            page displayed by default
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="settings-actions">
+                                    <button class="btn-custom btn-primary">Save Changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Settings Tab -->
+                    <div class="tab-content" id="advanced-tab">
+                        <div class="settings-card">
+                            <div class="settings-card-header">
+                                <h2 class="settings-card-title">Advanced Settings</h2>
+                                <p class="settings-card-subtitle">Technical configuration and system settings</p>
+                            </div>
+                            <div class="settings-card-body">
+                                <div class="form-group">
+                                    <label class="form-label">Database Optimization</label>
+                                    <div class="form-text">Optimize your database to improve performance and free up space.</div>
+                                    <button class="btn-custom btn-secondary" style="margin-top: 0.5rem;">
+                                        <i class="bi bi-database-check"></i>
+                                        Optimize Database Now
+                                    </button>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Cache Management</label>
+                                    <div class="form-text">Clear all cached data to ensure visitors see the latest content.</div>
+                                    <button class="btn-custom btn-secondary" style="margin-top: 0.5rem;">
+                                        <i class="bi bi-arrow-clockwise"></i>
+                                        Clear All Cache
+                                    </button>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Export Content</label>
+                                    <div class="form-text">Download an XML file containing your posts, pages, comments, custom fields, categories, and tags.</div>
+                                    <button class="btn-custom btn-secondary" style="margin-top: 0.5rem;">
+                                        <i class="bi bi-download"></i>
+                                        Export Site Data
+                                    </button>
+                                </div>
+
+                                <div class="danger-zone">
+                                    <h3 class="danger-zone-title">Danger Zone</h3>
+                                    <p class="danger-zone-description">Once you delete your site, there is no going back. Please be certain.</p>
+                                    <button class="btn-custom btn-danger">
+                                        <i class="bi bi-exclamation-triangle"></i>
+                                        Delete This Site
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // ========== SIDEBAR TOGGLE ==========
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const mainWrapper = document.getElementById('mainWrapper');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            sidebarOverlay.classList.toggle('active');
+        });
+
+        sidebarOverlay.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
+        });
+
+        // Close sidebar when clicking a link on mobile
+        document.querySelectorAll('.sidebar-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 991) {
+                    sidebar.classList.remove('active');
+                    sidebarOverlay.classList.remove('active');
+                }
+            });
+        });
+
+        // ========== THEME TOGGLE ==========
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const body = document.body;
+
+        function updateThemeIcon(isDark) {
+            if (isDark) {
+                themeIcon.classList.remove('bi-sun-fill');
+                themeIcon.classList.add('bi-moon-stars-fill');
+            } else {
+                themeIcon.classList.remove('bi-moon-stars-fill');
+                themeIcon.classList.add('bi-sun-fill');
+            }
+        }
+
+        function initTheme() {
+            const savedTheme = localStorage.getItem('admin_theme');
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+                updateThemeIcon(true);
+            } else if (savedTheme === 'light') {
+                body.classList.remove('dark-mode');
+                updateThemeIcon(false);
+            } else {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (prefersDark) {
+                    body.classList.add('dark-mode');
+                    updateThemeIcon(true);
+                }
+            }
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            updateThemeIcon(isDark);
+            localStorage.setItem('admin_theme', isDark ? 'dark' : 'light');
+        });
+
+        initTheme();
+
+        // ========== SETTINGS TABS ==========
+        const settingsNavLinks = document.querySelectorAll('.settings-nav-link');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        settingsNavLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all links and tabs
+                settingsNavLinks.forEach(l => l.classList.remove('active'));
+                tabContents.forEach(tab => tab.classList.remove('active'));
+                
+                // Add active class to clicked link
+                this.classList.add('active');
+                
+                // Show corresponding tab
+                const tabId = this.getAttribute('data-tab') + '-tab';
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // ========== HOMEPAGE DISPLAY TOGGLE ==========
+        const homepageLatest = document.getElementById('homepageLatest');
+        const homepageStatic = document.getElementById('homepageStatic');
+        const homepagePage = document.getElementById('homepagePage');
+        const postsPage = document.getElementById('postsPage');
+
+        homepageLatest.addEventListener('change', function() {
+            if (this.checked) {
+                homepagePage.disabled = true;
+                postsPage.disabled = true;
+            }
+        });
+
+        homepageStatic.addEventListener('change', function() {
+            if (this.checked) {
+                homepagePage.disabled = false;
+                postsPage.disabled = false;
+            }
+        });
+
+        // ========== FORM SUBMISSION ==========
+        document.querySelectorAll('.btn-primary').forEach(button => {
+            button.addEventListener('click', function() {
+                const card = this.closest('.settings-card');
+                const title = card.querySelector('.settings-card-title').textContent;
+                
+                // Show success message
+                alert(`${title} saved successfully!`);
+                
+                // In a real application, you would submit the form data here
+                console.log('Settings saved for:', title);
+            });
+        });
+
+        // ========== DANGER ZONE ACTIONS ==========
+        document.querySelector('.btn-danger').addEventListener('click', function() {
+            if (confirm('Are you absolutely sure you want to delete this site? This action cannot be undone and all your data will be permanently lost.')) {
+                alert('Site deletion process initiated. You will receive a confirmation email.');
+                console.log('Site deletion requested');
+            }
+        });
+
+        // ========== RESPONSIVE HANDLING ==========
+        function handleResize() {
+            if (window.innerWidth > 991) {
+                sidebar.classList.remove('active');
+                sidebarOverlay.classList.remove('active');
+            }
+        }
+
+        window.addEventListener('resize', handleResize);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Create new post - BlogName">
+    <title>Create New Post - BlogName Admin</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ========== CSS VARIABLES & THEME ========== */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-tertiary: #e9ecef;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6c757d;
+            --accent: #dc143c;
+            --accent-hover: #b01030;
+            --accent-light: rgba(220, 20, 60, 0.1);
+            --border-color: #dee2e6;
+            --card-shadow: rgba(0, 0, 0, 0.1);
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --info: #17a2b8;
+            --sidebar-width: 280px;
+            --font-heading: 'Inter', sans-serif;
+            --font-brand: 'Dancing Script', cursive;
+        }
+
+        .dark-mode {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #f5f5f5;
+            --text-secondary: #b0b0b0;
+            --accent: #ff4f5a;
+            --accent-hover: #ff6b75;
+            --accent-light: rgba(255, 79, 90, 0.15);
+            --border-color: #333;
+            --card-shadow: rgba(255, 255, 255, 0.05);
+            --success: #4caf50;
+            --warning: #ffb300;
+            --danger: #f44336;
+            --info: #29b6f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            font-family: var(--font-heading);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            line-height: 1.6;
+        }
+
+        /* ========== SIDEBAR ========== */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            background-color: var(--bg-primary);
+            border-right: 1px solid var(--border-color);
+            padding: 1.5rem 0;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar.hidden {
+            transform: translateX(-100%);
+        }
+
+        .sidebar-brand {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-brand a {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-family: var(--font-brand);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sidebar-brand span {
+            color: var(--accent);
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-nav-item {
+            margin-bottom: 0.25rem;
+        }
+
+        .sidebar-nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.875rem 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            font-weight: 500;
+        }
+
+        .sidebar-nav-link i {
+            font-size: 1.2rem;
+            margin-right: 1rem;
+            min-width: 24px;
+        }
+
+        .sidebar-nav-link:hover {
+            background-color: var(--accent-light);
+            color: var(--accent);
+        }
+
+        .sidebar-nav-link.active {
+            background-color: var(--accent-light);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .sidebar-nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: var(--accent);
+        }
+
+        .sidebar-section-title {
+            padding: 1.5rem 1.5rem 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+        }
+
+        /* ========== MAIN CONTENT ========== */
+        .main-wrapper {
+            margin-left: var(--sidebar-width);
+            transition: margin-left 0.3s ease;
+        }
+
+        .main-wrapper.expanded {
+            margin-left: 0;
+        }
+
+        /* ========== TOP HEADER ========== */
+        .top-header {
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: color 0.3s ease;
+            display: none;
+        }
+
+        .menu-toggle:hover {
+            color: var(--accent);
+        }
+
+        .search-box {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-icon {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .header-icon:hover {
+            color: var(--accent);
+            transform: scale(1.1);
+        }
+
+        .header-icon .badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: var(--danger);
+            color: white;
+            font-size: 0.65rem;
+            padding: 0.2rem 0.4rem;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--bg-secondary);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .user-menu:hover {
+            background-color: var(--accent-light);
+        }
+
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* ========== EDITOR CONTENT ========== */
+        .editor-content {
+            padding: 2rem 1.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        /* ========== EDITOR LAYOUT ========== */
+        .editor-container {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+        }
+
+        @media (max-width: 1200px) {
+            .editor-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .editor-main {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .editor-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* ========== EDITOR CARD ========== */
+        .editor-card {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .editor-card-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .editor-card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .editor-card-body {
+            padding: 1.5rem;
+        }
+
+        /* ========== FORM STYLES ========== */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .form-text {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* ========== RICH TEXT EDITOR ========== */
+        .editor-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            background-color: var(--bg-secondary);
+        }
+
+        .editor-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            font-size: 1.1rem;
+        }
+
+        .editor-btn:hover {
+            background-color: var(--bg-tertiary);
+            color: var(--accent);
+        }
+
+        .editor-btn.active {
+            background-color: var(--accent-light);
+            color: var(--accent);
+        }
+
+        .editor-content-area {
+            min-height: 400px;
+            padding: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            outline: none;
+        }
+
+        .editor-content-area:empty:before {
+            content: "Start writing your post...";
+            color: var(--text-secondary);
+        }
+
+        /* ========== FEATURED IMAGE ========== */
+        .featured-image-container {
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .featured-image-container:hover {
+            border-color: var(--accent);
+            background-color: var(--accent-light);
+        }
+
+        .featured-image-placeholder {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .featured-image-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .featured-image-preview {
+            max-width: 100%;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .featured-image-actions {
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        /* ========== BUTTON STYLES ========== */
+        .btn-custom {
+            padding: 0.6rem 1.25rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 20, 60, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+
+        /* ========== PUBLISHING CONTROLS ========== */
+        .publish-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .status-badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .status-draft {
+            background-color: rgba(255, 193, 7, 0.1);
+            color: var(--warning);
+        }
+
+        .status-published {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--success);
+        }
+
+        /* ========== TAGS INPUT ========== */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .tag {
+            background-color: var(--accent-light);
+            color: var(--accent);
+            padding: 0.3rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tag-remove {
+            background: none;
+            border: none;
+            color: var(--accent);
+            cursor: pointer;
+            padding: 0;
+            font-size: 1rem;
+        }
+
+        /* ========== SEO PREVIEW ========== */
+        .seo-preview {
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .seo-title {
+            color: #1a0dab;
+            font-size: 1.2rem;
+            margin-bottom: 0.25rem;
+            line-height: 1.3;
+        }
+
+        .seo-url {
+            color: #006621;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .seo-description {
+            color: #545454;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 1199px) {
+            :root {
+                --sidebar-width: 250px;
+            }
+        }
+
+        @media (max-width: 991px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-wrapper {
+                margin-left: 0;
+            }
+
+            .search-box {
+                max-width: 100%;
+            }
+
+            .user-info {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .editor-content {
+                padding: 1.5rem 1rem;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .publish-actions {
+                flex-direction: column;
+            }
+
+            .editor-toolbar {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .top-header {
+                padding: 1rem;
+            }
+
+            .search-box input {
+                font-size: 0.85rem;
+                padding: 0.65rem 1rem 0.65rem 2.5rem;
+            }
+
+            .header-right {
+                gap: 0.5rem;
+            }
+
+            .header-icon {
+                font-size: 1.2rem;
+            }
+
+            .editor-card-header,
+            .editor-card-body {
+                padding: 1rem;
+            }
+        }
+
+        /* ========== OVERLAY FOR MOBILE SIDEBAR ========== */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ========== SIDEBAR ========== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <a href="/">
+                <i class="bi bi-lightning-charge-fill"></i>
+                Blog<span>Admin</span>
+            </a>
+        </div>
+
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-speedometer2"></i>
+                    Dashboard
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link active">
+                    <i class="bi bi-file-earmark-text"></i>
+                    Posts
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-folder"></i>
+                    Categories
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-chat-dots"></i>
+                    Comments
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-people"></i>
+                    Users
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-section-title">Analytics</div>
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-graph-up"></i>
+                    Analytics
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-bar-chart"></i>
+                    Reports
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-section-title">Settings</div>
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-gear"></i>
+                    Settings
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-palette"></i>
+                    Appearance
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-box-arrow-right"></i>
+                    Logout
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- ========== SIDEBAR OVERLAY ========== -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <div class="main-wrapper" id="mainWrapper">
+        <!-- ========== TOP HEADER ========== -->
+        <header class="top-header">
+            <div class="header-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="bi bi-list"></i>
+                </button>
+                <div class="search-box">
+                    <i class="bi bi-search"></i>
+                    <input type="text" placeholder="Search posts...">
+                </div>
+            </div>
+
+            <div class="header-right">
+                <button class="header-icon" id="themeToggle" aria-label="Toggle dark mode">
+                    <i class="bi bi-sun-fill" id="themeIcon"></i>
+                </button>
+                <button class="header-icon">
+                    <i class="bi bi-bell"></i>
+                    <span class="badge">3</span>
+                </button>
+                <div class="user-menu">
+                    <div class="user-avatar">JD</div>
+                    <div class="user-info">
+                        <div class="user-name">John Doe</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                    <i class="bi bi-chevron-down" style="color: var(--text-secondary);"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- ========== EDITOR CONTENT ========== -->
+        <main class="editor-content">
+            <h1 class="page-title">Create New Post</h1>
+            <p class="page-subtitle">Write and publish engaging content for your audience.</p>
+
+            <div class="editor-container">
+                <!-- Main Editor Area -->
+                <div class="editor-main">
+                    <!-- Title Input -->
+                    <div class="editor-card">
+                        <div class="editor-card-body">
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="postTitle" placeholder="Add title" style="font-size: 1.5rem; font-weight: 700; border: none; padding: 0; background: transparent;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rich Text Editor -->
+                    <div class="editor-card">
+                        <div class="editor-toolbar">
+                            <button class="editor-btn" data-command="bold" title="Bold">
+                                <i class="bi bi-type-bold"></i>
+                            </button>
+                            <button class="editor-btn" data-command="italic" title="Italic">
+                                <i class="bi bi-type-italic"></i>
+                            </button>
+                            <button class="editor-btn" data-command="underline" title="Underline">
+                                <i class="bi bi-type-underline"></i>
+                            </button>
+                            <div class="vr"></div>
+                            <button class="editor-btn" data-command="insertUnorderedList" title="Bullet List">
+                                <i class="bi bi-list-ul"></i>
+                            </button>
+                            <button class="editor-btn" data-command="insertOrderedList" title="Numbered List">
+                                <i class="bi bi-list-ol"></i>
+                            </button>
+                            <div class="vr"></div>
+                            <button class="editor-btn" data-command="createLink" title="Insert Link">
+                                <i class="bi bi-link-45deg"></i>
+                            </button>
+                            <button class="editor-btn" data-command="unlink" title="Remove Link">
+                                <i class="bi bi-link-45deg"></i>
+                            </button>
+                            <div class="vr"></div>
+                            <button class="editor-btn" data-command="formatBlock" data-value="H2" title="Heading 2">
+                                H2
+                            </button>
+                            <button class="editor-btn" data-command="formatBlock" data-value="H3" title="Heading 3">
+                                H3
+                            </button>
+                            <button class="editor-btn" data-command="formatBlock" data-value="P" title="Paragraph">
+                                P
+                            </button>
+                            <div class="vr"></div>
+                            <button class="editor-btn" data-command="insertImage" title="Insert Image">
+                                <i class="bi bi-image"></i>
+                            </button>
+                            <button class="editor-btn" title="Insert Code">
+                                <i class="bi bi-code-slash"></i>
+                            </button>
+                        </div>
+                        <div class="editor-content-area" id="postContent" contenteditable="true"></div>
+                    </div>
+
+                    <!-- Excerpt -->
+                    <div class="editor-card">
+                        <div class="editor-card-header">
+                            <h2 class="editor-card-title">Excerpt</h2>
+                        </div>
+                        <div class="editor-card-body">
+                            <div class="form-group">
+                                <textarea class="form-control" id="postExcerpt" rows="3" placeholder="Write a brief excerpt that will appear in post previews..."></textarea>
+                                <div class="form-text">An optional hand-crafted summary of your post.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Editor Sidebar -->
+                <div class="editor-sidebar">
+                    <!-- Publish Controls -->
+                    <div class="editor-card">
+                        <div class="editor-card-header">
+                            <h2 class="editor-card-title">Publish</h2>
+                        </div>
+                        <div class="editor-card-body">
+                            <div class="form-group">
+                                <div class="form-label">Status: <span class="status-badge status-draft">Draft</span></div>
+                                <div class="form-text">Saved: Just now</div>
+                            </div>
+
+                            <div class="publish-actions">
+                                <button class="btn-custom btn-secondary" id="saveDraft">
+                                    <i class="bi bi-file-earmark"></i>
+                                    Save Draft
+                                </button>
+                                <button class="btn-custom btn-primary" id="publishPost">
+                                    <i class="bi bi-send"></i>
+                                    Publish
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Categories -->
+                    <div class="editor-card">
+                        <div class="editor-card-header">
+                            <h2 class="editor-card-title">Categories</h2>
+                        </div>
+                        <div class="editor-card-body">
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="categoryTech" checked>
+                                    <label class="form-check-label" for="categoryTech">
+                                        Technology
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="categoryNews">
+                                    <label class="form-check-label" for="categoryNews">
+                                        News
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="categoryTravel">
+                                    <label class="form-check-label" for="categoryTravel">
+                                        Travel
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="categoryLifestyle">
+                                    <label class="form-check-label" for="categoryLifestyle">
+                                        Lifestyle
+                                    </label>
+                                </div>
+                                <button class="btn-custom btn-secondary" style="margin-top: 0.5rem; width: 100%;">
+                                    <i class="bi bi-plus"></i>
+                                    Add New Category
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tags -->
+                    <div class="editor-card">
+                        <div class="editor-card-header">
+                            <h2 class="editor-card-title">Tags</h2>
+                        </div>
+                        <div class="editor-card-body">
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="tagInput" placeholder="Add tags">
+                                <div class="form-text">Separate tags with commas</div>
+                                <div class="tags-container" id="tagsContainer">
+                                    <div class="tag">
+                                        AI <button class="tag-remove">&times;</button>
+                                    </div>
+                                    <div class="tag">
+                                        Innovation <button class="tag-remove">&times;</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Featured Image -->
+                    <div class="editor-card">
+                        <div class="editor-card-header">
+                            <h2 class="editor-card-title">Featured Image</h2>
+                        </div>
+                        <div class="editor-card-body">
+                            <div class="featured-image-container" id="featuredImageContainer">
+                                <div class="featured-image-placeholder">
+                                    <i class="bi bi-image"></i>
+                                    <p>Set featured image</p>
+                                    <p class="text-muted">Click to upload or drag and drop</p>
+                                </div>
+                                <img src="" class="featured-image-preview" id="featuredImagePreview" alt="Featured Image">
+                            </div>
+                            <div class="featured-image-actions" id="featuredImageActions" style="display: none;">
+                                <button class="btn-custom btn-secondary" id="changeImage">
+                                    <i class="bi bi-arrow-repeat"></i>
+                                    Change
+                                </button>
+                                <button class="btn-custom btn-secondary" id="removeImage">
+                                    <i class="bi bi-trash"></i>
+                                    Remove
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SEO Settings -->
+                    <div class="editor-card">
+                        <div class="editor-card-header">
+                            <h2 class="editor-card-title">SEO Settings</h2>
+                        </div>
+                        <div class="editor-card-body">
+                            <div class="form-group">
+                                <label for="seoTitle" class="form-label">SEO Title</label>
+                                <input type="text" class="form-control" id="seoTitle" placeholder="SEO optimized title">
+                                <div class="form-text">Recommended: 50-60 characters</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="seoDescription" class="form-label">Meta Description</label>
+                                <textarea class="form-control" id="seoDescription" rows="3" placeholder="Write a compelling meta description"></textarea>
+                                <div class="form-text">Recommended: 150-160 characters</div>
+                            </div>
+                            <div class="seo-preview">
+                                <div class="seo-title" id="seoPreviewTitle">Your SEO title will appear here</div>
+                                <div class="seo-url">https://blogname.com/your-post-url</div>
+                                <div class="seo-description" id="seoPreviewDescription">Your meta description will appear here in search results.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // ========== SIDEBAR TOGGLE ==========
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const mainWrapper = document.getElementById('mainWrapper');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            sidebarOverlay.classList.toggle('active');
+        });
+
+        sidebarOverlay.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
+        });
+
+        // Close sidebar when clicking a link on mobile
+        document.querySelectorAll('.sidebar-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 991) {
+                    sidebar.classList.remove('active');
+                    sidebarOverlay.classList.remove('active');
+                }
+            });
+        });
+
+        // ========== THEME TOGGLE ==========
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const body = document.body;
+
+        function updateThemeIcon(isDark) {
+            if (isDark) {
+                themeIcon.classList.remove('bi-sun-fill');
+                themeIcon.classList.add('bi-moon-stars-fill');
+            } else {
+                themeIcon.classList.remove('bi-moon-stars-fill');
+                themeIcon.classList.add('bi-sun-fill');
+            }
+        }
+
+        function initTheme() {
+            const savedTheme = localStorage.getItem('admin_theme');
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+                updateThemeIcon(true);
+            } else if (savedTheme === 'light') {
+                body.classList.remove('dark-mode');
+                updateThemeIcon(false);
+            } else {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (prefersDark) {
+                    body.classList.add('dark-mode');
+                    updateThemeIcon(true);
+                }
+            }
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            updateThemeIcon(isDark);
+            localStorage.setItem('admin_theme', isDark ? 'dark' : 'light');
+        });
+
+        initTheme();
+
+        // ========== RICH TEXT EDITOR ==========
+        const editorBtns = document.querySelectorAll('.editor-btn');
+        const postContent = document.getElementById('postContent');
+
+        editorBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const command = this.dataset.command;
+                const value = this.dataset.value;
+                
+                if (command === 'createLink') {
+                    const url = prompt('Enter the URL:');
+                    if (url) {
+                        document.execCommand(command, false, url);
+                    }
+                } else if (command === 'insertImage') {
+                    const url = prompt('Enter the image URL:');
+                    if (url) {
+                        document.execCommand(command, false, url);
+                    }
+                } else if (value) {
+                    document.execCommand(command, false, value);
+                } else {
+                    document.execCommand(command, false, null);
+                }
+                
+                // Update active state for format buttons
+                if (command === 'formatBlock') {
+                    editorBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                }
+                
+                postContent.focus();
+            });
+        });
+
+        // ========== FEATURED IMAGE ==========
+        const featuredImageContainer = document.getElementById('featuredImageContainer');
+        const featuredImagePreview = document.getElementById('featuredImagePreview');
+        const featuredImageActions = document.getElementById('featuredImageActions');
+        const changeImageBtn = document.getElementById('changeImage');
+        const removeImageBtn = document.getElementById('removeImage');
+
+        featuredImageContainer.addEventListener('click', function() {
+            // In a real application, this would open a file picker
+            const imageUrl = 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&h=600&fit=crop';
+            featuredImagePreview.src = imageUrl;
+            featuredImagePreview.style.display = 'block';
+            featuredImageContainer.querySelector('.featured-image-placeholder').style.display = 'none';
+            featuredImageActions.style.display = 'flex';
+        });
+
+        changeImageBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            featuredImageContainer.click();
+        });
+
+        removeImageBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            featuredImagePreview.src = '';
+            featuredImagePreview.style.display = 'none';
+            featuredImageContainer.querySelector('.featured-image-placeholder').style.display = 'block';
+            featuredImageActions.style.display = 'none';
+        });
+
+        // ========== TAGS MANAGEMENT ==========
+        const tagInput = document.getElementById('tagInput');
+        const tagsContainer = document.getElementById('tagsContainer');
+
+        tagInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ',') {
+                e.preventDefault();
+                const tag = this.value.trim();
+                if (tag) {
+                    addTag(tag);
+                    this.value = '';
+                }
+            }
+        });
+
+        function addTag(tagText) {
+            const tag = document.createElement('div');
+            tag.className = 'tag';
+            tag.innerHTML = `
+                ${tagText} <button class="tag-remove">&times;</button>
+            `;
+            
+            tag.querySelector('.tag-remove').addEventListener('click', function() {
+                tag.remove();
+            });
+            
+            tagsContainer.appendChild(tag);
+        }
+
+        // Remove existing tags
+        document.querySelectorAll('.tag-remove').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.closest('.tag').remove();
+            });
+        });
+
+        // ========== SEO PREVIEW ==========
+        const seoTitle = document.getElementById('seoTitle');
+        const seoDescription = document.getElementById('seoDescription');
+        const seoPreviewTitle = document.getElementById('seoPreviewTitle');
+        const seoPreviewDescription = document.getElementById('seoPreviewDescription');
+        const postTitle = document.getElementById('postTitle');
+
+        function updateSeoPreview() {
+            seoPreviewTitle.textContent = seoTitle.value || postTitle.value || 'Your SEO title will appear here';
+            seoPreviewDescription.textContent = seoDescription.value || 'Your meta description will appear here in search results.';
+        }
+
+        seoTitle.addEventListener('input', updateSeoPreview);
+        seoDescription.addEventListener('input', updateSeoPreview);
+        postTitle.addEventListener('input', updateSeoPreview);
+
+        // ========== PUBLISHING ==========
+        const saveDraftBtn = document.getElementById('saveDraft');
+        const publishBtn = document.getElementById('publishPost');
+
+        saveDraftBtn.addEventListener('click', function() {
+            // In a real application, this would save to a database
+            alert('Draft saved successfully!');
+            console.log('Post saved as draft');
+        });
+
+        publishBtn.addEventListener('click', function() {
+            const title = postTitle.value.trim();
+            if (!title) {
+                alert('Please add a title before publishing.');
+                postTitle.focus();
+                return;
+            }
+
+            if (confirm('Are you ready to publish this post?')) {
+                // In a real application, this would publish to the blog
+                alert('Post published successfully!');
+                console.log('Post published');
+            }
+        });
+
+        // ========== AUTO-SAVE ==========
+        let autoSaveTimer;
+        
+        function startAutoSave() {
+            clearTimeout(autoSaveTimer);
+            autoSaveTimer = setTimeout(() => {
+                if (postTitle.value.trim() || postContent.textContent.trim()) {
+                    console.log('Auto-saving draft...');
+                    // In a real application, this would save to a database
+                }
+            }, 3000); // Auto-save after 3 seconds of inactivity
+        }
+
+        postTitle.addEventListener('input', startAutoSave);
+        postContent.addEventListener('input', startAutoSave);
+
+        // ========== RESPONSIVE HANDLING ==========
+        function handleResize() {
+            if (window.innerWidth > 991) {
+                sidebar.classList.remove('active');
+                sidebarOverlay.classList.remove('active');
+            }
+        }
+
+        window.addEventListener('resize', handleResize);
+    </script>
+</body>
+
+</html>

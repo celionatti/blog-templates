@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Blog post page - BlogName">
+    <title>Breaking: Major Development Reshapes Global Economy - BlogName</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ========== CSS VARIABLES & THEME ========== */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-tertiary: #e9ecef;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6c757d;
+            --accent: #dc143c;
+            --accent-hover: #b01030;
+            --accent-light: rgba(220, 20, 60, 0.1);
+            --border-color: #dee2e6;
+            --card-shadow: rgba(0, 0, 0, 0.1);
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --info: #17a2b8;
+            --sidebar-width: 280px;
+            --font-heading: 'Inter', sans-serif;
+            --font-brand: 'Dancing Script', cursive;
+        }
+
+        .dark-mode {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #f5f5f5;
+            --text-secondary: #b0b0b0;
+            --accent: #ff4f5a;
+            --accent-hover: #ff6b75;
+            --accent-light: rgba(255, 79, 90, 0.15);
+            --border-color: #333;
+            --card-shadow: rgba(255, 255, 255, 0.05);
+            --success: #4caf50;
+            --warning: #ffb300;
+            --danger: #f44336;
+            --info: #29b6f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            font-family: var(--font-heading);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            line-height: 1.6;
+        }
+
+        /* ========== SIDEBAR ========== */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            background-color: var(--bg-primary);
+            border-right: 1px solid var(--border-color);
+            padding: 1.5rem 0;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar.hidden {
+            transform: translateX(-100%);
+        }
+
+        .sidebar-brand {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-brand a {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-family: var(--font-brand);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sidebar-brand span {
+            color: var(--accent);
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-nav-item {
+            margin-bottom: 0.25rem;
+        }
+
+        .sidebar-nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.875rem 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            font-weight: 500;
+        }
+
+        .sidebar-nav-link i {
+            font-size: 1.2rem;
+            margin-right: 1rem;
+            min-width: 24px;
+        }
+
+        .sidebar-nav-link:hover {
+            background-color: var(--accent-light);
+            color: var(--accent);
+        }
+
+        .sidebar-nav-link.active {
+            background-color: var(--accent-light);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .sidebar-nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: var(--accent);
+        }
+
+        .sidebar-section-title {
+            padding: 1.5rem 1.5rem 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+        }
+
+        /* ========== MAIN CONTENT ========== */
+        .main-wrapper {
+            margin-left: var(--sidebar-width);
+            transition: margin-left 0.3s ease;
+        }
+
+        .main-wrapper.expanded {
+            margin-left: 0;
+        }
+
+        /* ========== TOP HEADER ========== */
+        .top-header {
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: color 0.3s ease;
+            display: none;
+        }
+
+        .menu-toggle:hover {
+            color: var(--accent);
+        }
+
+        .search-box {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-icon {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .header-icon:hover {
+            color: var(--accent);
+            transform: scale(1.1);
+        }
+
+        .header-icon .badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: var(--danger);
+            color: white;
+            font-size: 0.65rem;
+            padding: 0.2rem 0.4rem;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--bg-secondary);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .user-menu:hover {
+            background-color: var(--accent-light);
+        }
+
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* ========== POST CONTENT ========== */
+        .post-content {
+            padding: 2rem 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .post-header {
+            margin-bottom: 2rem;
+        }
+
+        .post-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        .post-meta {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .post-author {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .author-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .author-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .post-date {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .post-category {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            background-color: var(--accent-light);
+            color: var(--accent);
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .post-stats {
+            display: flex;
+            gap: 1.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .post-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .post-featured-image {
+            width: 100%;
+            height: 400px;
+            border-radius: 12px;
+            object-fit: cover;
+            margin-bottom: 2rem;
+        }
+
+        .post-body {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 3rem;
+        }
+
+        .post-body p {
+            margin-bottom: 1.5rem;
+        }
+
+        .post-body h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 2.5rem 0 1.5rem;
+        }
+
+        .post-body h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+        }
+
+        .post-body blockquote {
+            border-left: 4px solid var(--accent);
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        .post-body img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+
+        .post-body ul, .post-body ol {
+            margin: 1.5rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .post-body li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* ========== POST ACTIONS ========== */
+        .post-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn-custom {
+            padding: 0.6rem 1.25rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 20, 60, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        /* ========== RELATED POSTS ========== */
+        .related-posts {
+            margin-top: 3rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .post-card {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .post-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px var(--card-shadow);
+        }
+
+        .post-card-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .post-card-body {
+            padding: 1.5rem;
+        }
+
+        .post-card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+        }
+
+        .post-card-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* ========== COMMENTS SECTION ========== */
+        .comments-section {
+            margin-top: 3rem;
+        }
+
+        .comment-form {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .comment {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .comment-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .comment-author {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .comment-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .comment-meta {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .comment-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .comment-date {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .comment-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .comment-action {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: color 0.2s ease;
+        }
+
+        .comment-action:hover {
+            color: var(--accent);
+        }
+
+        .comment-body {
+            line-height: 1.6;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 1199px) {
+            :root {
+                --sidebar-width: 250px;
+            }
+        }
+
+        @media (max-width: 991px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-wrapper {
+                margin-left: 0;
+            }
+
+            .search-box {
+                max-width: 100%;
+            }
+
+            .user-info {
+                display: none;
+            }
+
+            .post-title {
+                font-size: 2rem;
+            }
+
+            .post-featured-image {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .post-content {
+                padding: 1.5rem 1rem;
+            }
+
+            .post-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .post-stats {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .post-actions {
+                flex-wrap: wrap;
+            }
+
+            .posts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .top-header {
+                padding: 1rem;
+            }
+
+            .search-box input {
+                font-size: 0.85rem;
+                padding: 0.65rem 1rem 0.65rem 2.5rem;
+            }
+
+            .header-right {
+                gap: 0.5rem;
+            }
+
+            .header-icon {
+                font-size: 1.2rem;
+            }
+
+            .post-title {
+                font-size: 1.75rem;
+            }
+
+            .post-featured-image {
+                height: 200px;
+            }
+
+            .post-body {
+                font-size: 1rem;
+            }
+        }
+
+        /* ========== OVERLAY FOR MOBILE SIDEBAR ========== */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ========== SIDEBAR ========== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <a href="/">
+                <i class="bi bi-lightning-charge-fill"></i>
+                Blog<span>Admin</span>
+            </a>
+        </div>
+
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-speedometer2"></i>
+                    Dashboard
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link active">
+                    <i class="bi bi-file-earmark-text"></i>
+                    Posts
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-folder"></i>
+                    Categories
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-chat-dots"></i>
+                    Comments
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-people"></i>
+                    Users
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-section-title">Analytics</div>
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-graph-up"></i>
+                    Analytics
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-bar-chart"></i>
+                    Reports
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-section-title">Settings</div>
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-gear"></i>
+                    Settings
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-palette"></i>
+                    Appearance
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-box-arrow-right"></i>
+                    Logout
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- ========== SIDEBAR OVERLAY ========== -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <div class="main-wrapper" id="mainWrapper">
+        <!-- ========== TOP HEADER ========== -->
+        <header class="top-header">
+            <div class="header-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="bi bi-list"></i>
+                </button>
+                <div class="search-box">
+                    <i class="bi bi-search"></i>
+                    <input type="text" placeholder="Search posts, users, categories...">
+                </div>
+            </div>
+
+            <div class="header-right">
+                <button class="header-icon" id="themeToggle" aria-label="Toggle dark mode">
+                    <i class="bi bi-sun-fill" id="themeIcon"></i>
+                </button>
+                <button class="header-icon">
+                    <i class="bi bi-bell"></i>
+                    <span class="badge">3</span>
+                </button>
+                <div class="user-menu">
+                    <div class="user-avatar">JD</div>
+                    <div class="user-info">
+                        <div class="user-name">John Doe</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                    <i class="bi bi-chevron-down" style="color: var(--text-secondary);"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- ========== POST CONTENT ========== -->
+        <main class="post-content">
+            <div class="post-header">
+                <h1 class="post-title">Breaking: Major Development Reshapes Global Economy</h1>
+                
+                <div class="post-meta">
+                    <div class="post-author">
+                        <div class="author-avatar">JD</div>
+                        <div class="author-info">
+                            <div class="author-name">John Doe</div>
+                            <div class="post-date">Published 2 hours ago</div>
+                        </div>
+                    </div>
+                    
+                    <span class="post-category">World News</span>
+                    
+                    <div class="post-stats">
+                        <div class="post-stat">
+                            <i class="bi bi-eye"></i>
+                            <span>2,548 views</span>
+                        </div>
+                        <div class="post-stat">
+                            <i class="bi bi-chat"></i>
+                            <span>45 comments</span>
+                        </div>
+                        <div class="post-stat">
+                            <i class="bi bi-heart"></i>
+                            <span>128 likes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=400&fit=crop" 
+                 alt="Featured Image" class="post-featured-image">
+            
+            <div class="post-actions">
+                <button class="btn-custom btn-primary">
+                    <i class="bi bi-pencil"></i>
+                    Edit Post
+                </button>
+                <button class="btn-custom btn-secondary">
+                    <i class="bi bi-eye"></i>
+                    View Live
+                </button>
+                <button class="btn-custom btn-secondary">
+                    <i class="bi bi-share"></i>
+                    Share
+                </button>
+            </div>
+            
+            <div class="post-body">
+                <p>In a stunning turn of events that has sent shockwaves through financial markets worldwide, a major development has emerged that promises to reshape the global economic landscape for years to come. The implications of this breakthrough are far-reaching, affecting everything from international trade to monetary policy.</p>
+                
+                <h2>The Unfolding Situation</h2>
+                
+                <p>Early indicators suggest that this development could potentially reverse years of economic stagnation in several key regions. Market analysts are scrambling to assess the full impact, with preliminary reports indicating significant shifts in commodity prices and currency valuations.</p>
+                
+                <blockquote>
+                    "This is arguably the most significant economic development we've seen in decades. The ramifications will be felt across every sector and in every corner of the globe." - Dr. Evelyn Reed, Chief Economist at Global Financial Institute
+                </blockquote>
+                
+                <p>The announcement came unexpectedly during what was otherwise a routine meeting of international financial leaders. Sources close to the matter indicate that the breakthrough involves a convergence of technological innovation and policy coordination that has previously been considered unattainable.</p>
+                
+                <h2>Immediate Market Reactions</h2>
+                
+                <p>Financial markets have responded with unprecedented volatility. Within hours of the announcement:</p>
+                
+                <ul>
+                    <li>Major stock indices surged by an average of 7%</li>
+                    <li>Cryptocurrency markets experienced a 15% rally</li>
+                    <li>Safe-haven assets saw significant outflows</li>
+                    <li>Emerging market currencies strengthened against the dollar</li>
+                </ul>
+                
+                <p>This market movement reflects the widespread optimism about the potential for renewed global economic growth. However, some analysts caution that the initial euphoria may be premature, pointing to structural challenges that remain unaddressed.</p>
+                
+                <h2>Long-term Implications</h2>
+                
+                <p>Looking beyond the immediate market reactions, experts are beginning to consider the longer-term implications of this development. Several key areas are expected to see significant transformation:</p>
+                
+                <h3>International Trade</h3>
+                
+                <p>The new framework could fundamentally alter global supply chains, reducing dependencies on single-source suppliers and creating more resilient trade networks. This would represent a major shift from the just-in-time manufacturing models that have dominated recent decades.</p>
+                
+                <h3>Monetary Policy</h3>
+                
+                <p>Central banks worldwide are reevaluating their policy approaches in light of these developments. The traditional tools of monetary policy may need substantial revision to accommodate the new economic realities.</p>
+                
+                <h3>Technological Adoption</h3>
+                
+                <p>The breakthrough appears to accelerate the adoption of several key technologies that were previously considered years away from mainstream implementation. This could create new industries while disrupting existing ones.</p>
+                
+                <p>As the situation continues to evolve, world leaders have called for calm and careful analysis. Emergency meetings are scheduled throughout the week as policymakers attempt to coordinate their responses to this unprecedented development.</p>
+                
+                <p>The coming days will be critical in determining whether this breakthrough represents a temporary market anomaly or the beginning of a new economic era. One thing is certain: the global economic order will never be the same.</p>
+            </div>
+            
+            <!-- Related Posts Section -->
+            <div class="related-posts">
+                <h2 class="section-title">Related Posts</h2>
+                <div class="posts-grid">
+                    <div class="post-card">
+                        <img src="https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=400&h=180&fit=crop" 
+                             alt="AI Revolution" class="post-card-image">
+                        <div class="post-card-body">
+                            <h3 class="post-card-title">AI Revolution: New Breakthrough Changes Everything</h3>
+                            <div class="post-card-meta">
+                                <span>Sarah Adams</span>
+                                <span>4 hours ago</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="post-card">
+                        <img src="https://images.unsplash.com/photo-1495020689067-958852a7765e?w=400&h=180&fit=crop" 
+                             alt="Climate Summit" class="post-card-image">
+                        <div class="post-card-body">
+                            <h3 class="post-card-title">Climate Summit Reaches Historic Agreement</h3>
+                            <div class="post-card-meta">
+                                <span>Emily Chen</span>
+                                <span>8 hours ago</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="post-card">
+                        <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=180&fit=crop" 
+                             alt="Quantum Computing" class="post-card-image">
+                        <div class="post-card-body">
+                            <h3 class="post-card-title">Quantum Computing Makes Giant Leap Forward</h3>
+                            <div class="post-card-meta">
+                                <span>David Wilson</span>
+                                <span>1 day ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Comments Section -->
+            <div class="comments-section">
+                <h2 class="section-title">Comments (45)</h2>
+                
+                <div class="comment-form">
+                    <h3>Leave a Comment</h3>
+                    <form id="commentForm">
+                        <div class="form-group">
+                            <label for="commentName" class="form-label">Name</label>
+                            <input type="text" id="commentName" class="form-control" placeholder="Your name">
+                        </div>
+                        <div class="form-group">
+                            <label for="commentEmail" class="form-label">Email</label>
+                            <input type="email" id="commentEmail" class="form-control" placeholder="Your email">
+                        </div>
+                        <div class="form-group">
+                            <label for="commentText" class="form-label">Comment</label>
+                            <textarea id="commentText" class="form-control" placeholder="Your thoughts..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-custom btn-primary">Post Comment</button>
+                    </form>
+                </div>
+                
+                <div class="comments-list">
+                    <div class="comment">
+                        <div class="comment-header">
+                            <div class="comment-author">
+                                <div class="comment-avatar">MR</div>
+                                <div class="comment-meta">
+                                    <div class="comment-name">Michael Roberts</div>
+                                    <div class="comment-date">1 hour ago</div>
+                                </div>
+                            </div>
+                            <div class="comment-actions">
+                                <button class="comment-action">Reply</button>
+                                <button class="comment-action">Like</button>
+                            </div>
+                        </div>
+                        <div class="comment-body">
+                            This is a fascinating development. I'm particularly interested in how this will affect emerging markets. The potential for reduced dependency on traditional economic powers could create new opportunities for growth in developing nations.
+                        </div>
+                    </div>
+                    
+                    <div class="comment">
+                        <div class="comment-header">
+                            <div class="comment-author">
+                                <div class="comment-avatar">SG</div>
+                                <div class="comment-meta">
+                                    <div class="comment-name">Sarah Green</div>
+                                    <div class="comment-date">2 hours ago</div>
+                                </div>
+                            </div>
+                            <div class="comment-actions">
+                                <button class="comment-action">Reply</button>
+                                <button class="comment-action">Like</button>
+                            </div>
+                        </div>
+                        <div class="comment-body">
+                            While the immediate market reactions are impressive, I'm concerned about the long-term sustainability of this development. History has shown us that rapid economic shifts often come with unintended consequences that aren't immediately apparent.
+                        </div>
+                    </div>
+                    
+                    <div class="comment">
+                        <div class="comment-header">
+                            <div class="comment-author">
+                                <div class="comment-avatar">TW</div>
+                                <div class="comment-meta">
+                                    <div class="comment-name">Thomas Wilson</div>
+                                    <div class="comment-date">3 hours ago</div>
+                                </div>
+                            </div>
+                            <div class="comment-actions">
+                                <button class="comment-action">Reply</button>
+                                <button class="comment-action">Like</button>
+                            </div>
+                        </div>
+                        <div class="comment-body">
+                            The technological aspect of this breakthrough is what intrigues me most. If this accelerates adoption of emerging technologies as suggested, we could be looking at productivity gains that dwarf anything we've seen since the internet revolution.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // ========== SIDEBAR TOGGLE ==========
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const mainWrapper = document.getElementById('mainWrapper');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            sidebarOverlay.classList.toggle('active');
+        });
+
+        sidebarOverlay.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
+        });
+
+        // Close sidebar when clicking a link on mobile
+        document.querySelectorAll('.sidebar-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 991) {
+                    sidebar.classList.remove('active');
+                    sidebarOverlay.classList.remove('active');
+                }
+            });
+        });
+
+        // ========== THEME TOGGLE ==========
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const body = document.body;
+
+        function updateThemeIcon(isDark) {
+            if (isDark) {
+                themeIcon.classList.remove('bi-sun-fill');
+                themeIcon.classList.add('bi-moon-stars-fill');
+            } else {
+                themeIcon.classList.remove('bi-moon-stars-fill');
+                themeIcon.classList.add('bi-sun-fill');
+            }
+        }
+
+        function initTheme() {
+            const savedTheme = localStorage.getItem('admin_theme');
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+                updateThemeIcon(true);
+            } else if (savedTheme === 'light') {
+                body.classList.remove('dark-mode');
+                updateThemeIcon(false);
+            } else {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (prefersDark) {
+                    body.classList.add('dark-mode');
+                    updateThemeIcon(true);
+                }
+            }
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            updateThemeIcon(isDark);
+            localStorage.setItem('admin_theme', isDark ? 'dark' : 'light');
+        });
+
+        initTheme();
+
+        // ========== COMMENT FORM HANDLING ==========
+        const commentForm = document.getElementById('commentForm');
+        
+        commentForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('commentName').value;
+            const email = document.getElementById('commentEmail').value;
+            const comment = document.getElementById('commentText').value;
+            
+            if (!name || !email || !comment) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            // In a real application, you would send this data to a server
+            console.log('New comment:', { name, email, comment });
+            
+            // Show success message
+            alert('Comment submitted successfully!');
+            
+            // Reset form
+            commentForm.reset();
+        });
+
+        // ========== RESPONSIVE HANDLING ==========
+        function handleResize() {
+            if (window.innerWidth > 991) {
+                sidebar.classList.remove('active');
+                sidebarOverlay.classList.remove('active');
+            }
+        }
+
+        window.addEventListener('resize', handleResize);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Categories management - BlogName">
+    <title>Categories - BlogName Admin</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ========== CSS VARIABLES & THEME ========== */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-tertiary: #e9ecef;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6c757d;
+            --accent: #dc143c;
+            --accent-hover: #b01030;
+            --accent-light: rgba(220, 20, 60, 0.1);
+            --border-color: #dee2e6;
+            --card-shadow: rgba(0, 0, 0, 0.1);
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --info: #17a2b8;
+            --sidebar-width: 280px;
+            --font-heading: 'Inter', sans-serif;
+            --font-brand: 'Dancing Script', cursive;
+        }
+
+        .dark-mode {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #f5f5f5;
+            --text-secondary: #b0b0b0;
+            --accent: #ff4f5a;
+            --accent-hover: #ff6b75;
+            --accent-light: rgba(255, 79, 90, 0.15);
+            --border-color: #333;
+            --card-shadow: rgba(255, 255, 255, 0.05);
+            --success: #4caf50;
+            --warning: #ffb300;
+            --danger: #f44336;
+            --info: #29b6f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            font-family: var(--font-heading);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            line-height: 1.6;
+        }
+
+        /* ========== SIDEBAR ========== */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            background-color: var(--bg-primary);
+            border-right: 1px solid var(--border-color);
+            padding: 1.5rem 0;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar.hidden {
+            transform: translateX(-100%);
+        }
+
+        .sidebar-brand {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-brand a {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-family: var(--font-brand);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sidebar-brand span {
+            color: var(--accent);
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-nav-item {
+            margin-bottom: 0.25rem;
+        }
+
+        .sidebar-nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.875rem 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            font-weight: 500;
+        }
+
+        .sidebar-nav-link i {
+            font-size: 1.2rem;
+            margin-right: 1rem;
+            min-width: 24px;
+        }
+
+        .sidebar-nav-link:hover {
+            background-color: var(--accent-light);
+            color: var(--accent);
+        }
+
+        .sidebar-nav-link.active {
+            background-color: var(--accent-light);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .sidebar-nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: var(--accent);
+        }
+
+        .sidebar-section-title {
+            padding: 1.5rem 1.5rem 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+        }
+
+        /* ========== MAIN CONTENT ========== */
+        .main-wrapper {
+            margin-left: var(--sidebar-width);
+            transition: margin-left 0.3s ease;
+        }
+
+        .main-wrapper.expanded {
+            margin-left: 0;
+        }
+
+        /* ========== TOP HEADER ========== */
+        .top-header {
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: color 0.3s ease;
+            display: none;
+        }
+
+        .menu-toggle:hover {
+            color: var(--accent);
+        }
+
+        .search-box {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-icon {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .header-icon:hover {
+            color: var(--accent);
+            transform: scale(1.1);
+        }
+
+        .header-icon .badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: var(--danger);
+            color: white;
+            font-size: 0.65rem;
+            padding: 0.2rem 0.4rem;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--bg-secondary);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .user-menu:hover {
+            background-color: var(--accent-light);
+        }
+
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* ========== CATEGORIES CONTENT ========== */
+        .categories-content {
+            padding: 2rem 1.5rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        /* ========== CATEGORIES CONTROLS ========== */
+        .categories-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .filters-container {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .filter-select {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            min-width: 150px;
+        }
+
+        .btn-custom {
+            padding: 0.6rem 1.25rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 20, 60, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        /* ========== BULK ACTIONS MENU ========== */
+        .bulk-actions-container {
+            display: none;
+            position: relative;
+        }
+
+        .bulk-actions-container.show {
+            display: block;
+        }
+
+        .bulk-actions-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 8px 24px var(--card-shadow);
+            z-index: 10;
+            min-width: 200px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .bulk-actions-header {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .bulk-actions-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .bulk-action-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .bulk-action-item:hover {
+            background-color: var(--accent-light);
+            color: var(--accent);
+        }
+
+        .bulk-action-item.danger:hover {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: var(--danger);
+        }
+
+        /* ========== CATEGORIES GRID ========== */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .category-card {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px var(--card-shadow);
+        }
+
+        .category-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .category-checkbox {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--accent);
+        }
+
+        .category-color {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            border: 2px solid var(--border-color);
+        }
+
+        .category-body {
+            padding: 1.5rem;
+        }
+
+        .category-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .category-slug {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            font-family: monospace;
+            background-color: var(--bg-secondary);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .category-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .category-stats {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .category-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .category-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            font-size: 1.1rem;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .action-btn:hover {
+            background-color: var(--bg-secondary);
+        }
+
+        .action-btn.edit:hover {
+            color: var(--info);
+        }
+
+        .action-btn.delete:hover {
+            color: var(--danger);
+        }
+
+        /* ========== ADD CATEGORY CARD ========== */
+        .add-category-card {
+            background-color: var(--bg-primary);
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+        }
+
+        .add-category-card:hover {
+            border-color: var(--accent);
+            background-color: var(--accent-light);
+        }
+
+        .add-category-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--accent-light);
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .add-category-text {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .add-category-subtext {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* ========== MODAL STYLES ========== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background-color: var(--bg-primary);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            font-size: 1.2rem;
+        }
+
+        .modal-close:hover {
+            background-color: var(--bg-secondary);
+            color: var(--danger);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        /* ========== FORM STYLES ========== */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .form-text {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .color-picker {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .color-input {
+            width: 60px;
+            height: 40px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .color-input::-webkit-color-swatch {
+            border: none;
+            border-radius: 4px;
+        }
+
+        .color-input::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        /* ========== EMPTY STATE ========== */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-state-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 1199px) {
+            :root {
+                --sidebar-width: 250px;
+            }
+        }
+
+        @media (max-width: 991px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-wrapper {
+                margin-left: 0;
+            }
+
+            .search-box {
+                max-width: 100%;
+            }
+
+            .user-info {
+                display: none;
+            }
+
+            .categories-controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .filters-container {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .categories-content {
+                padding: 1.5rem 1rem;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .category-stats {
+                justify-content: space-around;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .top-header {
+                padding: 1rem;
+            }
+
+            .search-box input {
+                font-size: 0.85rem;
+                padding: 0.65rem 1rem 0.65rem 2.5rem;
+            }
+
+            .header-right {
+                gap: 0.5rem;
+            }
+
+            .header-icon {
+                font-size: 1.2rem;
+            }
+
+            .filters-container {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .filter-group {
+                width: 100%;
+            }
+
+            .filter-select {
+                width: 100%;
+            }
+
+            .modal-footer {
+                flex-direction: column;
+            }
+        }
+
+        /* ========== OVERLAY FOR MOBILE SIDEBAR ========== */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ========== SIDEBAR ========== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <a href="/">
+                <i class="bi bi-lightning-charge-fill"></i>
+                Blog<span>Admin</span>
+            </a>
+        </div>
+
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-speedometer2"></i>
+                    Dashboard
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-file-earmark-text"></i>
+                    Posts
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link active">
+                    <i class="bi bi-folder"></i>
+                    Categories
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-chat-dots"></i>
+                    Comments
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-people"></i>
+                    Users
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-section-title">Analytics</div>
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-graph-up"></i>
+                    Analytics
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-bar-chart"></i>
+                    Reports
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-section-title">Settings</div>
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-gear"></i>
+                    Settings
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-palette"></i>
+                    Appearance
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-box-arrow-right"></i>
+                    Logout
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- ========== SIDEBAR OVERLAY ========== -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <div class="main-wrapper" id="mainWrapper">
+        <!-- ========== TOP HEADER ========== -->
+        <header class="top-header">
+            <div class="header-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="bi bi-list"></i>
+                </button>
+                <div class="search-box">
+                    <i class="bi bi-search"></i>
+                    <input type="text" placeholder="Search categories...">
+                </div>
+            </div>
+
+            <div class="header-right">
+                <button class="header-icon" id="themeToggle" aria-label="Toggle dark mode">
+                    <i class="bi bi-sun-fill" id="themeIcon"></i>
+                </button>
+                <button class="header-icon">
+                    <i class="bi bi-bell"></i>
+                    <span class="badge">3</span>
+                </button>
+                <div class="user-menu">
+                    <div class="user-avatar">JD</div>
+                    <div class="user-info">
+                        <div class="user-name">John Doe</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                    <i class="bi bi-chevron-down" style="color: var(--text-secondary);"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- ========== CATEGORIES CONTENT ========== -->
+        <main class="categories-content">
+            <h1 class="page-title">Categories Management</h1>
+            <p class="page-subtitle">Organize your content with categories and track their performance.</p>
+
+            <!-- ========== CATEGORIES CONTROLS ========== -->
+            <div class="categories-controls">
+                <div class="filters-container">
+                    <div class="filter-group">
+                        <label class="filter-label">Sort By</label>
+                        <select class="filter-select" id="sortFilter">
+                            <option value="name">Name</option>
+                            <option value="posts">Post Count</option>
+                            <option value="date">Date Created</option>
+                            <option value="updated">Last Updated</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Status</label>
+                        <select class="filter-select" id="statusFilter">
+                            <option value="all">All Categories</option>
+                            <option value="active">Active</option>
+                            <option value="archived">Archived</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="table-actions">
+                    <button class="btn-custom btn-secondary">
+                        <i class="bi bi-download"></i>
+                        Export
+                    </button>
+                    <!-- Bulk Actions Button -->
+                    <div class="bulk-actions-container" id="bulkActionsContainer">
+                        <button class="btn-custom btn-secondary" id="bulkActionsButton">
+                            <i class="bi bi-three-dots"></i>
+                            Bulk Actions
+                            <span id="selectedCount" class="ms-1">(0)</span>
+                        </button>
+                        <div class="bulk-actions-menu" id="bulkActionsMenu">
+                            <div class="bulk-actions-header">
+                                <span id="bulkActionsCount">0 items selected</span>
+                            </div>
+                            <ul class="bulk-actions-list">
+                                <li class="bulk-action-item" data-action="activate">
+                                    <i class="bi bi-check-circle"></i>
+                                    Activate
+                                </li>
+                                <li class="bulk-action-item" data-action="archive">
+                                    <i class="bi bi-archive"></i>
+                                    Archive
+                                </li>
+                                <li class="bulk-action-item danger" data-action="delete">
+                                    <i class="bi bi-trash"></i>
+                                    Delete
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== CATEGORIES GRID ========== -->
+            <div class="categories-grid">
+                <!-- Technology Category -->
+                <div class="category-card">
+                    <div class="category-header">
+                        <input type="checkbox" class="category-checkbox">
+                        <div class="category-color" style="background-color: #667eea;"></div>
+                    </div>
+                    <div class="category-body">
+                        <h3 class="category-title">
+                            <i class="bi bi-cpu"></i>
+                            Technology
+                        </h3>
+                        <div class="category-slug">technology</div>
+                        <p class="category-description">Latest tech news, reviews, and innovations in the world of technology and computing.</p>
+                        
+                        <div class="category-stats">
+                            <div class="category-stat">
+                                <div class="stat-value">42</div>
+                                <div class="stat-label">Posts</div>
+                            </div>
+                            <div class="category-stat">
+                                <div class="stat-value">12.5K</div>
+                                <div class="stat-label">Views</div>
+                            </div>
+                            <div class="category-stat">
+                                <div class="stat-value">156</div>
+                                <div class="stat-label">Comments</div>
+                            </div>
+                        </div>
+                        
+                        <div class="category-actions">
+                            <button class="action-btn edit">
+                                <i class="bi bi-pencil"></i>
+                                Edit
+                            </button>
+                            <button class="action-btn delete">
+                                <i class="bi bi-trash"></i>
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Travel Category -->
+                <div class="category-card">
+                    <div class="category-header">
+                        <input type="checkbox" class="category-checkbox">
+                        <div class="category-color" style="background-color: #11998e;"></div>
+                    </div>
+                    <div class="category-body">
+                        <h3 class="category-title">
+                            <i class="bi bi-geo-alt"></i>
+                            Travel
+                        </h3>
+                        <div class="category-slug">travel</div>
+                        <p class="category-description">Discover amazing destinations, travel tips, and cultural experiences from around the world.</p>
+                        
+                        <div class="category-stats">
+                            <div class="category-stat">
+                                <div class="stat-value">28</div>
+                                <div class="stat-label">Posts</div>
+                            </div>
+                            <div class="category-stat">
+                                <div class="stat-value">8.7K</div>
+                                <div class="stat-label">Views</div>
+                            </div>
+                            <div class="category-stat">
+                                <div class="stat-value">89</div>
+                                <div class="stat-label">Comments</div>
+                            </div>
+                        </div>
+                        
+                        <div class="category-actions">
+                            <button class="action-btn edit">
+                                <i class="bi bi-pencil"></i>
+                                Edit
+                            </button>
+                            <button class="action-btn delete">
+                                <i class="bi bi-trash"></i>
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lifestyle Category -->
+                <div class="category-card">
+                    <div class="category-header">
+                        <input type="checkbox" class="category-checkbox">
+                        <div class="category-color" style="background-color: #f093fb;"></div>
+                    </div>
+                    <div class="category-body">
+                        <h3 class="category-title">
+                            <i class="bi bi-heart"></i>
+                            Lifestyle
+                        </h3>
+                        <div class="category-slug">lifestyle</div>
+                        <p class="category-description">Health, wellness, fashion, and daily living tips for a balanced and fulfilling life.</p>
+                        
+                        <div class="category-stats">
+                            <div class="category-stat">
+                                <div class="stat-value">35</div>
+                                <div class="stat-label">Posts</div>
+                            </div>
+                            <div class="category-stat">
+                                <div class="stat-value">10.2K</div>
+                                <div class="stat-label">Views</div>
+                            </div>
+                            <div class="category-stat">
+                                <div class="stat-value">134</div>
+                                <div class="stat-label">Comments</div>
+                            </div>
+                        </div>
+                        
+                        <div class="category-actions">
+                            <button class="action-btn edit">
+                                <i class="bi bi-pencil"></i>
+                                Edit
+                            </button>
+                            <button class="action-btn delete">
+                                <i class="bi bi-trash"></i>
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Food Category -->
+                <div class="category-card">
+                    <div class="category-header">
+                        <input type="checkbox" class="category-checkbox">
+                        <div class="category-color" style="background-color: #ff6b6b;"></div>
+                    </div>
+                    <div class="category-body">
+                        <h3 class="category-title">
+                            <i class="bi bi-egg-fried"></i>
+                            Food & Cooking
+                        </h3>
+                        <div class="category-slug">food-cooking</div>
+                        <p class="category-description">Recipes, cooking techniques, restaurant reviews, and culinary adventures.</p>
+                        
+                        <div class="category-stats">
+                            <div class="category-stat">
+                                <div class="stat-value">19</div>
+                                <div class="stat-label">Posts</div>
+                            </div>
+                            <div class="category-stat">
+                                <div class="stat-value">6.3K</div>
+                                <div class="stat-label">Views</div>
+                            </div>
+                            <div class="category-stat">
+                                <div class="stat-value">67</div>
+                                <div class="stat-label">Comments</div>
+                            </div>
+                        </div>
+                        
+                        <div class="category-actions">
+                            <button class="action-btn edit">
+                                <i class="bi bi-pencil"></i>
+                                Edit
+                            </button>
+                            <button class="action-btn delete">
+                                <i class="bi bi-trash"></i>
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add New Category Card -->
+                <div class="add-category-card" id="addCategoryCard">
+                    <div class="add-category-icon">
+                        <i class="bi bi-plus-lg"></i>
+                    </div>
+                    <div class="add-category-text">Add New Category</div>
+                    <div class="add-category-subtext">Create a new category to organize your content</div>
+                </div>
+            </div>
+
+            <!-- Empty State (Hidden by default) -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <div class="empty-state-icon">
+                    <i class="bi bi-folder-x"></i>
+                </div>
+                <h3 class="empty-state-title">No Categories Found</h3>
+                <p>Get started by creating your first category to organize your content.</p>
+                <button class="btn-custom btn-primary" style="margin-top: 1rem;">
+                    <i class="bi bi-plus-lg"></i>
+                    Create Category
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <!-- ========== ADD/EDIT CATEGORY MODAL ========== -->
+    <div class="modal-overlay" id="categoryModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Add New Category</h3>
+                <button class="modal-close" id="modalClose">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="categoryForm">
+                    <div class="form-group">
+                        <label for="categoryName" class="form-label">Category Name</label>
+                        <input type="text" class="form-control" id="categoryName" placeholder="Enter category name">
+                        <div class="form-text">The name is how it appears on your site.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="categorySlug" class="form-label">Slug</label>
+                        <input type="text" class="form-control" id="categorySlug" placeholder="category-slug">
+                        <div class="form-text">The "slug" is the URL-friendly version of the name.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="categoryDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="categoryDescription" rows="3" placeholder="Enter a description (optional)"></textarea>
+                        <div class="form-text">The description is not prominent by default; however, some themes may show it.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="categoryColor" class="form-label">Color</label>
+                        <div class="color-picker">
+                            <input type="color" class="color-input" id="categoryColor" value="#667eea">
+                            <span>Choose a color to represent this category</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="categoryIcon" class="form-label">Icon</label>
+                        <select class="form-control" id="categoryIcon">
+                            <option value="bi-folder">Default</option>
+                            <option value="bi-cpu">Technology</option>
+                            <option value="bi-geo-alt">Travel</option>
+                            <option value="bi-heart">Lifestyle</option>
+                            <option value="bi-egg-fried">Food</option>
+                            <option value="bi-book">Education</option>
+                            <option value="bi-briefcase">Business</option>
+                            <option value="bi-film">Entertainment</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="parentCategory" class="form-label">Parent Category</label>
+                        <select class="form-control" id="parentCategory">
+                            <option value="">None</option>
+                            <option value="1">Technology</option>
+                            <option value="2">Travel</option>
+                            <option value="3">Lifestyle</option>
+                        </select>
+                        <div class="form-text">Categories can have a hierarchy. You might have a Jazz category, and under that have children categories for Bebop and Big Band.</div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-custom btn-secondary" id="modalCancel">Cancel</button>
+                <button class="btn-custom btn-primary" id="modalSave">Save Category</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // ========== SIDEBAR TOGGLE ==========
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const mainWrapper = document.getElementById('mainWrapper');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            sidebarOverlay.classList.toggle('active');
+        });
+
+        sidebarOverlay.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
+        });
+
+        // Close sidebar when clicking a link on mobile
+        document.querySelectorAll('.sidebar-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 991) {
+                    sidebar.classList.remove('active');
+                    sidebarOverlay.classList.remove('active');
+                }
+            });
+        });
+
+        // ========== THEME TOGGLE ==========
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const body = document.body;
+
+        function updateThemeIcon(isDark) {
+            if (isDark) {
+                themeIcon.classList.remove('bi-sun-fill');
+                themeIcon.classList.add('bi-moon-stars-fill');
+            } else {
+                themeIcon.classList.remove('bi-moon-stars-fill');
+                themeIcon.classList.add('bi-sun-fill');
+            }
+        }
+
+        function initTheme() {
+            const savedTheme = localStorage.getItem('admin_theme');
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+                updateThemeIcon(true);
+            } else if (savedTheme === 'light') {
+                body.classList.remove('dark-mode');
+                updateThemeIcon(false);
+            } else {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (prefersDark) {
+                    body.classList.add('dark-mode');
+                    updateThemeIcon(true);
+                }
+            }
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            updateThemeIcon(isDark);
+            localStorage.setItem('admin_theme', isDark ? 'dark' : 'light');
+        });
+
+        initTheme();
+
+        // ========== CATEGORY MODAL ==========
+        const addCategoryCard = document.getElementById('addCategoryCard');
+        const categoryModal = document.getElementById('categoryModal');
+        const modalClose = document.getElementById('modalClose');
+        const modalCancel = document.getElementById('modalCancel');
+        const modalSave = document.getElementById('modalSave');
+        const modalTitle = document.getElementById('modalTitle');
+        const categoryForm = document.getElementById('categoryForm');
+
+        // Open modal for adding new category
+        addCategoryCard.addEventListener('click', () => {
+            modalTitle.textContent = 'Add New Category';
+            categoryForm.reset();
+            categoryModal.classList.add('active');
+        });
+
+        // Open modal for editing category
+        document.querySelectorAll('.action-btn.edit').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const card = this.closest('.category-card');
+                const title = card.querySelector('.category-title').textContent.trim();
+                const slug = card.querySelector('.category-slug').textContent;
+                const description = card.querySelector('.category-description').textContent;
+                
+                modalTitle.textContent = 'Edit Category';
+                document.getElementById('categoryName').value = title;
+                document.getElementById('categorySlug').value = slug;
+                document.getElementById('categoryDescription').value = description;
+                
+                categoryModal.classList.add('active');
+            });
+        });
+
+        // Close modal
+        function closeModal() {
+            categoryModal.classList.remove('active');
+        }
+
+        modalClose.addEventListener('click', closeModal);
+        modalCancel.addEventListener('click', closeModal);
+
+        // Save category
+        modalSave.addEventListener('click', function() {
+            const name = document.getElementById('categoryName').value.trim();
+            if (!name) {
+                alert('Please enter a category name.');
+                return;
+            }
+
+            // In a real application, this would save to a database
+            console.log('Category saved:', {
+                name: name,
+                slug: document.getElementById('categorySlug').value,
+                description: document.getElementById('categoryDescription').value,
+                color: document.getElementById('categoryColor').value,
+                icon: document.getElementById('categoryIcon').value,
+                parent: document.getElementById('parentCategory').value
+            });
+
+            alert('Category saved successfully!');
+            closeModal();
+        });
+
+        // ========== BULK ACTIONS ==========
+        const categoryCheckboxes = document.querySelectorAll('.category-checkbox');
+        const bulkActionsContainer = document.getElementById('bulkActionsContainer');
+        const bulkActionsButton = document.getElementById('bulkActionsButton');
+        const bulkActionsMenu = document.getElementById('bulkActionsMenu');
+        const selectedCount = document.getElementById('selectedCount');
+        const bulkActionsCount = document.getElementById('bulkActionsCount');
+
+        function updateSelectedCount() {
+            const checkedCount = Array.from(categoryCheckboxes).filter(cb => cb.checked).length;
+            selectedCount.textContent = `(${checkedCount})`;
+            bulkActionsCount.textContent = `${checkedCount} item${checkedCount !== 1 ? 's' : ''} selected`;
+            
+            // Show/hide bulk actions container
+            if (checkedCount > 0) {
+                bulkActionsContainer.classList.add('show');
+            } else {
+                bulkActionsContainer.classList.remove('show');
+                bulkActionsMenu.style.display = 'none';
+            }
+        }
+
+        categoryCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateSelectedCount);
+        });
+
+        // ========== BULK ACTIONS MENU ==========
+        bulkActionsButton.addEventListener('click', function(e) {
+            e.stopPropagation();
+            bulkActionsMenu.style.display = bulkActionsMenu.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Close bulk actions menu when clicking outside
+        document.addEventListener('click', function() {
+            bulkActionsMenu.style.display = 'none';
+        });
+
+        // Handle bulk action selection
+        document.querySelectorAll('.bulk-action-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const action = this.getAttribute('data-action');
+                const checkedItems = Array.from(categoryCheckboxes).filter(cb => cb.checked);
+                
+                if (checkedItems.length === 0) {
+                    alert('Please select at least one category.');
+                    return;
+                }
+                
+                let actionText;
+                switch(action) {
+                    case 'activate':
+                        actionText = 'activate';
+                        break;
+                    case 'archive':
+                        actionText = 'archive';
+                        break;
+                    case 'delete':
+                        actionText = 'delete';
+                        break;
+                    default:
+                        actionText = action;
+                }
+                
+                if (confirm(`Are you sure you want to ${actionText} ${checkedItems.length} categor${checkedItems.length !== 1 ? 'ies' : 'y'}?`)) {
+                    console.log(`Performing ${action} on ${checkedItems.length} categories`);
+                    
+                    // Close the menu
+                    bulkActionsMenu.style.display = 'none';
+                    
+                    // Show a success message
+                    alert(`Successfully ${actionText}d ${checkedItems.length} categor${checkedItems.length !== 1 ? 'ies' : 'y'}`);
+                    
+                    // Reset checkboxes
+                    categoryCheckboxes.forEach(cb => cb.checked = false);
+                    updateSelectedCount();
+                }
+            });
+        });
+
+        // ========== DELETE CATEGORIES ==========
+        document.querySelectorAll('.action-btn.delete').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const card = this.closest('.category-card');
+                const categoryName = card.querySelector('.category-title').textContent.trim();
+                
+                if (confirm(`Are you sure you want to delete the category "${categoryName}"? This action cannot be undone.`)) {
+                    // In a real application, this would delete from database
+                    console.log('Category deleted:', categoryName);
+                    card.style.opacity = '0.5';
+                    setTimeout(() => {
+                        card.remove();
+                        // Check if we should show empty state
+                        if (document.querySelectorAll('.category-card').length === 1) { // Only add card remains
+                            document.getElementById('emptyState').style.display = 'block';
+                        }
+                    }, 500);
+                }
+            });
+        });
+
+        // ========== FILTER FUNCTIONALITY ==========
+        const sortFilter = document.getElementById('sortFilter');
+        const statusFilter = document.getElementById('statusFilter');
+
+        [sortFilter, statusFilter].forEach(filter => {
+            filter.addEventListener('change', function() {
+                console.log('Filter changed:', this.id, this.value);
+                // In a real application, this would filter the categories
+            });
+        });
+
+        // ========== AUTO-GENERATE SLUG ==========
+        const categoryName = document.getElementById('categoryName');
+        const categorySlug = document.getElementById('categorySlug');
+
+        categoryName.addEventListener('input', function() {
+            if (!categorySlug.dataset.manual) {
+                const slug = this.value
+                    .toLowerCase()
+                    .trim()
+                    .replace(/[^\w\s-]/g, '')
+                    .replace(/[\s_-]+/g, '-')
+                    .replace(/^-+|-+$/g, '');
+                categorySlug.value = slug;
+            }
+        });
+
+        categorySlug.addEventListener('input', function() {
+            this.dataset.manual = 'true';
+        });
+
+        // ========== RESPONSIVE HANDLING ==========
+        function handleResize() {
+            if (window.innerWidth > 991) {
+                sidebar.classList.remove('active');
+                sidebarOverlay.classList.remove('active');
+            }
+        }
+
+        window.addEventListener('resize', handleResize);
+    </script>
+</body>
+
+</html>
