@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Discover and book tickets for amazing events">
+    <title>EventHub - Discover Amazing Events</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ============================================
+           CUSTOM CSS - style.css
+           ============================================ */
+
+        /* Root Variables for Theme Colors */
+        :root {
+            --primary-color: #10b981;
+            --primary-dark: #059669;
+            --primary-light: #34d399;
+            --secondary-color: #0f766e;
+            --bg-light: #ffffff;
+            --bg-gray: #f9fafb;
+            --text-light: #111827;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        /* Dark Mode Variables */
+        [data-theme="dark"] {
+            --bg-light: #1f2937;
+            --bg-gray: #111827;
+            --text-light: #f9fafb;
+            --text-muted: #9ca3af;
+            --border-color: #374151;
+            --shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            transition: var(--transition);
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background-color: var(--bg-light);
+            box-shadow: 0 2px 10px var(--shadow);
+            transition: var(--transition);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color) !important;
+        }
+
+        .nav-link {
+            color: var(--text-light) !important;
+            font-weight: 500;
+            margin: 0 0.5rem;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.5rem 0.75rem !important;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            background: none;
+            border: 2px solid var(--border-color);
+            color: var(--text-light);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            transform: rotate(180deg);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            padding: 100px 0 60px;
+            position: relative;
+            overflow: hidden;
+            min-height: 500px;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .hero-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: white;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .hero-search {
+            background: white;
+            border-radius: 16px;
+            padding: 0.75rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .hero-search .input-group {
+            gap: 0.5rem;
+        }
+
+        .hero-search input {
+            border: none;
+            padding: 1rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 12px;
+            background: var(--bg-gray);
+            flex: 1;
+        }
+
+        .hero-search input:focus {
+            outline: none;
+            box-shadow: none;
+            background: #f3f4f6;
+        }
+
+        .hero-search .btn {
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            white-space: nowrap;
+            min-width: 120px;
+        }
+
+        .btn-primary-custom {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .btn-primary-custom:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        /* Section Styling */
+        .section {
+            padding: 60px 0;
+        }
+
+        .section-title {
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: clamp(0.95rem, 2vw, 1.1rem);
+        }
+
+        /* Event Cards - Enhanced with Real Images */
+        .event-card {
+            background: var(--bg-light);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+            height: 100%;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .event-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px var(--shadow);
+        }
+
+        .event-image-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 60%;
+            /* 5:3 Aspect Ratio */
+            overflow: hidden;
+            background: var(--bg-gray);
+        }
+
+        .event-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.5s ease;
+        }
+
+        .event-card:hover .event-image {
+            transform: scale(1.1);
+        }
+
+        .event-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            z-index: 2;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .event-body {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .event-date {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .event-title {
+            font-size: clamp(1.1rem, 2vw, 1.25rem);
+            margin-bottom: 0.75rem;
+            color: var(--text-light);
+            line-height: 1.4;
+        }
+
+        .event-location {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .event-footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .event-price {
+            font-size: clamp(1.25rem, 3vw, 1.5rem);
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .event-footer .btn {
+            font-size: 0.9rem;
+            padding: 0.6rem 1.5rem;
+        }
+
+        /* Category Cards */
+        .category-card {
+            background: var(--bg-gray);
+            border-radius: 16px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            transition: var(--transition);
+            border: 2px solid var(--border-color);
+            cursor: pointer;
+            height: 100%;
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .category-card:hover {
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-5px);
+        }
+
+        .category-icon {
+            font-size: clamp(2.5rem, 5vw, 3rem);
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .category-card:hover .category-icon {
+            color: white;
+        }
+
+        .category-card h4 {
+            font-size: clamp(1.1rem, 2vw, 1.25rem);
+            margin-bottom: 0.5rem;
+        }
+
+        .category-card:hover h4 {
+            color: white;
+        }
+
+        .category-card p {
+            margin-bottom: 0;
+            font-size: 0.9rem;
+        }
+
+        /* Testimonial Cards */
+        .testimonial-card {
+            background: var(--bg-light);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            height: 100%;
+        }
+
+        .testimonial-card:hover {
+            box-shadow: 0 10px 30px var(--shadow);
+        }
+
+        .testimonial-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-rating {
+            color: #fbbf24;
+            margin-bottom: 1rem;
+        }
+
+        /* Newsletter Section */
+        .newsletter-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 60px 0;
+            color: white;
+        }
+
+        .newsletter-form {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .newsletter-form .input-group {
+            gap: 0.5rem;
+        }
+
+        .newsletter-input {
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            flex: 1;
+        }
+
+        .newsletter-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+        }
+
+        .newsletter-form .btn {
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            white-space: nowrap;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-gray);
+            padding: 60px 0 30px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-title {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+        }
+
+        .footer-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.75rem;
+            transition: var(--transition);
+        }
+
+        .footer-link:hover {
+            color: var(--primary-color);
+            padding-left: 5px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            margin-right: 0.75rem;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .social-links a:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .animate-on-scroll.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive Design Improvements */
+        @media (max-width: 991px) {
+            .nav-link {
+                padding: 0.75rem 0 !important;
+                margin: 0;
+            }
+
+            .nav-link::after {
+                display: none;
+            }
+
+            .theme-toggle {
+                margin-top: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 80px 0 50px;
+                min-height: 400px;
+            }
+
+            .section {
+                padding: 40px 0;
+            }
+
+            .hero-search {
+                padding: 0.5rem;
+            }
+
+            .hero-search input {
+                padding: 0.875rem 1rem;
+                font-size: 0.95rem;
+            }
+
+            .hero-search .btn {
+                padding: 0.875rem 1rem;
+                min-width: 100px;
+                font-size: 0.9rem;
+            }
+
+            .event-footer {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .event-footer .btn {
+                width: 100%;
+            }
+
+            .category-card {
+                padding: 1.5rem 1rem;
+                min-height: 160px;
+            }
+
+            .newsletter-input {
+                padding: 0.875rem 1rem;
+            }
+
+            .newsletter-form .btn {
+                padding: 0.875rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .navbar-brand {
+                font-size: 1.25rem;
+            }
+
+            .hero-search .input-group {
+                flex-direction: column;
+            }
+
+            .hero-search .btn {
+                width: 100%;
+                min-width: auto;
+            }
+
+            .newsletter-form .input-group {
+                flex-direction: column;
+            }
+
+            .newsletter-form .btn {
+                width: 100%;
+            }
+
+            .footer {
+                padding: 40px 0 20px;
+            }
+
+            .event-image-wrapper {
+                padding-top: 65%;
+            }
+        }
+
+        /* Accessibility Improvements */
+        .skip-to-content {
+            position: absolute;
+            left: -9999px;
+            z-index: 999;
+            padding: 1rem;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+        }
+
+        .skip-to-content:focus {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Focus Styles */
+        *:focus-visible {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        /* Animation Delays for Staggered Effect */
+        .event-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .event-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .event-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .event-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .event-card:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .event-card:nth-child(6) {
+            animation-delay: 0.6s;
+        }
+
+        /* Loading placeholder for images */
+        .image-loading {
+            background: linear-gradient(90deg, var(--bg-gray) 25%, var(--border-color) 50%, var(--bg-gray) 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Skip to Content Link for Accessibility -->
+    <a href="#main-content" class="skip-to-content">Skip to main content</a>
+
+    <!-- PHP Include: Navigation Header -->
+    <!-- <?php include('header.php'); ?> -->
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg sticky-top" role="navigation" aria-label="Main navigation">
+        <div class="container">
+            <a class="navbar-brand" href="#" aria-label="EventHub Home">
+                <i class="bi bi-ticket-perforated-fill"></i> EventHub
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#events">Events</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#categories">Categories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#testimonials">Reviews</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#newsletter">Subscribe</a>
+                    </li>
+                    <li class="nav-item ms-lg-3">
+                        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                            <i class="bi bi-moon-stars-fill"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <!-- Hero Section -->
+        <section id="home" class="hero-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-lg-10 col-xl-9 mx-auto text-center hero-content">
+                        <h1 class="hero-title">Discover Amazing Events Near You</h1>
+                        <p class="hero-subtitle">Book tickets for concerts, sports, festivals, and more. Your next
+                            unforgettable experience awaits.</p>
+                        <div class="hero-search">
+                            <div class="input-group">
+                                <input type="text" class="form-control"
+                                    placeholder="Search for events, artists, venues..." aria-label="Search events">
+                                <button class="btn btn-primary-custom">
+                                    <i class="bi bi-search"></i> <span class="d-none d-sm-inline">Search</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section id="categories" class="section">
+            <div class="container">
+                <h2 class="section-title animate-on-scroll">Browse by Category</h2>
+                <p class="section-subtitle animate-on-scroll">Find the perfect event for your interests</p>
+                <div class="row g-3 g-md-4">
+                    <div class="col-6 col-md-4 col-lg-3 animate-on-scroll">
+                        <div class="category-card">
+                            <i class="bi bi-music-note-beamed category-icon"></i>
+                            <h4>Concerts</h4>
+                            <p class="text-muted">Live music</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4 col-lg-3 animate-on-scroll">
+                        <div class="category-card">
+                            <i class="bi bi-trophy category-icon"></i>
+                            <h4>Sports</h4>
+                            <p class="text-muted">Competitions</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4 col-lg-3 animate-on-scroll">
+                        <div class="category-card">
+                            <i class="bi bi-palette category-icon"></i>
+                            <h4>Arts & Theater</h4>
+                            <p class="text-muted">Performances</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4 col-lg-3 animate-on-scroll">
+                        <div class="category-card">
+                            <i class="bi bi-lightbulb category-icon"></i>
+                            <h4>Workshops</h4>
+                            <p class="text-muted">Learn & grow</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PHP Include: Events Listing -->
+        <!-- <?php include('events-list.php'); ?> -->
+
+        <!-- Featured Events Section -->
+        <section id="events" class="section" style="background: var(--bg-gray);">
+            <div class="container">
+                <h2 class="section-title">Featured Events</h2>
+                <p class="section-subtitle">Don't miss out on these amazing upcoming events</p>
+                <div class="row g-3 g-md-4">
+                    <!-- Event Card 1 -->
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <div class="event-card">
+                            <div class="event-image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&h=500&fit=crop"
+                                    alt="Summer Music Festival" class="event-image" loading="lazy">
+                                <span class="event-badge">Trending</span>
+                            </div>
+                            <div class="event-body">
+                                <p class="event-date">
+                                    <i class="bi bi-calendar-event"></i> Sat, Dec 14, 2025
+                                </p>
+                                <h3 class="event-title">Summer Music Festival</h3>
+                                <p class="event-location">
+                                    <i class="bi bi-geo-alt"></i> Central Park, Lagos
+                                </p>
+                                <div class="event-footer">
+                                    <span class="event-price">₦15,000</span>
+                                    <button class="btn btn-primary-custom">Get Tickets</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Event Card 4 -->
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <div class="event-card">
+                            <div class="event-image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1527224857830-43a7acc85260?w=800&h=500&fit=crop"
+                                    alt="Comedy Night Live" class="event-image" loading="lazy">
+                            </div>
+                            <div class="event-body">
+                                <p class="event-date">
+                                    <i class="bi bi-calendar-event"></i> Sat, Jan 4, 2026
+                                </p>
+                                <h3 class="event-title">Comedy Night Live</h3>
+                                <p class="event-location">
+                                    <i class="bi bi-geo-alt"></i> Silverbird Cinemas, Lagos
+                                </p>
+                                <div class="event-footer">
+                                    <span class="event-price">₦10,000</span>
+                                    <button class="btn btn-primary-custom">Get Tickets</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Event Card 5 -->
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <div class="event-card">
+                            <div class="event-image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&h=500&fit=crop"
+                                    alt="Basketball Championship" class="event-image" loading="lazy">
+                            </div>
+                            <div class="event-body">
+                                <p class="event-date">
+                                    <i class="bi bi-calendar-event"></i> Wed, Jan 8, 2026
+                                </p>
+                                <h3 class="event-title">Basketball Championship</h3>
+                                <p class="event-location">
+                                    <i class="bi bi-geo-alt"></i> National Stadium, Lagos
+                                </p>
+                                <div class="event-footer">
+                                    <span class="event-price">₦8,000</span>
+                                    <button class="btn btn-primary-custom">Get Tickets</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Event Card 6 -->
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <div class="event-card">
+                            <div class="event-image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=800&h=500&fit=crop"
+                                    alt="Art Gallery Opening" class="event-image" loading="lazy">
+                            </div>
+                            <div class="event-body">
+                                <p class="event-date">
+                                    <i class="bi bi-calendar-event"></i> Fri, Jan 10, 2026
+                                </p>
+                                <h3 class="event-title">Art Gallery Opening</h3>
+                                <p class="event-location">
+                                    <i class="bi bi-geo-alt"></i> Nike Art Gallery, Lagos
+                                </p>
+                                <div class="event-footer">
+                                    <span class="event-price">Free</span>
+                                    <button class="btn btn-primary-custom">RSVP</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="section">
+            <div class="container">
+                <h2 class="section-title">What Our Customers Say</h2>
+                <p class="section-subtitle">Join thousands of happy event-goers</p>
+                <div class="row g-3 g-md-4">
+                    <div class="col-12 col-md-6 col-lg-4 animate-on-scroll">
+                        <div class="testimonial-card">
+                            <div class="testimonial-avatar">AO</div>
+                            <div class="testimonial-rating">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                            <p>"Amazing platform! Got tickets to the best concert of the year. The booking process was
+                                seamless and customer service was excellent."</p>
+                            <strong>Adeyemi Oladipo</strong>
+                            <p class="text-muted mb-0">Lagos, Nigeria</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4 animate-on-scroll">
+                        <div class="testimonial-card">
+                            <div class="testimonial-avatar">CN</div>
+                            <div class="testimonial-rating">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                            <p>"EventHub made finding and booking events so easy. I love the variety of events available
+                                and the user-friendly interface. Highly recommend!"</p>
+                            <strong>Chioma Nwankwo</strong>
+                            <p class="text-muted mb-0">Abuja, Nigeria</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4 animate-on-scroll">
+                        <div class="testimonial-card">
+                            <div class="testimonial-avatar">TE</div>
+                            <div class="testimonial-rating">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                            <p>"The best ticketing platform I've used. Great prices, reliable service, and always
+                                up-to-date with the latest events. EventHub is my go-to!"</p>
+                            <strong>Tunde Eze</strong>
+                            <p class="text-muted mb-0">Port Harcourt, Nigeria</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter Section -->
+        <section id="newsletter" class="newsletter-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-lg-8 mx-auto text-center">
+                        <h2 class="mb-3">Stay Updated</h2>
+                        <p class="mb-4">Subscribe to our newsletter and never miss out on exciting events and exclusive
+                            offers</p>
+                        <form class="newsletter-form">
+                            <div class="input-group">
+                                <input type="email" class="form-control newsletter-input"
+                                    placeholder="Enter your email address" required aria-label="Email address">
+                                <button type="submit" class="btn btn-light">
+                                    <i class="bi bi-envelope-fill"></i> <span
+                                        class="d-none d-sm-inline">Subscribe</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- PHP Include: Footer -->
+    <!-- <?php include('footer.php'); ?> -->
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <h3 class="footer-title">
+                        <i class="bi bi-ticket-perforated-fill" style="color: var(--primary-color);"></i> EventHub
+                    </h3>
+                    <p class="text-muted mb-4">Your premier destination for discovering and booking amazing events.
+                        Creating memorable experiences since 2025.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3 col-lg-2">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <a href="#home" class="footer-link">Home</a>
+                    <a href="#events" class="footer-link">Browse Events</a>
+                    <a href="#categories" class="footer-link">Categories</a>
+                    <a href="#" class="footer-link">About Us</a>
+                </div>
+                <div class="col-6 col-md-3 col-lg-2">
+                    <h4 class="footer-title">Support</h4>
+                    <a href="#" class="footer-link">Help Center</a>
+                    <a href="#" class="footer-link">Contact Us</a>
+                    <a href="#" class="footer-link">FAQs</a>
+                    <a href="#" class="footer-link">Terms</a>
+                </div>
+                <div class="col-6 col-md-3 col-lg-2">
+                    <h4 class="footer-title">Organizers</h4>
+                    <a href="#" class="footer-link">Create Event</a>
+                    <a href="#" class="footer-link">Pricing</a>
+                    <a href="#" class="footer-link">Resources</a>
+                    <a href="#" class="footer-link">Dashboard</a>
+                </div>
+                <div class="col-6 col-md-3 col-lg-2">
+                    <h4 class="footer-title">Legal</h4>
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                    <a href="#" class="footer-link">Cookie Policy</a>
+                    <a href="#" class="footer-link">Refund Policy</a>
+                    <a href="#" class="footer-link">Accessibility</a>
+                </div>
+            </div>
+            <hr style="border-color: var(--border-color); margin: 3rem 0 2rem;">
+            <div class="row">
+                <div class="col-12 col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <p class="text-muted mb-0">&copy; 2025 EventHub. All rights reserved.</p>
+                </div>
+                <div class="col-12 col-md-6 text-center text-md-end">
+                    <p class="text-muted mb-0">Made with <i class="bi bi-heart-fill"
+                            style="color: var(--primary-color);"></i> in Nigeria</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        /* ============================================
+           CUSTOM JAVASCRIPT - script.js
+           ============================================ */
+
+        // Theme Toggle Functionality with Cookie Storage
+        const themeToggle = document.getElementById('themeToggle');
+        const htmlElement = document.documentElement;
+        const themeIcon = themeToggle.querySelector('i');
+
+        // Cookie Helper Functions
+        function setCookie(name, value, days) {
+            const expires = new Date();
+            expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+            document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+
+        // Load Theme from Cookie
+        function loadTheme() {
+            const savedTheme = getCookie('theme');
+            if (savedTheme) {
+                htmlElement.setAttribute('data-theme', savedTheme);
+                updateThemeIcon(savedTheme);
+            } else {
+                // Check system preference
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const theme = prefersDark ? 'dark' : 'light';
+                htmlElement.setAttribute('data-theme', theme);
+                updateThemeIcon(theme);
+            }
+        }
+
+        // Update Theme Icon
+        function updateThemeIcon(theme) {
+            if (theme === 'dark') {
+                themeIcon.className = 'bi bi-sun-fill';
+                themeToggle.setAttribute('aria-label', 'Switch to light mode');
+            } else {
+                themeIcon.className = 'bi bi-moon-stars-fill';
+                themeToggle.setAttribute('aria-label', 'Switch to dark mode');
+            }
+        }
+
+        // Toggle Theme
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+            htmlElement.setAttribute('data-theme', newTheme);
+            setCookie('theme', newTheme, 365); // Store for 1 year
+            updateThemeIcon(newTheme);
+        });
+
+        // Initialize theme on page load
+        loadTheme();
+
+        // Smooth Scroll for Navigation Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href.length > 1) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        const navHeight = document.querySelector('.navbar').offsetHeight;
+                        const targetPosition = target.offsetTop - navHeight;
+
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+
+                        // Close mobile menu if open
+                        const navbarCollapse = document.querySelector('.navbar-collapse');
+                        if (navbarCollapse.classList.contains('show')) {
+                            const bsCollapse = new bootstrap.Collapse(navbarCollapse);
+                            bsCollapse.hide();
+                        }
+                    }
+                }
+            });
+        });
+
+        // Scroll Animation Observer
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animated');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all elements with animate-on-scroll class
+        document.querySelectorAll('.animate-on-scroll').forEach(element => {
+            observer.observe(element);
+        });
+
+        // Navbar Background on Scroll
+        const navbar = document.querySelector('.navbar');
+        let lastScroll = 0;
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll > 100) {
+                navbar.style.boxShadow = '0 4px 20px var(--shadow)';
+            } else {
+                navbar.style.boxShadow = '0 2px 10px var(--shadow)';
+            }
+
+            lastScroll = currentScroll;
+        });
+
+        // Form Submission Handler (Newsletter)
+        document.querySelector('.newsletter-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const email = this.querySelector('input[type="email"]').value;
+
+            // Here you would typically send the email to your backend
+            // For now, we'll just show an alert
+            alert(`Thank you for subscribing with: ${email}\n\nIn production, this would be sent to your PHP backend.`);
+            this.reset();
+        });
+
+        // Event Ticket Button Handlers
+        document.querySelectorAll('.event-card button').forEach(button => {
+            button.addEventListener('click', function () {
+                const eventCard = this.closest('.event-card');
+                const eventTitle = eventCard.querySelector('.event-title').textContent;
+                const eventPrice = eventCard.querySelector('.event-price').textContent;
+
+                // In production, this would redirect to a booking page or open a modal
+                alert(`Redirecting to booking for:\n${eventTitle}\nPrice: ${eventPrice}\n\nIn production, this would integrate with your PHP booking system.`);
+            });
+        });
+
+        // Category Card Interactions
+        document.querySelectorAll('.category-card').forEach(card => {
+            card.addEventListener('click', function () {
+                const category = this.querySelector('h4').textContent;
+                alert(`Filtering events by category: ${category}\n\nIn production, this would load filtered events from your database.`);
+            });
+        });
+
+        // Add Active State to Navigation Links
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Accessibility: Trap focus in mobile menu when open
+        const navbarToggler = document.querySelector('.navbar-toggler');
+        const navbarCollapse = document.querySelector('.navbar-collapse');
+
+        navbarToggler.addEventListener('click', function () {
+            setTimeout(() => {
+                if (navbarCollapse.classList.contains('show')) {
+                    const firstLink = navbarCollapse.querySelector('.nav-link');
+                    if (firstLink) firstLink.focus();
+                }
+            }, 350);
+        });
+
+        // Image Loading Handler
+        document.querySelectorAll('.event-image').forEach(img => {
+            img.addEventListener('load', function () {
+                this.style.opacity = '1';
+            });
+
+            img.addEventListener('error', function () {
+                this.style.background = 'linear-gradient(135deg, var(--primary-light), var(--primary-color))';
+                this.alt = 'Event image unavailable';
+            });
+        });
+
+        // Preload animations - add stagger effect
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '1';
+        });
+
+        console.log('EventHub Template Loaded Successfully');
+        console.log('✅ Fully Responsive Design Active');
+        console.log('✅ Real Event Images Loaded');
+        console.log('✅ Fixed Search Input Display');
+        console.log('Ready for PHP Backend Integration');
+    </script>
+</body>
+
+</html>

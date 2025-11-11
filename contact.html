@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Get in touch with BlogName - We'd love to hear from you">
+    <title>Contact Us - BlogName</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        /* ========== LOADING STATE ========== */
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .page-loader.dark {
+            background-color: #121212;
+        }
+
+        .page-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-content {
+            text-align: center;
+        }
+
+        .loader-logo {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .loader-logo .light-theme {
+            color: #1a1a1a;
+        }
+
+        .loader-logo .light-theme span {
+            color: #dc143c;
+        }
+
+        .loader-logo .dark-theme {
+            color: #f5f5f5;
+            display: none;
+        }
+
+        .loader-logo .dark-theme span {
+            color: #ff4f5a;
+        }
+
+        .page-loader.dark .loader-logo .light-theme {
+            display: none;
+        }
+
+        .page-loader.dark .loader-logo .dark-theme {
+            display: inline;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(220, 20, 60, 0.1);
+            border-top-color: #dc143c;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .page-loader.dark .spinner {
+            border: 4px solid rgba(255, 79, 90, 0.1);
+            border-top-color: #ff4f5a;
+        }
+
+        .loader-text {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #6c757d;
+            animation: fadeInOut 2s ease-in-out infinite;
+        }
+
+        .page-loader.dark .loader-text {
+            color: #b0b0b0;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        body.loading {
+            overflow: hidden;
+        }
+
+        .main-content {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .main-content.visible {
+            opacity: 1;
+        }
+
+        /* ========== CSS VARIABLES & THEME ========== */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6c757d;
+            --accent: #dc143c;
+            --accent-hover: #b01030;
+            --border-color: #dee2e6;
+            --card-shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-mode {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --text-primary: #f5f5f5;
+            --text-secondary: #b0b0b0;
+            --accent: #ff4f5a;
+            --accent-hover: #ff6b75;
+            --border-color: #333;
+            --card-shadow: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            line-height: 1.6;
+        }
+
+        /* ========== ANIMATIONS ========== */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .animate-on-scroll {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+        }
+
+        /* ========== TOP HEADER ========== */
+        .top-header {
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.75rem 0;
+            font-size: 0.9rem;
+        }
+
+        .top-header .btn-subscribe {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.4rem 1.2rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .top-header .btn-subscribe:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .top-header .brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .top-header .brand span {
+            color: var(--accent);
+        }
+
+        .top-header .auth-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            margin-left: 1rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .top-header .auth-links a:hover {
+            color: var(--accent);
+        }
+
+        /* ========== MAIN NAVBAR ========== */
+        .main-navbar {
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+        }
+
+        .main-navbar .navbar-nav .nav-link {
+            color: var(--text-primary);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .main-navbar .navbar-nav .nav-link:hover,
+        .main-navbar .navbar-nav .nav-link.active {
+            color: var(--accent);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            color: var(--accent);
+            transform: rotate(20deg);
+        }
+
+        /* ========== HERO SECTION ========== */
+        .contact-hero {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+            color: white;
+            padding: 5rem 0 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .contact-hero .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-hero p {
+            font-size: 1.25rem;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.95;
+        }
+
+        /* ========== CONTACT SECTION ========== */
+        .contact-section {
+            padding: 5rem 0;
+        }
+
+        /* ========== CONTACT FORM ========== */
+        .contact-form-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: 0 10px 40px var(--card-shadow);
+        }
+
+        .contact-form-card h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .form-control, .form-select {
+            background-color: var(--bg-primary);
+            border: 2px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background-color: var(--bg-primary);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 0.2rem rgba(220, 20, 60, 0.15);
+            color: var(--text-primary);
+        }
+
+        .dark-mode .form-control:focus,
+        .dark-mode .form-select:focus {
+            box-shadow: 0 0 0 0.2rem rgba(255, 79, 90, 0.15);
+        }
+
+        .form-control::placeholder {
+            color: var(--text-secondary);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--card-shadow);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        /* ========== CONTACT INFO CARDS ========== */
+        .contact-info-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            height: 100%;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .contact-info-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px var(--card-shadow);
+        }
+
+        .contact-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            margin: 0 auto 1.5rem;
+        }
+
+        .contact-info-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .contact-info-card p {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-info-card a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .contact-info-card a:hover {
+            color: var(--accent-hover);
+            text-decoration: underline;
+        }
+
+        /* ========== MAP SECTION ========== */
+        .map-section {
+            padding: 5rem 0;
+            background-color: var(--bg-secondary);
+        }
+
+        .map-container {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px var(--card-shadow);
+            height: 450px;
+            background-color: var(--bg-primary);
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            filter: grayscale(20%);
+        }
+
+        .dark-mode .map-container iframe {
+            filter: grayscale(20%) invert(90%) hue-rotate(180deg);
+        }
+
+        /* ========== FAQ SECTION ========== */
+        .faq-section {
+            padding: 5rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+        }
+
+        .accordion-item {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .accordion-button {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 1.25rem 1.5rem;
+            border: none;
+        }
+
+        .accordion-button:not(.collapsed) {
+            background-color: var(--bg-secondary);
+            color: var(--accent);
+            box-shadow: none;
+        }
+
+        .accordion-button:focus {
+            box-shadow: none;
+            border-color: var(--border-color);
+        }
+
+        .accordion-button::after {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23dc143c'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+        }
+
+        .dark-mode .accordion-button::after {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ff4f5a'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+        }
+
+        .accordion-body {
+            background-color: var(--bg-primary);
+            color: var(--text-secondary);
+            padding: 1.5rem;
+            line-height: 1.7;
+        }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 0 1.5rem;
+            margin-top: 0;
+        }
+
+        .footer .brand {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .footer .brand span {
+            color: var(--accent);
+        }
+
+        .footer h5 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer ul li a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer ul li a:hover {
+            color: var(--accent);
+        }
+
+        .footer .copyright {
+            text-align: center;
+            color: var(--text-secondary);
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .contact-hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .contact-hero p {
+                font-size: 1.1rem;
+            }
+
+            .contact-form-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .map-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="loading">
+    <!-- ========== PAGE LOADER ========== -->
+    <div class="page-loader" id="pageLoader">
+        <div class="loader-content">
+            <div class="loader-logo">
+                <span class="light-theme">Blog<span>Name</span></span>
+                <span class="dark-theme">Blog<span>Name</span></span>
+            </div>
+            <div class="spinner"></div>
+            <p class="loader-text">Connecting you...</p>
+        </div>
+    </div>
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <div class="main-content">
+    <!-- ========== TOP HEADER ========== -->
+    <header class="top-header">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <button class="btn btn-subscribe rounded-pill">
+                    <i class="bi bi-envelope-fill me-1"></i> Subscribe
+                </button>
+                <a href="/" class="brand">Blog<span>Name</span></a>
+                <div class="auth-links">
+                    <a href="#"><i class="bi bi-person-circle me-1"></i> Login</a>
+                    <a href="#"><i class="bi bi-person-plus-fill me-1"></i> Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========== MAIN NAVBAR ========== -->
+    <nav class="navbar navbar-expand-lg main-navbar sticky-top">
+        <div class="container">
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                <i class="bi bi-list" style="font-size: 1.5rem; color: var(--text-primary);"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Articles</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">World</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Sports</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Politics</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Entertainment</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Nigeria</a></li>
+                </ul>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                    <i class="bi bi-sun-fill" id="themeIcon"></i>
+                </button>
+                <button class="btn" style="background: none; border: none; color: var(--text-primary); font-size: 1.2rem;">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ========== HERO SECTION ========== -->
+    <section class="contact-hero">
+        <div class="container">
+            <h1 class="animate-on-scroll">Get In Touch</h1>
+            <p class="animate-on-scroll">Have a story tip, feedback, or just want to say hello? We'd love to hear from you.</p>
+        </div>
+    </section>
+
+    <!-- ========== CONTACT INFO CARDS ========== -->
+    <section class="contact-section animate-on-scroll">
+        <div class="container">
+            <div class="row g-4 mb-5">
+                <div class="col-lg-4 col-md-6">
+                    <div class="contact-info-card">
+                        <div class="contact-icon">
+                            <i class="bi bi-envelope-fill"></i>
+                        </div>
+                        <h3>Email Us</h3>
+                        <p>Get in touch via email</p>
+                        <a href="mailto:contact@blogname.com">contact@blogname.com</a><br>
+                        <a href="mailto:news@blogname.com">news@blogname.com</a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="contact-info-card">
+                        <div class="contact-icon">
+                            <i class="bi bi-telephone-fill"></i>
+                        </div>
+                        <h3>Call Us</h3>
+                        <p>Monday to Friday, 9am-6pm</p>
+                        <a href="tel:+2341234567890">+234 123 456 7890</a><br>
+                        <a href="tel:+2349876543210">+234 987 654 3210</a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="contact-info-card">
+                        <div class="contact-icon">
+                            <i class="bi bi-geo-alt-fill"></i>
+                        </div>
+                        <h3>Visit Us</h3>
+                        <p>123 Media Avenue<br>Victoria Island, Lagos<br>Nigeria</p>
+                        <a href="#map">Get Directions</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== CONTACT FORM ========== -->
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="contact-form-card">
+                        <h2>Send Us a Message</h2>
+                        <form id="contactForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="firstName" class="form-label">First Name *</label>
+                                    <input type="text" class="form-control" id="firstName" placeholder="John" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lastName" class="form-label">Last Name *</label>
+                                    <input type="text" class="form-control" id="lastName" placeholder="Doe" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label">Email Address *</label>
+                                    <input type="email" class="form-control" id="email" placeholder="john.doe@example.com" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="phone" class="form-label">Phone Number</label>
+                                    <input type="tel" class="form-control" id="phone" placeholder="+234 xxx xxx xxxx">
+                                </div>
+                                <div class="col-12">
+                                    <label for="subject" class="form-label">Subject *</label>
+                                    <select class="form-select" id="subject" required>
+                                        <option value="">Choose a subject...</option>
+                                        <option value="general">General Inquiry</option>
+                                        <option value="news-tip">News Tip</option>
+                                        <option value="feedback">Feedback</option>
+                                        <option value="advertising">Advertising</option>
+                                        <option value="partnership">Partnership</option>
+                                        <option value="technical">Technical Support</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label for="message" class="form-label">Message *</label>
+                                    <textarea class="form-control" id="message" placeholder="Tell us more about your inquiry..." required></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="newsletter">
+                                        <label class="form-check-label" for="newsletter">
+                                            Subscribe to our newsletter for updates
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="submit-btn">
+                                        <i class="bi bi-send-fill me-2"></i> Send Message
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== MAP SECTION ========== -->
+    <section class="map-section" id="map">
+        <div class="container">
+            <h2 class="section-title animate-on-scroll">Find Us Here</h2>
+            <div class="map-container animate-on-scroll">
+                <!-- Replace with your actual Google Maps embed or Mapbox -->
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3964.6269!2d3.4219!3d6.4281!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMjUnNDEuMiJOIDPCsDI1JzE4LjgiRQ!5e0!3m2!1sen!2sng!4v1234567890"
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FAQ SECTION ========== -->
+    <section class="faq-section animate-on-scroll">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="accordion" id="faqAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                    How do I submit a news tip?
+                                </button>
+                            </h2>
+                            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    You can submit news tips through our contact form above by selecting "News Tip" as the subject, or email us directly at news@blogname.com. We review all submissions and will contact you if we need additional information.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                    How can I advertise with BlogName?
+                                </button>
+                            </h2>
+                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    For advertising inquiries, please fill out the contact form and select "Advertising" as your subject. Our advertising team will respond within 24-48 hours with our media kit and pricing information.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                    What is your response time?
+                                </button>
+                            </h2>
+                            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    We typically respond to all inquiries within 24-48 hours during business days. For urgent news tips or time-sensitive matters, please mark your message as urgent in the subject line.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                                    Can I request corrections to published articles?
+                                </button>
+                            </h2>
+                            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Yes, we take accuracy seriously. If you believe an article contains an error, please contact us with details about the correction needed. Include the article URL and specific information that needs to be corrected.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                                    How do I report technical issues?
+                                </button>
+                            </h2>
+                            <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    If you're experiencing technical issues with our website, please select "Technical Support" in the contact form. Include details about the problem, your browser/device information, and screenshots if possible.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
+                                    Are you hiring journalists?
+                                </button>
+                            </h2>
+                            <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    We're always looking for talented journalists! Please visit our Careers page for current openings, or send your resume and portfolio to careers@blogname.com for future opportunities.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <a href="/" class="brand d-block mb-3">Blog<span>Name</span></a>
+                    <p style="color: var(--text-secondary);">Your trusted source for breaking news, in-depth analysis, and compelling stories from around the world.</p>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6">
+                    <h5>Categories</h5>
+                    <ul>
+                        <li><a href="#">World</a></li>
+                        <li><a href="#">Politics</a></li>
+                        <li><a href="#">Sports</a></li>
+                        <li><a href="#">Entertainment</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6">
+                    <h5>Company</h5>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Advertise</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6">
+                    <h5>Legal</h5>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-12">
+                    <h5>Follow Us</h5>
+                    <div class="d-flex gap-3">
+                        <a href="#" style="color: var(--text-secondary); font-size: 1.5rem; transition: color 0.3s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-secondary)'">
+                            <i class="bi bi-twitter"></i>
+                        </a>
+                        <a href="#" style="color: var(--text-secondary); font-size: 1.5rem; transition: color 0.3s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-secondary)'">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                        <a href="#" style="color: var(--text-secondary); font-size: 1.5rem; transition: color 0.3s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-secondary)'">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                        <a href="#" style="color: var(--text-secondary); font-size: 1.5rem; transition: color 0.3s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-secondary)'">
+                            <i class="bi bi-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 BlogName. All rights reserved. | Designed with <i class="bi bi-heart-fill" style="color: var(--accent);"></i></p>
+            </div>
+        </div>
+    </footer>
+    </div>
+    <!-- END MAIN CONTENT -->
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // ========== PAGE LOADER ==========
+        window.addEventListener('load', function() {
+            const pageLoader = document.getElementById('pageLoader');
+            const mainContent = document.querySelector('.main-content');
+            const body = document.body;
+
+            setTimeout(() => {
+                pageLoader.classList.add('hidden');
+                mainContent.classList.add('visible');
+                body.classList.remove('loading');
+                
+                setTimeout(() => {
+                    pageLoader.style.display = 'none';
+                }, 500);
+            }, 800);
+        });
+
+        // ========== THEME TOGGLE & COOKIE MANAGEMENT ==========
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const body = document.body;
+
+        function setCookie(name, value, days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            document.cookie = `${name}=${value};expires=${date.toUTCString()};path=/;SameSite=Lax`;
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for(let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+
+        function initTheme() {
+            const savedTheme = getCookie('site_theme');
+            const pageLoader = document.getElementById('pageLoader');
+            
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+                if (pageLoader) pageLoader.classList.add('dark');
+                updateThemeIcon(true);
+            } else if (savedTheme === 'light') {
+                body.classList.remove('dark-mode');
+                if (pageLoader) pageLoader.classList.remove('dark');
+                updateThemeIcon(false);
+            } else {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (prefersDark) {
+                    body.classList.add('dark-mode');
+                    if (pageLoader) pageLoader.classList.add('dark');
+                    updateThemeIcon(true);
+                    setCookie('site_theme', 'dark', 365);
+                } else {
+                    setCookie('site_theme', 'light', 365);
+                }
+            }
+        }
+
+        function updateThemeIcon(isDark) {
+            if (isDark) {
+                themeIcon.classList.remove('bi-sun-fill');
+                themeIcon.classList.add('bi-moon-stars-fill');
+            } else {
+                themeIcon.classList.remove('bi-moon-stars-fill');
+                themeIcon.classList.add('bi-sun-fill');
+            }
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            updateThemeIcon(isDark);
+            setCookie('site_theme', isDark ? 'dark' : 'light', 365);
+        });
+
+        initTheme();
+
+        // ========== SCROLL ANIMATIONS ==========
+        const animateOnScroll = () => {
+            const elements = document.querySelectorAll('.animate-on-scroll');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, index * 100);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            elements.forEach(element => {
+                observer.observe(element);
+            });
+
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                elements.forEach(element => {
+                    element.classList.add('visible');
+                });
+            }
+        };
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', animateOnScroll);
+        } else {
+            animateOnScroll();
+        }
+
+        // ========== NAVBAR SCROLL EFFECT ==========
+        let lastScroll = 0;
+        const navbar = document.querySelector('.main-navbar');
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 100) {
+                navbar.style.boxShadow = '0 2px 10px var(--card-shadow)';
+            } else {
+                navbar.style.boxShadow = 'none';
+            }
+
+            lastScroll = currentScroll;
+        });
+
+        // ========== CONTACT FORM SUBMISSION ==========
+        const contactForm = document.getElementById('contactForm');
+        
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                subject: document.getElementById('subject').value,
+                message: document.getElementById('message').value,
+                newsletter: document.getElementById('newsletter').checked
+            };
+
+            // Show loading state
+            const submitBtn = contactForm.querySelector('.submit-btn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i> Sending...';
+            submitBtn.disabled = true;
+
+            // Simulate form submission (replace with actual API call)
+            setTimeout(() => {
+                // Success message
+                submitBtn.innerHTML = '<i class="bi bi-check-circle-fill me-2"></i> Message Sent!';
+                submitBtn.style.backgroundColor = '#28a745';
+                
+                // Reset form
+                contactForm.reset();
+                
+                // Show success alert
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'alert alert-success mt-3';
+                alertDiv.innerHTML = '<i class="bi bi-check-circle-fill me-2"></i> <strong>Success!</strong> Your message has been sent. We\'ll get back to you soon!';
+                contactForm.appendChild(alertDiv);
+                
+                // Reset button after 3 seconds
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.style.backgroundColor = '';
+                    submitBtn.disabled = false;
+                    alertDiv.remove();
+                }, 3000);
+
+                // Log form data (in production, send to backend)
+                console.log('Form submitted:', formData);
+                
+                // In production, you would do:
+                // fetch('/api/contact', {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify(formData)
+                // })
+                // .then(response => response.json())
+                // .then(data => { /* handle success */ })
+                // .catch(error => { /* handle error */ });
+                
+            }, 2000);
+        });
+
+        // ========== FORM VALIDATION STYLING ==========
+        const formInputs = document.querySelectorAll('.form-control, .form-select');
+        
+        formInputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                if (this.value && this.checkValidity()) {
+                    this.classList.add('is-valid');
+                    this.classList.remove('is-invalid');
+                } else if (this.value && !this.checkValidity()) {
+                    this.classList.add('is-invalid');
+                    this.classList.remove('is-valid');
+                }
+            });
+
+            input.addEventListener('input', function() {
+                if (this.classList.contains('is-invalid') && this.checkValidity()) {
+                    this.classList.remove('is-invalid');
+                    this.classList.add('is-valid');
+                }
+            });
+        });
+
+        // ========== SMOOTH SCROLL TO MAP ==========
+        document.querySelectorAll('a[href="#map"]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('map').scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
