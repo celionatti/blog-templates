@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Find and book tickets for the best events, concerts, and shows">
+    <title>EventHub - Your Premier Event Booking Platform</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ========== CSS VARIABLES & THEME ========== */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6c757d;
+            --accent: #dc143c;
+            --accent-hover: #b01030;
+            --border-color: #dee2e6;
+            --card-shadow: rgba(0, 0, 0, 0.1);
+            --font-heading: 'Inter', sans-serif;
+            --font-brand: 'Dancing Script', cursive;
+        }
+
+        .dark-mode {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --text-primary: #f5f5f5;
+            --text-secondary: #b0b0b0;
+            --accent: #ff4f5a;
+            --accent-hover: #ff6b75;
+            --border-color: #333;
+            --card-shadow: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-heading);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            line-height: 1.6;
+        }
+
+        /* ========== LOADING STATE ========== */
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .page-loader.dark {
+            background-color: #121212;
+        }
+
+        .page-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-content {
+            text-align: center;
+        }
+
+        .loader-logo {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            animation: pulse 1.5s ease-in-out infinite;
+            font-family: var(--font-brand);
+        }
+
+        .loader-logo .light-theme {
+            color: #1a1a1a;
+        }
+
+        .loader-logo .light-theme span {
+            color: #dc143c;
+        }
+
+        .loader-logo .dark-theme {
+            color: #f5f5f5;
+            display: none;
+        }
+
+        .loader-logo .dark-theme span {
+            color: #ff4f5a;
+        }
+
+        .page-loader.dark .loader-logo .light-theme {
+            display: none;
+        }
+
+        .page-loader.dark .loader-logo .dark-theme {
+            display: inline;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(220, 20, 60, 0.1);
+            border-top-color: #dc143c;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .page-loader.dark .spinner {
+            border: 4px solid rgba(255, 79, 90, 0.1);
+            border-top-color: #ff4f5a;
+        }
+
+        .loader-text {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #6c757d;
+            animation: fadeInOut 2s ease-in-out infinite;
+        }
+
+        .page-loader.dark .loader-text {
+            color: #b0b0b0;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% {
+                opacity: 0.5;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* Hide content while loading */
+        body.loading {
+            overflow: hidden;
+        }
+
+        .main-content {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .main-content.visible {
+            opacity: 1;
+        }
+
+        /* ========== ANIMATIONS ========== */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .animate-on-scroll {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+        }
+
+        /* ========== TOP HEADER ========== */
+        .top-header {
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.75rem 0;
+            font-size: 0.9rem;
+        }
+
+        .top-header .btn-subscribe {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.4rem 1.2rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .top-header .btn-subscribe:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .top-header .brand {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-family: var(--font-brand);
+        }
+
+        .top-header .brand span {
+            color: var(--accent);
+        }
+
+        .top-header .auth-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            margin-left: 1rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .top-header .auth-links a:hover {
+            color: var(--accent);
+        }
+
+        /* ========== MAIN NAVBAR ========== */
+        .main-navbar {
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .main-navbar .navbar-nav .nav-link {
+            color: var(--text-primary);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .main-navbar .navbar-nav .nav-link:hover,
+        .main-navbar .navbar-nav .nav-link.active {
+            color: var(--accent);
+        }
+
+        .main-navbar .navbar-nav .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 1rem;
+            right: 1rem;
+            height: 2px;
+            background-color: var(--accent);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            color: var(--accent);
+            transform: rotate(20deg);
+        }
+
+        /* ========== SEARCH BAR - FIXED FOR MOBILE ========== */
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-toggle {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: color 0.3s ease;
+            z-index: 1001;
+        }
+
+        .search-toggle:hover {
+            color: var(--accent);
+        }
+
+        .search-input-container {
+            position: absolute;
+            right: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            overflow: hidden;
+            transition: width 0.3s ease;
+            background-color: var(--bg-primary);
+            border-radius: 50px;
+            box-shadow: 0 2px 10px var(--card-shadow);
+            z-index: 1000;
+        }
+
+        .search-input-container.active {
+            width: 250px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.5rem 1rem;
+            border: none;
+            background: transparent;
+            color: var(--text-primary);
+            outline: none;
+            font-size: 0.9rem;
+        }
+
+        .search-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .search-close {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1rem;
+            z-index: 1002;
+        }
+
+        .search-close:hover {
+            color: var(--accent);
+        }
+
+        /* ========== HERO SECTION ========== */
+        .hero-section {
+            padding: 3rem 0;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1200&h=600&fit=crop');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-section h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .hero-search {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .hero-search .input-group {
+            background: white;
+            border-radius: 50px;
+            overflow: hidden;
+            padding: 5px;
+        }
+
+        .hero-search input {
+            border: none;
+            padding: 15px 20px;
+            font-size: 1rem;
+        }
+
+        .hero-search input:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        .hero-search .btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0 30px;
+            font-weight: 600;
+        }
+
+        .hero-search .btn:hover {
+            background: var(--accent-hover);
+        }
+
+        /* ========== FEATURED EVENTS ========== */
+        .featured-events {
+            padding: 3rem 0;
+        }
+
+        .event-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            height: 100%;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .event-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px var(--card-shadow);
+        }
+
+        .event-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .event-card .card-body {
+            padding: 1.25rem;
+        }
+
+        .event-card .category-badge {
+            background-color: var(--accent);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+
+        .event-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .event-card .location {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .event-card .date {
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .event-card .price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .event-card .btn-ticket {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .event-card .btn-ticket:hover {
+            background-color: var(--accent-hover);
+        }
+
+        /* ========== SECTION HEADERS ========== */
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin: 3rem 0 2rem;
+        }
+
+        .section-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0;
+            padding-right: 1.5rem;
+            white-space: nowrap;
+        }
+
+        .section-header .line {
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(to right, var(--accent), transparent);
+        }
+
+        /* ========== CATEGORIES SECTION ========== */
+        .categories-section {
+            padding: 3rem 0;
+            background-color: var(--bg-secondary);
+        }
+
+        .category-card {
+            background-color: var(--bg-primary);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+        }
+
+        .category-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px var(--card-shadow);
+        }
+
+        .category-icon {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .category-card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .category-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* ========== UPCOMING EVENTS ========== */
+        .upcoming-events {
+            padding: 3rem 0;
+        }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 0 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .footer .brand {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-family: var(--font-brand);
+        }
+
+        .footer .brand span {
+            color: var(--accent);
+        }
+
+        .footer h5 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer ul li a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer ul li a:hover {
+            color: var(--accent);
+        }
+
+        .footer .copyright {
+            text-align: center;
+            color: var(--text-secondary);
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 991px) {
+            .top-header .d-flex {
+                flex-direction: row;
+                justify-content: space-between;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .top-header .btn-subscribe {
+                display: none;
+            }
+
+            .top-header .auth-links a {
+                margin-left: 0.5rem;
+            }
+
+            .hero-section h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .search-input-container.active {
+                width: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-header .d-flex {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .top-header .auth-links a {
+                margin-left: 0.5rem;
+            }
+
+            .hero-section h1 {
+                font-size: 2rem;
+            }
+
+            .hero-section p {
+                font-size: 1rem;
+            }
+
+            .search-input-container.active {
+                width: 180px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .search-input-container {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                width: 100% !important;
+                height: 60px;
+                transform: translateY(-100%);
+                border-radius: 0;
+                transition: transform 0.3s ease;
+                z-index: 9999;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+
+            .search-input-container.active {
+                transform: translateY(0);
+            }
+
+            .search-input {
+                height: 100%;
+                padding: 1rem 3rem 1rem 1rem;
+                font-size: 1rem;
+            }
+
+            .search-close {
+                right: 1rem;
+                font-size: 1.2rem;
+            }
+
+            .navbar-toggler {
+                z-index: 10000;
+            }
+
+            .hero-search .input-group {
+                flex-direction: column;
+                border-radius: 12px;
+            }
+
+            .hero-search input {
+                border-radius: 12px 12px 0 0 !important;
+                margin-bottom: 1px;
+            }
+
+            .hero-search .btn {
+                border-radius: 0 0 12px 12px !important;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body class="loading">
+    <!-- ========== PAGE LOADER ========== -->
+    <div class="page-loader" id="pageLoader">
+        <div class="loader-content">
+            <div class="loader-logo">
+                <span class="light-theme">Event<span>Hub</span></span>
+                <span class="dark-theme">Event<span>Hub</span></span>
+            </div>
+            <div class="spinner"></div>
+            <p class="loader-text">Loading amazing events...</p>
+        </div>
+    </div>
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <div class="main-content">
+        <!-- ========== TOP HEADER ========== -->
+        <header class="top-header">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <button class="btn btn-subscribe rounded-pill">
+                        <i class="bi bi-bell-fill me-1"></i> Get Notified
+                    </button>
+                    <a href="/" class="brand">Event<span>Hub</span></a>
+                    <div class="auth-links">
+                        <a href="#"><i class="bi bi-person-circle me-1"></i> Login</a>
+                        <a href="#"><i class="bi bi-person-plus-fill me-1"></i> Sign Up</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ========== MAIN NAVBAR ========== -->
+        <nav class="navbar navbar-expand-lg main-navbar sticky-top">
+            <div class="container">
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#mainNav">
+                    <i class="bi bi-list" style="font-size: 1.5rem; color: var(--text-primary);"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="mainNav">
+                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Concerts</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Sports</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Theater</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Festivals</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Conferences</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Family</a></li>
+                    </ul>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="search-container">
+                        <div class="search-input-container" id="searchInputContainer">
+                            <input type="text" class="search-input" placeholder="Search events...">
+                            <button class="search-close" id="searchClose">
+                                <i class="bi bi-x"></i>
+                            </button>
+                        </div>
+                        <button class="search-toggle" id="searchToggle">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                        <i class="bi bi-sun-fill" id="themeIcon"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- ========== HERO SECTION ========== -->
+        <section class="hero-section animate-on-scroll">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Find Your Next Unforgettable Experience</h1>
+                    <p>Discover and book tickets for concerts, sports, theater, festivals and more</p>
+                    <div class="hero-search">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search for events, artists, or venues...">
+                            <button class="btn" type="button">
+                                <i class="bi bi-search me-1"></i> Search
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== FEATURED EVENTS SECTION ========== -->
+        <section class="featured-events animate-on-scroll">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Featured Events</h2>
+                    <div class="line"></div>
+                </div>
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+                    <!-- Event 1 -->
+                    <div class="col">
+                        <div class="event-card">
+                            <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=200&fit=crop"
+                                alt="Concert" loading="lazy">
+                            <div class="card-body">
+                                <span class="category-badge">Concert</span>
+                                <h3>Summer Music Festival 2025</h3>
+                                <div class="location">
+                                    <i class="bi bi-geo-alt me-1"></i> Central Park, New York
+                                </div>
+                                <div class="date">
+                                    <i class="bi bi-calendar-event me-1"></i> June 15, 2025
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="price">$89+</div>
+                                    <button class="btn-ticket">Get Tickets</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Event 2 -->
+                    <div class="col">
+                        <div class="event-card">
+                            <img src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400&h=200&fit=crop"
+                                alt="Sports" loading="lazy">
+                            <div class="card-body">
+                                <span class="category-badge">Sports</span>
+                                <h3>Championship Finals 2025</h3>
+                                <div class="location">
+                                    <i class="bi bi-geo-alt me-1"></i> Madison Square Garden
+                                </div>
+                                <div class="date">
+                                    <i class="bi bi-calendar-event me-1"></i> July 22, 2025
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="price">$75+</div>
+                                    <button class="btn-ticket">Get Tickets</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Event 3 -->
+                    <div class="col">
+                        <div class="event-card">
+                            <img src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=400&h=200&fit=crop"
+                                alt="Theater" loading="lazy">
+                            <div class="card-body">
+                                <span class="category-badge">Theater</span>
+                                <h3>Broadway: The Phantom Returns</h3>
+                                <div class="location">
+                                    <i class="bi bi-geo-alt me-1"></i> Majestic Theatre
+                                </div>
+                                <div class="date">
+                                    <i class="bi bi-calendar-event me-1"></i> August 5, 2025
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="price">$120+</div>
+                                    <button class="btn-ticket">Get Tickets</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Event 4 -->
+                    <div class="col">
+                        <div class="event-card">
+                            <img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400&h=200&fit=crop"
+                                alt="Festival" loading="lazy">
+                            <div class="card-body">
+                                <span class="category-badge">Festival</span>
+                                <h3>Food & Wine Festival</h3>
+                                <div class="location">
+                                    <i class="bi bi-geo-alt me-1"></i> Downtown Convention Center
+                                </div>
+                                <div class="date">
+                                    <i class="bi bi-calendar-event me-1"></i> September 12, 2025
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="price">$45+</div>
+                                    <button class="btn-ticket">Get Tickets</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== CATEGORIES SECTION ========== -->
+        <section class="categories-section animate-on-scroll">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Browse By Category</h2>
+                    <div class="line"></div>
+                </div>
+                <div class="row row-cols-2 row-cols-md-3 row-cols-lg-6 g-4">
+                    <!-- Category 1 -->
+                    <div class="col">
+                        <div class="category-card">
+                            <div class="category-icon">
+                                <i class="bi bi-music-note-beamed"></i>
+                            </div>
+                            <h3>Concerts</h3>
+                            <p>Live music events</p>
+                        </div>
+                    </div>
+                    <!-- Category 2 -->
+                    <div class="col">
+                        <div class="category-card">
+                            <div class="category-icon">
+                                <i class="bi bi-trophy"></i>
+                            </div>
+                            <h3>Sports</h3>
+                            <p>Games & competitions</p>
+                        </div>
+                    </div>
+                    <!-- Category 3 -->
+                    <div class="col">
+                        <div class="category-card">
+                            <div class="category-icon">
+                                <i class="bi bi-mask"></i>
+                            </div>
+                            <h3>Theater</h3>
+                            <p>Plays & performances</p>
+                        </div>
+                    </div>
+                    <!-- Category 4 -->
+                    <div class="col">
+                        <div class="category-card">
+                            <div class="category-icon">
+                                <i class="bi bi-people"></i>
+                            </div>
+                            <h3>Festivals</h3>
+                            <p>Cultural celebrations</p>
+                        </div>
+                    </div>
+                    <!-- Category 5 -->
+                    <div class="col">
+                        <div class="category-card">
+                            <div class="category-icon">
+                                <i class="bi bi-mic"></i>
+                            </div>
+                            <h3>Conferences</h3>
+                            <p>Business & learning</p>
+                        </div>
+                    </div>
+                    <!-- Category 6 -->
+                    <div class="col">
+                        <div class="category-card">
+                            <div class="category-icon">
+                                <i class="bi bi-emoji-smile"></i>
+                            </div>
+                            <h3>Family</h3>
+                            <p>Kid-friendly events</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== UPCOMING EVENTS SECTION ========== -->
+        <section class="upcoming-events animate-on-scroll">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Upcoming Events</h2>
+                    <div class="line"></div>
+                </div>
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+                    <!-- Event 1 -->
+                    <div class="col">
+                        <div class="event-card">
+                            <img src="https://images.unsplash.com/photo-1571266028245-69d4e92bf98d?w=400&h=200&fit=crop"
+                                alt="Comedy" loading="lazy">
+                            <div class="card-body">
+                                <span class="category-badge">Comedy</span>
+                                <h3>Stand-Up Comedy Night</h3>
+                                <div class="location">
+                                    <i class="bi bi-geo-alt me-1"></i> Comedy Cellar
+                                </div>
+                                <div class="date">
+                                    <i class="bi bi-calendar-event me-1"></i> May 20, 2025
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="price">$35+</div>
+                                    <button class="btn-ticket">Get Tickets</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Event 2 -->
+                    <div class="col">
+                        <div class="event-card">
+                            <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400&h=200&fit=crop"
+                                alt="Art" loading="lazy">
+                            <div class="card-body">
+                                <span class="category-badge">Art</span>
+                                <h3>Modern Art Exhibition</h3>
+                                <div class="location">
+                                    <i class="bi bi-geo-alt me-1"></i> City Art Museum
+                                </div>
+                                <div class="date">
+                                    <i class="bi bi-calendar-event me-1"></i> June 5, 2025
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="price">$25+</div>
+                                    <button class="btn-ticket">Get Tickets</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Event 3 -->
+                    <div class="col">
+                        <div class="event-card">
+                            <img src="https://images.unsplash.com/photo-1519677100203-a0e668c92439?w=400&h=200&fit=crop"
+                                alt="Dance" loading="lazy">
+                            <div class="card-body">
+                                <span class="category-badge">Dance</span>
+                                <h3>Contemporary Dance Show</h3>
+                                <div class="location">
+                                    <i class="bi bi-geo-alt me-1"></i> Performing Arts Center
+                                </div>
+                                <div class="date">
+                                    <i class="bi bi-calendar-event me-1"></i> June 18, 2025
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="price">$55+</div>
+                                    <button class="btn-ticket">Get Tickets</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Event 4 -->
+                    <div class="col">
+                        <div class="event-card">
+                            <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&h=200&fit=crop"
+                                alt="Music" loading="lazy">
+                            <div class="card-body">
+                                <span class="category-badge">Music</span>
+                                <h3>Jazz Night Live</h3>
+                                <div class="location">
+                                    <i class="bi bi-geo-alt me-1"></i> Blue Note Jazz Club
+                                </div>
+                                <div class="date">
+                                    <i class="bi bi-calendar-event me-1"></i> July 8, 2025
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="price">$40+</div>
+                                    <button class="btn-ticket">Get Tickets</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== FOOTER ========== -->
+        <footer class="footer">
+            <div class="container">
+                <div class="row g-4">
+                    <div class="col-lg-4">
+                        <a href="/" class="brand d-block mb-3">Event<span>Hub</span></a>
+                        <p style="color: var(--text-secondary);">Your premier destination for discovering and booking tickets to the best events, concerts, and shows in your city and beyond.</p>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <h5>Events</h5>
+                        <ul>
+                            <li><a href="#">Concerts</a></li>
+                            <li><a href="#">Sports</a></li>
+                            <li><a href="#">Theater</a></li>
+                            <li><a href="#">Festivals</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <h5>Company</h5>
+                        <ul>
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">Careers</a></li>
+                            <li><a href="#">Partners</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <h5>Support</h5>
+                        <ul>
+                            <li><a href="#">Help Center</a></li>
+                            <li><a href="#">Refund Policy</a></li>
+                            <li><a href="#">Terms of Service</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-2 col-md-12">
+                        <h5>Follow Us</h5>
+                        <div class="d-flex gap-3">
+                            <a href="#" style="color: var(--text-secondary); font-size: 1.5rem; transition: color 0.3s;"
+                                onmouseover="this.style.color='var(--accent)'"
+                                onmouseout="this.style.color='var(--text-secondary)'">
+                                <i class="bi bi-facebook"></i>
+                            </a>
+                            <a href="#" style="color: var(--text-secondary); font-size: 1.5rem; transition: color 0.3s;"
+                                onmouseover="this.style.color='var(--accent)'"
+                                onmouseout="this.style.color='var(--text-secondary)'">
+                                <i class="bi bi-instagram"></i>
+                            </a>
+                            <a href="#" style="color: var(--text-secondary); font-size: 1.5rem; transition: color 0.3s;"
+                                onmouseover="this.style.color='var(--accent)'"
+                                onmouseout="this.style.color='var(--text-secondary)'">
+                                <i class="bi bi-twitter"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="copyright">
+                    <p>&copy; 2025 EventHub. All rights reserved. | Your ticket to unforgettable experiences</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!-- END MAIN CONTENT -->
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function () {
+            // ========== PAGE LOADER ==========
+            window.addEventListener('load', function () {
+                const pageLoader = document.getElementById('pageLoader');
+                const mainContent = document.querySelector('.main-content');
+                const body = document.body;
+
+                // Minimum loading time to ensure smooth animation (optional)
+                setTimeout(() => {
+                    pageLoader.classList.add('hidden');
+                    mainContent.classList.add('visible');
+                    body.classList.remove('loading');
+
+                    // Remove loader from DOM after transition
+                    setTimeout(() => {
+                        pageLoader.style.display = 'none';
+                    }, 500);
+                }, 800); // Adjust this delay as needed (800ms = 0.8 seconds)
+            });
+
+            // ========== SEARCH TOGGLE FUNCTIONALITY ==========
+            const searchToggle = document.getElementById('searchToggle');
+            const searchInputContainer = document.getElementById('searchInputContainer');
+            const searchClose = document.getElementById('searchClose');
+            const searchInput = document.querySelector('.search-input');
+
+            searchToggle.addEventListener('click', function() {
+                searchInputContainer.classList.toggle('active');
+                if (searchInputContainer.classList.contains('active')) {
+                    searchInput.focus();
+                }
+            });
+
+            searchClose.addEventListener('click', function() {
+                searchInputContainer.classList.remove('active');
+                searchInput.value = '';
+            });
+
+            // Close search when clicking outside (for desktop)
+            document.addEventListener('click', function(event) {
+                if (window.innerWidth > 576) {
+                    if (!searchInputContainer.contains(event.target) && !searchToggle.contains(event.target)) {
+                        searchInputContainer.classList.remove('active');
+                    }
+                }
+            });
+
+            // Close search on escape key
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    searchInputContainer.classList.remove('active');
+                }
+            });
+
+            // ========== THEME TOGGLE ==========
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+            const body = document.body;
+
+            // Initialize theme from localStorage or system preference
+            function initTheme() {
+                const savedTheme = localStorage.getItem('site_theme');
+                const pageLoader = document.getElementById('pageLoader');
+
+                if (savedTheme === 'dark') {
+                    body.classList.add('dark-mode');
+                    if (pageLoader) pageLoader.classList.add('dark');
+                    updateThemeIcon(true);
+                } else if (savedTheme === 'light') {
+                    body.classList.remove('dark-mode');
+                    if (pageLoader) pageLoader.classList.remove('dark');
+                    updateThemeIcon(false);
+                } else {
+                    // No saved preference, check system preference
+                    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    if (prefersDark) {
+                        body.classList.add('dark-mode');
+                        if (pageLoader) pageLoader.classList.add('dark');
+                        updateThemeIcon(true);
+                        localStorage.setItem('site_theme', 'dark');
+                    } else {
+                        localStorage.setItem('site_theme', 'light');
+                    }
+                }
+            }
+
+            function updateThemeIcon(isDark) {
+                if (isDark) {
+                    themeIcon.classList.remove('bi-sun-fill');
+                    themeIcon.classList.add('bi-moon-stars-fill');
+                } else {
+                    themeIcon.classList.remove('bi-moon-stars-fill');
+                    themeIcon.classList.add('bi-sun-fill');
+                }
+            }
+
+            // Toggle theme on button click
+            themeToggle.addEventListener('click', () => {
+                body.classList.toggle('dark-mode');
+                const isDark = body.classList.contains('dark-mode');
+                updateThemeIcon(isDark);
+                localStorage.setItem('site_theme', isDark ? 'dark' : 'light');
+            });
+
+            // Initialize on page load
+            initTheme();
+
+            // ========== SCROLL ANIMATIONS ==========
+            const animateOnScroll = () => {
+                const elements = document.querySelectorAll('.animate-on-scroll');
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach((entry, index) => {
+                        if (entry.isIntersecting) {
+                            // Stagger animation slightly for each element
+                            setTimeout(() => {
+                                entry.target.classList.add('visible');
+                            }, index * 100);
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -50px 0px'
+                });
+
+                elements.forEach(element => {
+                    observer.observe(element);
+                });
+
+                // Respect reduced motion preference
+                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    elements.forEach(element => {
+                        element.classList.add('visible');
+                    });
+                }
+            };
+
+            // Initialize animations when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', animateOnScroll);
+            } else {
+                animateOnScroll();
+            }
+
+            // ========== NAVBAR SCROLL EFFECT ==========
+            let lastScroll = 0;
+            const navbar = document.querySelector('.main-navbar');
+
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.pageYOffset;
+
+                if (currentScroll > 100) {
+                    navbar.style.boxShadow = '0 2px 10px var(--card-shadow)';
+                } else {
+                    navbar.style.boxShadow = 'none';
+                }
+
+                lastScroll = currentScroll;
+            });
+
+            // ========== EVENT CARD CLICK HANDLING ==========
+            document.querySelectorAll('.event-card').forEach(card => {
+                card.addEventListener('click', function () {
+                    // In a real implementation, this would navigate to the event details page
+                    console.log('Navigate to event details page');
+                    // window.location.href = 'event.html?id=123';
+                });
+            });
+
+            // ========== CATEGORY CARD CLICK HANDLING ==========
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.addEventListener('click', function () {
+                    // In a real implementation, this would filter events by category
+                    console.log('Filter events by category');
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
