@@ -11,8 +11,51 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
+        /* ========== CSS VARIABLES & THEME ========== */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6c757d;
+            --accent: #dc143c;
+            --accent-hover: #b01030;
+            --border-color: #dee2e6;
+            --card-shadow: rgba(0, 0, 0, 0.1);
+            --font-heading: 'Inter', sans-serif;
+            --font-brand: 'Dancing Script', cursive;
+        }
+
+        .dark-mode {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --text-primary: #f5f5f5;
+            --text-secondary: #b0b0b0;
+            --accent: #ff4f5a;
+            --accent-hover: #ff6b75;
+            --border-color: #333;
+            --card-shadow: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-heading);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            line-height: 1.6;
+        }
+
         /* ========== LOADING STATE ========== */
         .page-loader {
             position: fixed;
@@ -47,6 +90,7 @@
             font-weight: 700;
             margin-bottom: 1.5rem;
             animation: pulse 1.5s ease-in-out infinite;
+            font-family: var(--font-brand);
         }
 
         .loader-logo .light-theme {
@@ -106,13 +150,10 @@
         }
 
         @keyframes pulse {
-
-            0%,
-            100% {
+            0%, 100% {
                 transform: scale(1);
                 opacity: 1;
             }
-
             50% {
                 transform: scale(1.05);
                 opacity: 0.8;
@@ -120,12 +161,9 @@
         }
 
         @keyframes fadeInOut {
-
-            0%,
-            100% {
+            0%, 100% {
                 opacity: 0.5;
             }
-
             50% {
                 opacity: 1;
             }
@@ -143,43 +181,6 @@
 
         .main-content.visible {
             opacity: 1;
-        }
-
-        /* ========== CSS VARIABLES & THEME ========== */
-        :root {
-            --bg-primary: #ffffff;
-            --bg-secondary: #f8f9fa;
-            --text-primary: #1a1a1a;
-            --text-secondary: #6c757d;
-            --accent: #dc143c;
-            --accent-hover: #b01030;
-            --border-color: #dee2e6;
-            --card-shadow: rgba(0, 0, 0, 0.1);
-        }
-
-        .dark-mode {
-            --bg-primary: #121212;
-            --bg-secondary: #1e1e1e;
-            --text-primary: #f5f5f5;
-            --text-secondary: #b0b0b0;
-            --accent: #ff4f5a;
-            --accent-hover: #ff6b75;
-            --border-color: #333;
-            --card-shadow: rgba(255, 255, 255, 0.05);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            line-height: 1.6;
         }
 
         /* ========== ANIMATIONS ========== */
@@ -225,10 +226,11 @@
         }
 
         .top-header .brand {
-            font-size: 1.5rem;
+            font-size: 2rem;
             font-weight: 700;
             color: var(--text-primary);
             text-decoration: none;
+            font-family: var(--font-brand);
         }
 
         .top-header .brand span {
@@ -252,6 +254,7 @@
             background-color: var(--bg-primary);
             border-bottom: 1px solid var(--border-color);
             padding: 1rem 0;
+            transition: box-shadow 0.3s ease;
         }
 
         .main-navbar .navbar-nav .nav-link {
@@ -290,6 +293,74 @@
         .theme-toggle:hover {
             color: var(--accent);
             transform: rotate(20deg);
+        }
+
+        /* ========== SEARCH BAR ========== */
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-toggle {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .search-toggle:hover {
+            color: var(--accent);
+        }
+
+        .search-input-container {
+            position: absolute;
+            right: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            overflow: hidden;
+            transition: width 0.3s ease;
+            background-color: var(--bg-primary);
+            border-radius: 50px;
+            box-shadow: 0 2px 10px var(--card-shadow);
+        }
+
+        .search-input-container.active {
+            width: 250px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.5rem 1rem;
+            border: none;
+            background: transparent;
+            color: var(--text-primary);
+            outline: none;
+            font-size: 0.9rem;
+        }
+
+        .search-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .search-close {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .search-close:hover {
+            color: var(--accent);
         }
 
         /* ========== HERO SECTION ========== */
@@ -448,10 +519,11 @@
         }
 
         .footer .brand {
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: 700;
             color: var(--text-primary);
             text-decoration: none;
+            font-family: var(--font-brand);
         }
 
         .footer .brand span {
@@ -493,11 +565,16 @@
         }
 
         /* ========== RESPONSIVE ========== */
-        @media (max-width: 768px) {
+        @media (max-width: 991px) {
             .top-header .d-flex {
-                flex-direction: column;
+                flex-direction: row;
+                justify-content: space-between;
                 gap: 1rem;
                 text-align: center;
+            }
+
+            .top-header .btn-subscribe {
+                display: none;
             }
 
             .top-header .auth-links a {
@@ -510,6 +587,31 @@
 
             .section-header h2 {
                 font-size: 1.5rem;
+            }
+
+            .search-input-container.active {
+                width: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-header .d-flex {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .top-header .auth-links a {
+                margin-left: 0.5rem;
+            }
+
+            .search-input-container.active {
+                width: 180px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .search-input-container.active {
+                width: 150px;
             }
         }
 
@@ -690,12 +792,19 @@
                     </ul>
                 </div>
                 <div class="d-flex align-items-center gap-3">
+                    <div class="search-container">
+                        <div class="search-input-container" id="searchInputContainer">
+                            <input type="text" class="search-input" placeholder="Search articles...">
+                            <button class="search-close" id="searchClose">
+                                <i class="bi bi-x"></i>
+                            </button>
+                        </div>
+                        <button class="search-toggle" id="searchToggle">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
                     <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
                         <i class="bi bi-sun-fill" id="themeIcon"></i>
-                    </button>
-                    <button class="btn"
-                        style="background: none; border: none; color: var(--text-primary); font-size: 1.2rem;">
-                        <i class="bi bi-search"></i>
                     </button>
                 </div>
             </div>
@@ -1078,6 +1187,31 @@
                     pageLoader.style.display = 'none';
                 }, 500);
             }, 800); // Adjust this delay as needed (800ms = 0.8 seconds)
+        });
+
+        // ========== SEARCH TOGGLE FUNCTIONALITY ==========
+        const searchToggle = document.getElementById('searchToggle');
+        const searchInputContainer = document.getElementById('searchInputContainer');
+        const searchClose = document.getElementById('searchClose');
+        const searchInput = document.querySelector('.search-input');
+
+        searchToggle.addEventListener('click', function() {
+            searchInputContainer.classList.toggle('active');
+            if (searchInputContainer.classList.contains('active')) {
+                searchInput.focus();
+            }
+        });
+
+        searchClose.addEventListener('click', function() {
+            searchInputContainer.classList.remove('active');
+            searchInput.value = '';
+        });
+
+        // Close search when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!searchInputContainer.contains(event.target) && !searchToggle.contains(event.target)) {
+                searchInputContainer.classList.remove('active');
+            }
         });
 
         // ========== THEME TOGGLE & COOKIE MANAGEMENT ==========
