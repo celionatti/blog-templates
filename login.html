@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Register for BlogName">
-    <title>BlogName - Create Account</title>
+    <meta name="description" content="Login to BlogName">
+    <title>BlogName - Sign In</title>
 
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -113,27 +113,22 @@
         }
 
         @keyframes float {
-
-            0%,
-            100% {
+            0%, 100% {
                 transform: translate(0, 0) rotate(0deg);
             }
-
             25% {
                 transform: translate(20px, 20px) rotate(5deg);
             }
-
             50% {
                 transform: translate(-15px, 15px) rotate(-5deg);
             }
-
             75% {
                 transform: translate(10px, -10px) rotate(3deg);
             }
         }
 
-        /* ========== REGISTRATION CONTAINER ========== */
-        .registration-container {
+        /* ========== LOGIN CONTAINER ========== */
+        .login-container {
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -142,7 +137,7 @@
             perspective: 1000px;
         }
 
-        .registration-card {
+        .login-card {
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
@@ -150,7 +145,7 @@
             border-radius: 20px;
             padding: 2.5rem;
             width: 100%;
-            max-width: 580px;
+            max-width: 480px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
             transform-style: preserve-3d;
             animation: cardAppear 1s ease-out;
@@ -159,12 +154,12 @@
             overflow: hidden;
         }
 
-        .dark-mode .registration-card {
+        .dark-mode .login-card {
             background: rgba(30, 30, 30, 0.85);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .registration-card::before {
+        .login-card::before {
             content: '';
             position: absolute;
             top: 0;
@@ -179,7 +174,6 @@
             0% {
                 transform: translateX(-100%);
             }
-
             100% {
                 transform: translateX(100%);
             }
@@ -190,21 +184,20 @@
                 opacity: 0;
                 transform: translateY(50px) rotateX(-10deg);
             }
-
             100% {
                 opacity: 1;
                 transform: translateY(0) rotateX(0);
             }
         }
 
-        /* ========== REGISTRATION HEADER ========== */
-        .registration-header {
+        /* ========== LOGIN HEADER ========== */
+        .login-header {
             text-align: center;
             margin-bottom: 2rem;
             transform: translateZ(30px);
         }
 
-        .registration-logo {
+        .login-logo {
             font-size: 2.5rem;
             font-weight: 700;
             color: var(--text-primary);
@@ -214,17 +207,17 @@
             display: block;
         }
 
-        .registration-logo span {
+        .login-logo span {
             color: var(--accent);
         }
 
-        .registration-title {
+        .login-title {
             font-size: 1.75rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
         }
 
-        .registration-subtitle {
+        .login-subtitle {
             color: var(--text-secondary);
             font-size: 0.9rem;
         }
@@ -262,11 +255,9 @@
             font-size: 1rem;
             transition: all 0.3s ease;
             transform-style: preserve-3d;
-
             z-index: 1;
         }
 
-        /* Special padding for inputs with icons */
         .form-control.has-icon {
             padding-right: 3rem;
         }
@@ -298,7 +289,6 @@
             transform: translateY(-2px) translateZ(5px);
         }
 
-        /* Password toggle button - Fixed positioning */
         .password-toggle {
             position: absolute;
             right: 1rem;
@@ -328,15 +318,9 @@
             pointer-events: none;
         }
 
-        /* Error states */
         .form-control.error {
             border-color: var(--error-color);
             box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
-        }
-
-        .form-control.success {
-            border-color: var(--success-color);
-            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
         }
 
         .input-icon {
@@ -351,15 +335,10 @@
             font-size: 1.1rem;
         }
 
-        .form-control.error~.input-icon {
+        .form-control.error ~ .input-icon {
             color: var(--error-color);
         }
 
-        .form-control.success~.input-icon {
-            color: var(--success-color);
-        }
-
-        /* Error message */
         .error-message {
             color: var(--error-color);
             font-size: 0.85rem;
@@ -376,67 +355,28 @@
                 opacity: 0;
                 transform: translateY(-10px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
 
-        /* ========== PASSWORD STRENGTH ========== */
-        .password-strength {
-            height: 4px;
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 2px;
-            margin-top: 0.5rem;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .dark-mode .password-strength {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .strength-meter {
-            height: 100%;
-            width: 0%;
-            border-radius: 2px;
-            transition: all 0.3s ease;
-        }
-
-        .strength-weak {
-            background: #ff4757;
-            width: 33%;
-        }
-
-        .strength-medium {
-            background: #ffa502;
-            width: 66%;
-        }
-
-        .strength-strong {
-            background: #2ed573;
-            width: 100%;
-        }
-
-        .strength-text {
-            font-size: 0.8rem;
-            margin-top: 0.25rem;
-            text-align: right;
-            color: var(--text-secondary);
-        }
-
-        /* ========== CHECKBOX STYLES ========== */
-        .form-check {
+        /* ========== CHECKBOX & OPTIONS ========== */
+        .form-options {
             display: flex;
-            align-items: flex-start;
-            margin-bottom: 1.25rem;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
             transform: translateZ(15px);
         }
 
+        .form-check {
+            display: flex;
+            align-items: center;
+        }
+
         .form-check-input {
-            margin-right: 0.75rem;
-            margin-top: 0.25rem;
+            margin-right: 0.5rem;
             background: rgba(255, 255, 255, 0.7);
             border: 1px solid rgba(0, 0, 0, 0.3);
             transform: translateZ(10px);
@@ -453,27 +393,26 @@
             border-color: var(--accent);
         }
 
-        .form-check-input.error {
-            border-color: var(--error-color);
-        }
-
         .form-check-label {
             font-size: 0.9rem;
             color: var(--text-secondary);
-            line-height: 1.5;
+            cursor: pointer;
         }
 
-        .form-check-label a {
+        .forgot-password {
+            font-size: 0.9rem;
             color: var(--accent);
             text-decoration: none;
+            transition: opacity 0.3s ease;
         }
 
-        .form-check-label a:hover {
+        .forgot-password:hover {
             text-decoration: underline;
+            opacity: 0.8;
         }
 
         /* ========== BUTTON STYLES ========== */
-        .btn-register {
+        .btn-login {
             width: 100%;
             padding: 0.875rem 2rem;
             background: var(--accent);
@@ -493,7 +432,7 @@
             gap: 0.5rem;
         }
 
-        .btn-register::before {
+        .btn-login::before {
             content: '';
             position: absolute;
             top: 0;
@@ -504,33 +443,29 @@
             transition: left 0.5s;
         }
 
-        .btn-register:hover {
+        .btn-login:hover {
             background: var(--accent-hover);
             transform: translateY(-3px) translateZ(10px);
             box-shadow: 0 10px 25px rgba(220, 20, 60, 0.3);
         }
 
-        .btn-register:hover::before {
+        .btn-login:hover::before {
             left: 100%;
         }
 
-        .btn-register:active {
+        .btn-login:active {
             transform: translateY(-1px) translateZ(5px);
         }
 
-        .btn-register:disabled {
+        .btn-login:disabled {
             background: var(--text-secondary);
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
         }
 
-        .btn-register:disabled:hover::before {
-            left: -100%;
-        }
-
-        /* ========== LOGIN LINK ========== */
-        .login-link {
+        /* ========== REGISTER LINK ========== */
+        .register-link {
             text-align: center;
             margin-top: 1.5rem;
             color: var(--text-secondary);
@@ -538,18 +473,18 @@
             font-size: 0.95rem;
         }
 
-        .login-link a {
+        .register-link a {
             color: var(--accent);
             text-decoration: none;
             font-weight: 600;
         }
 
-        .login-link a:hover {
+        .register-link a:hover {
             text-decoration: underline;
         }
 
-        /* ========== SOCIAL REGISTRATION ========== */
-        .social-registration {
+        /* ========== SOCIAL LOGIN ========== */
+        .social-login {
             margin-top: 1.5rem;
             transform: translateZ(20px);
         }
@@ -680,7 +615,7 @@
             font-size: 1.2rem;
         }
 
-        /* ========== VALIDATION SUCCESS ========== */
+        /* ========== SUCCESS MESSAGE ========== */
         .validation-success {
             background: rgba(46, 204, 113, 0.1);
             border: 1px solid var(--success-color);
@@ -711,47 +646,27 @@
         }
 
         /* ========== RESPONSIVE DESIGN ========== */
-        @media (max-width: 992px) {
-            .registration-container {
-                padding: 1.5rem 1rem;
-            }
-
-            .registration-card {
-                max-width: 520px;
-                padding: 2rem;
-            }
-
-            .bg-shape {
-                transform: scale(0.8);
-            }
-        }
-
         @media (max-width: 768px) {
-            .registration-container {
+            .login-container {
                 padding: 1rem;
             }
 
-            .registration-card {
+            .login-card {
                 padding: 1.75rem;
                 max-width: 95%;
                 border-radius: 15px;
             }
 
-            .registration-logo {
+            .login-logo {
                 font-size: 2rem;
             }
 
-            .registration-title {
+            .login-title {
                 font-size: 1.5rem;
-            }
-
-            .registration-subtitle {
-                font-size: 0.85rem;
             }
 
             .form-control {
                 font-size: 16px;
-                /* Prevents zoom on iOS */
                 padding: 0.75rem 1rem;
             }
 
@@ -760,7 +675,7 @@
                 padding-right: 3rem;
             }
 
-            .btn-register {
+            .btn-login {
                 padding: 0.75rem 1.5rem;
                 font-size: 0.95rem;
             }
@@ -774,36 +689,32 @@
                 transform: scale(0.6);
             }
 
-            /* Disable 3D effects on mobile for better performance */
-            .registration-card:hover {
+            .login-card:hover {
                 transform: none;
+            }
+
+            .form-options {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
             }
         }
 
         @media (max-width: 576px) {
-            .registration-card {
+            .login-card {
                 padding: 1.5rem;
             }
 
-            .registration-header {
+            .login-header {
                 margin-bottom: 1.5rem;
             }
 
-            .registration-logo {
+            .login-logo {
                 font-size: 1.75rem;
             }
 
-            .registration-title {
+            .login-title {
                 font-size: 1.35rem;
-            }
-
-            .form-group {
-                margin-bottom: 1rem;
-            }
-
-            .form-label {
-                font-size: 0.9rem;
-                margin-bottom: 0.4rem;
             }
 
             .theme-toggle-container {
@@ -815,53 +726,16 @@
                 width: 40px;
                 height: 40px;
             }
-
-            .theme-toggle i {
-                font-size: 1.1rem;
-            }
         }
 
-        @media (max-width: 400px) {
-            .registration-card {
-                padding: 1.25rem;
-            }
-
-            .registration-logo {
-                font-size: 1.5rem;
-            }
-
-            .registration-title {
-                font-size: 1.25rem;
-            }
-
-            .form-control {
-                padding: 0.65rem 0.85rem;
-            }
-
-            .form-control.has-icon,
-            .form-control.has-password-toggle {
-                padding-right: 2.75rem;
-            }
-
-            .password-toggle,
-            .input-icon {
-                right: 0.75rem;
-            }
-        }
-
-        /* ========== ACCESSIBILITY ========== */
         @media (prefers-reduced-motion: reduce) {
-
-            *,
-            *::before,
-            *::after {
+            *, *::before, *::after {
                 animation-duration: 0.01ms !important;
                 animation-iteration-count: 1 !important;
                 transition-duration: 0.01ms !important;
             }
         }
 
-        /* Focus visible for keyboard navigation */
         *:focus-visible {
             outline: 2px solid var(--accent);
             outline-offset: 2px;
@@ -884,52 +758,21 @@
         </button>
     </div>
 
-    <!-- ========== REGISTRATION CONTAINER ========== -->
-    <div class="registration-container">
-        <div class="registration-card">
-            <div class="registration-header">
-                <a href="/" class="registration-logo">Blog<span>Name</span></a>
-                <h1 class="registration-title">Create Account</h1>
-                <p class="registration-subtitle">Join our community of readers and writers</p>
+    <!-- ========== LOGIN CONTAINER ========== -->
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <a href="/" class="login-logo">Blog<span>Name</span></a>
+                <h1 class="login-title">Welcome Back</h1>
+                <p class="login-subtitle">Sign in to continue to your account</p>
             </div>
 
-            <form id="registrationForm">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="form-label" for="firstName">First Name</label>
-                            <div class="input-wrapper">
-                                <input type="text" class="form-control has-icon" id="firstName"
-                                    placeholder="Enter your first name" required autocomplete="given-name">
-                                <i class="bi bi-person input-icon"></i>
-                            </div>
-                            <div class="error-message" id="firstNameError" style="display: none;">
-                                <i class="bi bi-exclamation-circle"></i>
-                                <span>First name must be at least 2 characters</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="form-label" for="lastName">Last Name</label>
-                            <div class="input-wrapper">
-                                <input type="text" class="form-control has-icon" id="lastName"
-                                    placeholder="Enter your last name" required autocomplete="family-name">
-                                <i class="bi bi-person input-icon"></i>
-                            </div>
-                            <div class="error-message" id="lastNameError" style="display: none;">
-                                <i class="bi bi-exclamation-circle"></i>
-                                <span>Last name must be at least 2 characters</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+            <form id="loginForm">
                 <div class="form-group">
                     <label class="form-label" for="email">Email Address</label>
                     <div class="input-wrapper">
-                        <input type="email" class="form-control has-icon" id="email" placeholder="Enter your email"
-                            required autocomplete="email">
+                        <input type="email" class="form-control has-icon" id="email"
+                            placeholder="Enter your email" required autocomplete="email">
                         <i class="bi bi-envelope input-icon"></i>
                     </div>
                     <div class="error-message" id="emailError" style="display: none;">
@@ -939,100 +782,56 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label" for="username">Username</label>
-                    <div class="input-wrapper">
-                        <input type="text" class="form-control has-icon" id="username" placeholder="Choose a username"
-                            required autocomplete="username">
-                        <i class="bi bi-at input-icon"></i>
-                    </div>
-                    <div class="error-message" id="usernameError" style="display: none;">
-                        <i class="bi bi-exclamation-circle"></i>
-                        <span>Username must be 3-20 characters (letters, numbers, _)</span>
-                    </div>
-                </div>
-
-                <div class="form-group">
                     <label class="form-label" for="password">Password</label>
                     <div class="input-wrapper">
                         <input type="password" class="form-control has-password-toggle" id="password"
-                            placeholder="Create a strong password" required autocomplete="new-password">
+                            placeholder="Enter your password" required autocomplete="current-password">
                         <button type="button" class="password-toggle" id="passwordToggle"
                             aria-label="Toggle password visibility">
                             <i class="bi bi-eye"></i>
                         </button>
                     </div>
-                    <div class="password-strength">
-                        <div class="strength-meter" id="passwordStrength"></div>
-                    </div>
-                    <div class="strength-text" id="passwordText">Password strength</div>
                     <div class="error-message" id="passwordError" style="display: none;">
                         <i class="bi bi-exclamation-circle"></i>
-                        <span>Password must be at least 8 characters with uppercase, lowercase, number, and special
-                            character</span>
+                        <span>Please enter your password</span>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label" for="confirmPassword">Confirm Password</label>
-                    <div class="input-wrapper">
-                        <input type="password" class="form-control has-password-toggle" id="confirmPassword"
-                            placeholder="Repeat your password" required autocomplete="new-password">
-                        <button type="button" class="password-toggle" id="confirmPasswordToggle"
-                            aria-label="Toggle password visibility">
-                            <i class="bi bi-eye"></i>
-                        </button>
+                <div class="form-options">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="remember">
+                        <label class="form-check-label" for="remember">
+                            Remember me
+                        </label>
                     </div>
-                    <div class="error-message" id="confirmPasswordError" style="display: none;">
-                        <i class="bi bi-exclamation-circle"></i>
-                        <span>Passwords do not match</span>
-                    </div>
+                    <a href="#" class="forgot-password" tabindex="0">Forgot password?</a>
                 </div>
 
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="terms" required>
-                    <label class="form-check-label" for="terms">
-                        I agree to the <a href="#" tabindex="0">Terms of Service</a> and <a href="#"
-                            tabindex="0">Privacy Policy</a>
-                    </label>
-                </div>
-                <div class="error-message" id="termsError"
-                    style="display: none; margin-top: -1rem; margin-bottom: 1rem;">
-                    <i class="bi bi-exclamation-circle"></i>
-                    <span>You must accept the terms and conditions</span>
-                </div>
-
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="newsletter">
-                    <label class="form-check-label" for="newsletter">
-                        Subscribe to our newsletter for updates
-                    </label>
-                </div>
-
-                <button type="submit" class="btn-register" id="submitButton">
-                    <i class="bi bi-person-plus"></i>
-                    <span>Create Account</span>
+                <button type="submit" class="btn-login" id="submitButton">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                    <span>Sign In</span>
                 </button>
             </form>
 
-            <div class="social-registration">
+            <div class="social-login">
                 <div class="social-divider">
-                    <span>Or register with</span>
+                    <span>Or continue with</span>
                 </div>
                 <div class="social-buttons">
-                    <button class="btn-social btn-google" type="button" aria-label="Register with Google">
+                    <button class="btn-social btn-google" type="button" aria-label="Sign in with Google">
                         <i class="bi bi-google"></i>
                     </button>
-                    <button class="btn-social btn-facebook" type="button" aria-label="Register with Facebook">
+                    <button class="btn-social btn-facebook" type="button" aria-label="Sign in with Facebook">
                         <i class="bi bi-facebook"></i>
                     </button>
-                    <button class="btn-social btn-twitter" type="button" aria-label="Register with Twitter">
+                    <button class="btn-social btn-twitter" type="button" aria-label="Sign in with Twitter">
                         <i class="bi bi-twitter"></i>
                     </button>
                 </div>
             </div>
 
-            <div class="login-link">
-                Already have an account? <a href="#" tabindex="0">Sign in here</a>
+            <div class="register-link">
+                Don't have an account? <a href="#" tabindex="0">Create one here</a>
             </div>
         </div>
     </div>
@@ -1041,14 +840,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Initialize when page loads
         document.addEventListener('DOMContentLoaded', function () {
             // ========== THEME TOGGLE ==========
             const themeToggle = document.getElementById('themeToggle');
             const themeIcon = document.getElementById('themeIcon');
             const body = document.body;
 
-            // Check for saved theme preference
             const savedTheme = localStorage.getItem('site_theme') || 'dark';
 
             function setTheme(theme) {
@@ -1064,10 +861,8 @@
                 localStorage.setItem('site_theme', theme);
             }
 
-            // Initialize theme
             setTheme(savedTheme);
 
-            // Toggle theme on button click
             themeToggle.addEventListener('click', () => {
                 const isDark = body.classList.contains('dark-mode');
                 setTheme(isDark ? 'light' : 'dark');
@@ -1075,228 +870,100 @@
 
             // ========== PASSWORD TOGGLE ==========
             const passwordToggle = document.getElementById('passwordToggle');
-            const confirmPasswordToggle = document.getElementById('confirmPasswordToggle');
             const passwordInput = document.getElementById('password');
-            const confirmPasswordInput = document.getElementById('confirmPassword');
-
-            function togglePasswordVisibility(input, toggle) {
-                const isPassword = input.type === 'password';
-                input.type = isPassword ? 'text' : 'password';
-                const icon = toggle.querySelector('i');
-                icon.className = isPassword ? 'bi bi-eye-slash' : 'bi bi-eye';
-            }
 
             passwordToggle.addEventListener('click', () => {
-                togglePasswordVisibility(passwordInput, passwordToggle);
-            });
-
-            confirmPasswordToggle.addEventListener('click', () => {
-                togglePasswordVisibility(confirmPasswordInput, confirmPasswordToggle);
+                const isPassword = passwordInput.type === 'password';
+                passwordInput.type = isPassword ? 'text' : 'password';
+                const icon = passwordToggle.querySelector('i');
+                icon.className = isPassword ? 'bi bi-eye-slash' : 'bi bi-eye';
             });
 
             // ========== VALIDATION FUNCTIONS ==========
-            function validateName(name) {
-                return name.trim().length >= 2 && /^[a-zA-Z\s]+$/.test(name);
-            }
-
             function validateEmail(email) {
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 return emailRegex.test(email);
             }
 
-            function validateUsername(username) {
-                const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/;
-                return usernameRegex.test(username);
-            }
+            // ========== REAL-TIME VALIDATION ==========
+            const emailInput = document.getElementById('email');
+            const emailError = document.getElementById('emailError');
+            const passwordError = document.getElementById('passwordError');
 
-            function validatePassword(password) {
-                // At least 8 characters, 1 uppercase, 1 lowercase, 1 number, 1 special character
-                const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-                return passwordRegex.test(password);
-            }
+            emailInput.addEventListener('blur', function () {
+                if (this.value.trim() === '') {
+                    this.classList.remove('error');
+                    emailError.style.display = 'none';
+                    return;
+                }
 
-            // ========== PASSWORD STRENGTH ==========
-            const passwordStrength = document.getElementById('passwordStrength');
-            const passwordText = document.getElementById('passwordText');
+                const isValid = validateEmail(this.value);
+                if (!isValid) {
+                    this.classList.add('error');
+                    emailError.style.display = 'flex';
+                } else {
+                    this.classList.remove('error');
+                    emailError.style.display = 'none';
+                }
+            });
+
+            emailInput.addEventListener('input', function () {
+                if (this.classList.contains('error')) {
+                    this.classList.remove('error');
+                    emailError.style.display = 'none';
+                }
+            });
 
             passwordInput.addEventListener('input', function () {
-                const password = this.value;
-                let strength = 0;
-                let text = 'Password strength';
-
-                if (password.length >= 8) strength++;
-                if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength++;
-                if (password.match(/\d/)) strength++;
-                if (password.match(/[^a-zA-Z\d]/)) strength++;
-
-                // Update strength meter
-                passwordStrength.className = 'strength-meter';
-                if (strength === 0) {
-                    text = 'Very weak';
-                } else if (strength === 1) {
-                    passwordStrength.classList.add('strength-weak');
-                    text = 'Weak';
-                } else if (strength === 2) {
-                    passwordStrength.classList.add('strength-medium');
-                    text = 'Medium';
-                } else if (strength === 3) {
-                    passwordStrength.classList.add('strength-medium');
-                    text = 'Good';
-                } else {
-                    passwordStrength.classList.add('strength-strong');
-                    text = 'Strong';
-                }
-
-                passwordText.textContent = text;
-            });
-
-            // ========== REAL-TIME VALIDATION ==========
-            const inputs = {
-                firstName: { element: document.getElementById('firstName'), error: document.getElementById('firstNameError') },
-                lastName: { element: document.getElementById('lastName'), error: document.getElementById('lastNameError') },
-                email: { element: document.getElementById('email'), error: document.getElementById('emailError') },
-                username: { element: document.getElementById('username'), error: document.getElementById('usernameError') },
-                password: { element: passwordInput, error: document.getElementById('passwordError') },
-                confirmPassword: { element: confirmPasswordInput, error: document.getElementById('confirmPasswordError') },
-                terms: { element: document.getElementById('terms'), error: document.getElementById('termsError') }
-            };
-
-            // Add event listeners for real-time validation
-            inputs.firstName.element.addEventListener('blur', function () {
-                const isValid = validateName(this.value);
-                updateFieldValidation(this, inputs.firstName.error, isValid);
-            });
-
-            inputs.lastName.element.addEventListener('blur', function () {
-                const isValid = validateName(this.value);
-                updateFieldValidation(this, inputs.lastName.error, isValid);
-            });
-
-            inputs.email.element.addEventListener('blur', function () {
-                const isValid = validateEmail(this.value);
-                updateFieldValidation(this, inputs.email.error, isValid);
-            });
-
-            inputs.username.element.addEventListener('blur', function () {
-                const isValid = validateUsername(this.value);
-                updateFieldValidation(this, inputs.username.error, isValid);
-            });
-
-            inputs.password.element.addEventListener('blur', function () {
-                const isValid = validatePassword(this.value);
-                updateFieldValidation(this, inputs.password.error, isValid);
-            });
-
-            inputs.confirmPassword.element.addEventListener('blur', function () {
-                const isValid = this.value === inputs.password.element.value && this.value.length > 0;
-                updateFieldValidation(this, inputs.confirmPassword.error, isValid);
-            });
-
-            inputs.terms.element.addEventListener('change', function () {
-                const isValid = this.checked;
-                updateFieldValidation(this, inputs.terms.error, isValid);
-            });
-
-            // Clear error on input
-            Object.values(inputs).forEach(input => {
-                if (input.element.type !== 'checkbox') {
-                    input.element.addEventListener('input', function () {
-                        if (this.classList.contains('error')) {
-                            this.classList.remove('error');
-                            input.error.style.display = 'none';
-                        }
-                    });
+                if (this.classList.contains('error')) {
+                    this.classList.remove('error');
+                    passwordError.style.display = 'none';
                 }
             });
-
-            function updateFieldValidation(field, errorElement, isValid) {
-                if (field.type === 'checkbox') {
-                    if (isValid) {
-                        field.classList.remove('error');
-                        errorElement.style.display = 'none';
-                    } else {
-                        field.classList.add('error');
-                        errorElement.style.display = 'flex';
-                    }
-                    return;
-                }
-
-                if (field.value.trim() === '') {
-                    field.classList.remove('error', 'success');
-                    errorElement.style.display = 'none';
-                    return;
-                }
-
-                if (isValid) {
-                    field.classList.remove('error');
-                    field.classList.add('success');
-                    errorElement.style.display = 'none';
-                } else {
-                    field.classList.remove('success');
-                    field.classList.add('error');
-                    errorElement.style.display = 'flex';
-                }
-            }
 
             // ========== FORM SUBMISSION ==========
-            const registrationForm = document.getElementById('registrationForm');
+            const loginForm = document.getElementById('loginForm');
             const submitButton = document.getElementById('submitButton');
 
-            registrationForm.addEventListener('submit', function (e) {
+            loginForm.addEventListener('submit', function (e) {
                 e.preventDefault();
 
                 let isValid = true;
 
-                // Validate all fields
-                if (!validateName(inputs.firstName.element.value)) {
-                    updateFieldValidation(inputs.firstName.element, inputs.firstName.error, false);
+                // Validate email
+                if (!validateEmail(emailInput.value)) {
+                    emailInput.classList.add('error');
+                    emailError.style.display = 'flex';
                     isValid = false;
+                } else {
+                    emailInput.classList.remove('error');
+                    emailError.style.display = 'none';
                 }
 
-                if (!validateName(inputs.lastName.element.value)) {
-                    updateFieldValidation(inputs.lastName.element, inputs.lastName.error, false);
+                // Validate password
+                if (passwordInput.value.trim() === '') {
+                    passwordInput.classList.add('error');
+                    passwordError.style.display = 'flex';
                     isValid = false;
-                }
-
-                if (!validateEmail(inputs.email.element.value)) {
-                    updateFieldValidation(inputs.email.element, inputs.email.error, false);
-                    isValid = false;
-                }
-
-                if (!validateUsername(inputs.username.element.value)) {
-                    updateFieldValidation(inputs.username.element, inputs.username.error, false);
-                    isValid = false;
-                }
-
-                if (!validatePassword(inputs.password.element.value)) {
-                    updateFieldValidation(inputs.password.element, inputs.password.error, false);
-                    isValid = false;
-                }
-
-                if (inputs.confirmPassword.element.value !== inputs.password.element.value) {
-                    updateFieldValidation(inputs.confirmPassword.element, inputs.confirmPassword.error, false);
-                    isValid = false;
-                }
-
-                if (!inputs.terms.element.checked) {
-                    updateFieldValidation(inputs.terms.element, inputs.terms.error, false);
-                    isValid = false;
+                } else {
+                    passwordInput.classList.remove('error');
+                    passwordError.style.display = 'none';
                 }
 
                 if (!isValid) {
-                    // Scroll to first error
-                    const firstError = document.querySelector('.error');
-                    if (firstError) {
-                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }
                     return;
                 }
 
-                // Simulate registration success
+                // Simulate login success
                 const originalText = submitButton.innerHTML;
 
-                submitButton.innerHTML = '<i class="bi bi-check-lg"></i><span>Creating Account...</span>';
+                submitButton.innerHTML = '<i class="bi bi-arrow-clockwise" style="animation: spin 1s linear infinite;"></i><span>Signing In...</span>';
                 submitButton.disabled = true;
+
+                // Add spin animation
+                const style = document.createElement('style');
+                style.textContent = '@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }';
+                document.head.appendChild(style);
 
                 setTimeout(() => {
                     // Show success message
@@ -1305,44 +972,33 @@
                     successMessage.innerHTML = `
                         <i class="bi bi-check-circle-fill"></i>
                         <div>
-                            <strong>Account created successfully!</strong>
-                            <div>Welcome to BlogName. You can now sign in.</div>
+                            <strong>Login successful!</strong>
+                            <div>Redirecting to your dashboard...</div>
                         </div>
                     `;
 
-                    registrationForm.parentNode.insertBefore(successMessage, registrationForm);
+                    loginForm.parentNode.insertBefore(successMessage, loginForm);
 
                     // Reset form after delay
                     setTimeout(() => {
-                        registrationForm.reset();
+                        loginForm.reset();
                         submitButton.innerHTML = originalText;
                         submitButton.disabled = false;
-
-                        // Remove success message
                         successMessage.remove();
 
-                        // Reset all field styles
-                        Object.values(inputs).forEach(input => {
-                            if (input.element) {
-                                input.element.classList.remove('error', 'success');
-                                if (input.error) input.error.style.display = 'none';
-                            }
-                        });
+                        emailInput.classList.remove('error');
+                        passwordInput.classList.remove('error');
+                        emailError.style.display = 'none';
+                        passwordError.style.display = 'none';
 
-                        passwordStrength.className = 'strength-meter';
-                        passwordText.textContent = 'Password strength';
-
-                        // Reset password visibility
                         passwordInput.type = 'password';
-                        confirmPasswordInput.type = 'password';
                         passwordToggle.querySelector('i').className = 'bi bi-eye';
-                        confirmPasswordToggle.querySelector('i').className = 'bi bi-eye';
                     }, 3000);
                 }, 2000);
             });
 
             // ========== 3D CARD TILT EFFECT (Desktop only) ==========
-            const card = document.querySelector('.registration-card');
+            const card = document.querySelector('.login-card');
             const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
             if (!isTouchDevice && window.innerWidth > 768) {

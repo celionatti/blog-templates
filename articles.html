@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Modern responsive blog template with dark mode">
-    <title>BlogName - Your Daily News Source</title>
+    <title>BlogName - Articles</title>
 
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -211,51 +211,6 @@
             }
         }
 
-        /* ========== SCROLL PROGRESS BAR ========== */
-        .scroll-progress {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 0%;
-            height: 3px;
-            background-color: var(--accent);
-            z-index: 9998;
-            transition: width 0.1s ease;
-        }
-
-        /* ========== SCROLL TO TOP BUTTON ========== */
-        .scroll-to-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            background-color: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            cursor: pointer;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 9996;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .scroll-to-top:hover {
-            background-color: var(--accent-hover);
-            transform: translateY(-3px);
-        }
-
-        .scroll-to-top.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-
         /* ========== TOP HEADER ========== */
         .top-header {
             background-color: var(--bg-secondary);
@@ -419,12 +374,109 @@
             color: var(--accent);
         }
 
-        /* ========== HERO SECTION ========== */
-        .hero-section {
-            padding: 3rem 0;
+        /* ========== SCROLL PROGRESS BAR ========== */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background-color: var(--accent);
+            z-index: 9998;
+            transition: width 0.1s ease;
         }
 
-        .hero-card {
+        /* ========== SCROLL TO TOP BUTTON ========== */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 9996;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .scroll-to-top:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-3px);
+        }
+
+        .scroll-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* ========== ARTICLES PAGE STYLES ========== */
+        .articles-hero {
+            background-color: var(--bg-secondary);
+            padding: 3rem 0;
+            margin-bottom: 3rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .articles-hero h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .articles-hero p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .articles-filters {
+            background-color: var(--bg-secondary);
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background-color: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .articles-grid {
+            margin-bottom: 4rem;
+        }
+
+        .article-card {
             background-color: var(--bg-secondary);
             border: 1px solid var(--border-color);
             border-radius: 12px;
@@ -432,28 +484,25 @@
             height: 100%;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
+            margin-bottom: 2rem;
         }
 
-        .hero-card:hover {
+        .article-card:hover {
             transform: translateY(-4px);
             box-shadow: 0 8px 24px var(--card-shadow);
         }
 
-        .hero-card img {
+        .article-card img {
             width: 100%;
-            height: 400px;
+            height: 200px;
             object-fit: cover;
         }
 
-        .hero-card.small img {
-            height: 200px;
-        }
-
-        .hero-card .card-body {
+        .article-card .card-body {
             padding: 1.5rem;
         }
 
-        .hero-card .category-badge {
+        .article-card .category-badge {
             background-color: var(--accent);
             color: white;
             padding: 0.25rem 0.75rem;
@@ -465,105 +514,47 @@
             margin-bottom: 0.75rem;
         }
 
-        .hero-card h2 {
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-bottom: 0.75rem;
-            line-height: 1.3;
-        }
-
-        .hero-card.small h3 {
-            font-size: 1.1rem;
+        .article-card h3 {
+            font-size: 1.25rem;
             font-weight: 600;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
         }
 
-        .hero-card p {
+        .article-card p {
             color: var(--text-secondary);
             margin-bottom: 1rem;
-        }
-
-        .hero-card .meta {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-        }
-
-        /* ========== SECTION HEADERS ========== */
-        .section-header {
-            display: flex;
-            align-items: center;
-            margin: 3rem 0 2rem;
-        }
-
-        .section-header h2 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin: 0;
-            padding-right: 1.5rem;
-            white-space: nowrap;
-        }
-
-        .section-header .line {
-            flex: 1;
-            height: 2px;
-            background: linear-gradient(to right, var(--accent), transparent);
-        }
-
-        /* ========== CONTENT CARDS ========== */
-        .content-card {
-            background-color: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            overflow: hidden;
-            height: 100%;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-        }
-
-        .content-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px var(--card-shadow);
-        }
-
-        .content-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .content-card .card-body {
-            padding: 1.25rem;
-        }
-
-        .content-card .category-badge {
-            background-color: var(--accent);
-            color: white;
-            padding: 0.2rem 0.6rem;
-            border-radius: 4px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            display: inline-block;
-            margin-bottom: 0.5rem;
-        }
-
-        .content-card h3 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            line-height: 1.4;
             display: -webkit-box;
-            -webkit-line-clamp: 2;
+            -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
 
-        .content-card .meta {
+        .article-card .meta {
             color: var(--text-secondary);
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             display: flex;
             align-items: center;
             gap: 1rem;
+        }
+
+        .load-more-container {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .btn-load-more {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-load-more:hover {
+            background-color: var(--accent-hover);
         }
 
         /* ========== FOOTER ========== */
@@ -637,12 +628,8 @@
                 margin-left: 0.5rem;
             }
 
-            .hero-card img {
-                height: 250px;
-            }
-
-            .section-header h2 {
-                font-size: 1.5rem;
+            .articles-hero h1 {
+                font-size: 2rem;
             }
 
             .search-input-container.active {
@@ -890,8 +877,8 @@
                 </button>
                 <div class="collapse navbar-collapse" id="mainNav">
                     <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="articles.html">Articles</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="articles.html">Articles</a></li>
                         <li class="nav-item"><a class="nav-link" href="#">World</a></li>
                         <li class="nav-item"><a class="nav-link" href="#">Sports</a></li>
                         <li class="nav-item"><a class="nav-link" href="#">Politics</a></li>
@@ -918,107 +905,41 @@
             </div>
         </nav>
 
-        <!-- ========== HERO SECTION ========== -->
-        <section class="hero-section animate-on-scroll">
-            <div class="container">
-                <div class="row g-4">
-                    <!-- Main Featured Post -->
-                    <div class="col-lg-8">
-                        <div class="hero-card">
-                            <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&h=400&fit=crop"
-                                alt="Featured article" loading="lazy">
-                            <div class="card-body">
-                                <span class="category-badge">Featured</span>
-                                <h2>Breaking: Major Development Reshapes Global Economy</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua.</p>
-                                <div class="meta">
-                                    <span><i class="bi bi-person-circle me-1"></i> John Doe</span>
-                                    <span><i class="bi bi-clock me-1"></i> 2 hours ago</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <!-- ========== ARTICLES HERO SECTION ========== -->
+        <section class="articles-hero animate-on-scroll">
+            <div class="container text-center">
+                <h1>All Articles</h1>
+                <p>Explore our collection of articles covering a wide range of topics from technology and politics to entertainment and lifestyle.</p>
+            </div>
+        </section>
 
-                    <!-- Side Featured Posts -->
-                    <div class="col-lg-4">
-                        <div class="row g-4">
-                            <div class="col-12">
-                                <div class="hero-card small">
-                                    <img src="https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=400&h=200&fit=crop"
-                                        alt="Tech news" loading="lazy">
-                                    <div class="card-body">
-                                        <span class="category-badge">Technology</span>
-                                        <h3>AI Revolution: New Breakthrough Changes Everything</h3>
-                                        <div class="meta">
-                                            <span><i class="bi bi-clock me-1"></i> 4 hours ago</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="hero-card small">
-                                    <img src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400&h=200&fit=crop"
-                                        alt="Sports news" loading="lazy">
-                                    <div class="card-body">
-                                        <span class="category-badge">Sports</span>
-                                        <h3>Champions League: Stunning Upset Shocks Fans</h3>
-                                        <div class="meta">
-                                            <span><i class="bi bi-clock me-1"></i> 6 hours ago</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <!-- ========== ARTICLES FILTERS ========== -->
+        <section class="articles-filters animate-on-scroll">
+            <div class="container">
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">All Articles</button>
+                    <button class="filter-btn" data-filter="technology">Technology</button>
+                    <button class="filter-btn" data-filter="politics">Politics</button>
+                    <button class="filter-btn" data-filter="entertainment">Entertainment</button>
+                    <button class="filter-btn" data-filter="sports">Sports</button>
+                    <button class="filter-btn" data-filter="lifestyle">Lifestyle</button>
                 </div>
             </div>
         </section>
 
-        <!-- ========== TRENDING SECTION ========== -->
-        <section class="trending-section animate-on-scroll">
+        <!-- ========== ARTICLES GRID ========== -->
+        <section class="articles-grid animate-on-scroll">
             <div class="container">
-                <div class="section-header">
-                    <h2>Trending</h2>
-                    <div class="line"></div>
-                </div>
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-                    <!-- PHP: Loop trending posts here -->
-                    <div class="col">
-                        <div class="content-card">
-                            <img src="https://images.unsplash.com/photo-1495020689067-958852a7765e?w=400&h=200&fit=crop"
-                                alt="News" loading="lazy">
-                            <div class="card-body">
-                                <span class="category-badge">World</span>
-                                <h3>Climate Summit Reaches Historic Agreement</h3>
-                                <div class="meta">
-                                    <span><i class="bi bi-clock me-1"></i> 1h ago</span>
-                                    <span><i class="bi bi-eye me-1"></i> 2.5k</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="content-card">
-                            <img src="https://images.unsplash.com/photo-1483058712412-4245e9b90334?w=400&h=200&fit=crop"
-                                alt="Travel" loading="lazy">
-                            <div class="card-body">
-                                <span class="category-badge">Travel</span>
-                                <h3>10 Hidden Gems You Must Visit in 2025</h3>
-                                <div class="meta">
-                                    <span><i class="bi bi-clock me-1"></i> 3h ago</span>
-                                    <span><i class="bi bi-eye me-1"></i> 1.8k</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="content-card">
+                <div class="row" id="articlesContainer">
+                    <!-- Article cards will be dynamically loaded here -->
+                    <div class="col-lg-4 col-md-6" data-category="technology">
+                        <div class="article-card">
                             <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=200&fit=crop"
                                 alt="Tech" loading="lazy">
                             <div class="card-body">
                                 <span class="category-badge">Technology</span>
                                 <h3>Quantum Computing Makes Giant Leap Forward</h3>
+                                <p>Researchers have achieved a breakthrough in quantum computing that could revolutionize how we process information and solve complex problems.</p>
                                 <div class="meta">
                                     <span><i class="bi bi-clock me-1"></i> 5h ago</span>
                                     <span><i class="bi bi-eye me-1"></i> 3.2k</span>
@@ -1026,109 +947,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col">
-                        <div class="content-card">
-                            <img src="https://images.unsplash.com/photo-1490730141103-6cac27aaab94?w=400&h=200&fit=crop"
-                                alt="Fashion" loading="lazy">
-                            <div class="card-body">
-                                <span class="category-badge">Fashion</span>
-                                <h3>Fashion Week 2025: Top Trends Revealed</h3>
-                                <div class="meta">
-                                    <span><i class="bi bi-clock me-1"></i> 8h ago</span>
-                                    <span><i class="bi bi-eye me-1"></i> 1.5k</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ========== ENTERTAINMENT SECTION ========== -->
-        <section class="entertainment-section animate-on-scroll">
-            <div class="container">
-                <div class="section-header">
-                    <h2>Entertainment</h2>
-                    <div class="line"></div>
-                </div>
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-                    <!-- PHP: Loop entertainment posts here -->
-                    <div class="col">
-                        <div class="content-card">
-                            <img src="https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=400&h=200&fit=crop"
-                                alt="Movie" loading="lazy">
-                            <div class="card-body">
-                                <span class="category-badge">Movies</span>
-                                <h3>Box Office: New Blockbuster Breaks Records</h3>
-                                <div class="meta">
-                                    <span><i class="bi bi-clock me-1"></i> 2h ago</span>
-                                    <span><i class="bi bi-eye me-1"></i> 4.1k</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="content-card">
-                            <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=400&h=200&fit=crop"
-                                alt="Music" loading="lazy">
-                            <div class="card-body">
-                                <span class="category-badge">Music</span>
-                                <h3>Grammy Winner Announces World Tour</h3>
-                                <div class="meta">
-                                    <span><i class="bi bi-clock me-1"></i> 4h ago</span>
-                                    <span><i class="bi bi-eye me-1"></i> 2.7k</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="content-card">
-                            <img src="https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=400&h=200&fit=crop"
-                                alt="TV" loading="lazy">
-                            <div class="card-body">
-                                <span class="category-badge">TV Shows</span>
-                                <h3>Most Anticipated Series of 2025 Unveiled</h3>
-                                <div class="meta">
-                                    <span><i class="bi bi-clock me-1"></i> 6h ago</span>
-                                    <span><i class="bi bi-eye me-1"></i> 3.5k</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="content-card">
-                            <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400&h=200&fit=crop"
-                                alt="Celebrity" loading="lazy">
-                            <div class="card-body">
-                                <span class="category-badge">Celebrity</span>
-                                <h3>Hollywood Stars Unite for Charity Event</h3>
-                                <div class="meta">
-                                    <span><i class="bi bi-clock me-1"></i> 9h ago</span>
-                                    <span><i class="bi bi-eye me-1"></i> 2.9k</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ========== POLITICS SECTION ========== -->
-        <section class="politics-section animate-on-scroll">
-            <div class="container">
-                <div class="section-header">
-                    <h2>Politics</h2>
-                    <div class="line"></div>
-                </div>
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-                    <!-- PHP: Loop politics posts here -->
-                    <div class="col">
-                        <div class="content-card">
+                    <div class="col-lg-4 col-md-6" data-category="politics">
+                        <div class="article-card">
                             <img src="https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=400&h=200&fit=crop"
                                 alt="Politics" loading="lazy">
                             <div class="card-body">
                                 <span class="category-badge">Politics</span>
                                 <h3>Senate Passes Major Infrastructure Bill</h3>
+                                <p>After months of negotiations, the Senate has approved a comprehensive infrastructure package that will fund projects across the country.</p>
                                 <div class="meta">
                                     <span><i class="bi bi-clock me-1"></i> 1h ago</span>
                                     <span><i class="bi bi-eye me-1"></i> 5.2k</span>
@@ -1136,27 +962,74 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col">
-                        <div class="content-card">
-                            <img src="https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=400&h=200&fit=crop"
-                                alt="Policy" loading="lazy">
+                    <div class="col-lg-4 col-md-6" data-category="entertainment">
+                        <div class="article-card">
+                            <img src="https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=400&h=200&fit=crop"
+                                alt="Movie" loading="lazy">
                             <div class="card-body">
-                                <span class="category-badge">Policy</span>
-                                <h3>New Healthcare Reform Announced Today</h3>
+                                <span class="category-badge">Entertainment</span>
+                                <h3>Box Office: New Blockbuster Breaks Records</h3>
+                                <p>The latest superhero film has shattered box office records in its opening weekend, becoming the highest-grossing film of the year.</p>
                                 <div class="meta">
-                                    <span><i class="bi bi-clock me-1"></i> 3h ago</span>
-                                    <span><i class="bi bi-eye me-1"></i> 4.6k</span>
+                                    <span><i class="bi bi-clock me-1"></i> 2h ago</span>
+                                    <span><i class="bi bi-eye me-1"></i> 4.1k</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col">
-                        <div class="content-card">
+                    <div class="col-lg-4 col-md-6" data-category="sports">
+                        <div class="article-card">
+                            <img src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400&h=200&fit=crop"
+                                alt="Sports" loading="lazy">
+                            <div class="card-body">
+                                <span class="category-badge">Sports</span>
+                                <h3>Champions League: Stunning Upset Shocks Fans</h3>
+                                <p>Underdogs pull off a remarkable victory against the tournament favorites in a match that will be remembered for years to come.</p>
+                                <div class="meta">
+                                    <span><i class="bi bi-clock me-1"></i> 6h ago</span>
+                                    <span><i class="bi bi-eye me-1"></i> 2.8k</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6" data-category="lifestyle">
+                        <div class="article-card">
+                            <img src="https://images.unsplash.com/photo-1483058712412-4245e9b90334?w=400&h=200&fit=crop"
+                                alt="Travel" loading="lazy">
+                            <div class="card-body">
+                                <span class="category-badge">Lifestyle</span>
+                                <h3>10 Hidden Gems You Must Visit in 2025</h3>
+                                <p>Discover these breathtaking destinations that are still off the beaten path but offer unforgettable experiences for travelers.</p>
+                                <div class="meta">
+                                    <span><i class="bi bi-clock me-1"></i> 3h ago</span>
+                                    <span><i class="bi bi-eye me-1"></i> 1.8k</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6" data-category="technology">
+                        <div class="article-card">
+                            <img src="https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=400&h=200&fit=crop"
+                                alt="AI" loading="lazy">
+                            <div class="card-body">
+                                <span class="category-badge">Technology</span>
+                                <h3>AI Revolution: New Breakthrough Changes Everything</h3>
+                                <p>Artificial intelligence researchers have developed a system that can understand and generate human-like text with unprecedented accuracy.</p>
+                                <div class="meta">
+                                    <span><i class="bi bi-clock me-1"></i> 4h ago</span>
+                                    <span><i class="bi bi-eye me-1"></i> 2.5k</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6" data-category="politics">
+                        <div class="article-card">
                             <img src="https://images.unsplash.com/photo-1591258739299-5b65d5cbb235?w=400&h=200&fit=crop"
                                 alt="Elections" loading="lazy">
                             <div class="card-body">
-                                <span class="category-badge">Elections</span>
+                                <span class="category-badge">Politics</span>
                                 <h3>Polls Show Tight Race in Upcoming Vote</h3>
+                                <p>Latest polling data indicates a neck-and-neck competition between the leading candidates with just weeks remaining until election day.</p>
                                 <div class="meta">
                                     <span><i class="bi bi-clock me-1"></i> 5h ago</span>
                                     <span><i class="bi bi-eye me-1"></i> 3.8k</span>
@@ -1164,20 +1037,39 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col">
-                        <div class="content-card">
-                            <img src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=400&h=200&fit=crop"
-                                alt="International" loading="lazy">
+                    <div class="col-lg-4 col-md-6" data-category="entertainment">
+                        <div class="article-card">
+                            <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=400&h=200&fit=crop"
+                                alt="Music" loading="lazy">
                             <div class="card-body">
-                                <span class="category-badge">International</span>
-                                <h3>G20 Summit Addresses Global Challenges</h3>
+                                <span class="category-badge">Entertainment</span>
+                                <h3>Grammy Winner Announces World Tour</h3>
+                                <p>The multi-award winning artist has revealed plans for a global tour that will visit over 30 countries starting next spring.</p>
                                 <div class="meta">
-                                    <span><i class="bi bi-clock me-1"></i> 7h ago</span>
-                                    <span><i class="bi bi-eye me-1"></i> 4.3k</span>
+                                    <span><i class="bi bi-clock me-1"></i> 4h ago</span>
+                                    <span><i class="bi bi-eye me-1"></i> 2.7k</span>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="col-lg-4 col-md-6" data-category="sports">
+                        <div class="article-card">
+                            <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=200&fit=crop"
+                                alt="Basketball" loading="lazy">
+                            <div class="card-body">
+                                <span class="category-badge">Sports</span>
+                                <h3>NBA Finals: Underdog Team Takes Game 1</h3>
+                                <p>In a surprising turn of events, the underdog team secured a decisive victory in the opening game of the championship series.</p>
+                                <div class="meta">
+                                    <span><i class="bi bi-clock me-1"></i> 8h ago</span>
+                                    <span><i class="bi bi-eye me-1"></i> 3.1k</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="load-more-container">
+                    <button class="btn btn-load-more" id="loadMoreBtn">Load More Articles</button>
                 </div>
             </div>
         </section>
@@ -1276,6 +1168,7 @@
         // Initialize cookie consent when page loads
         document.addEventListener('DOMContentLoaded', function () {
             checkCookieConsent();
+            initArticlesPage();
         });
 
         // ========== PAGE LOADER ==========
@@ -1555,7 +1448,7 @@
         });
 
         // ========== CARD CLICK HANDLING ==========
-        document.querySelectorAll('.hero-card, .content-card').forEach(card => {
+        document.querySelectorAll('.hero-card, .content-card, .article-card').forEach(card => {
             card.addEventListener('click', function () {
                 // In a real implementation, this would navigate to the article
                 console.log('Navigate to article page');
@@ -1609,6 +1502,65 @@
                 behavior: 'smooth'
             });
         });
+
+        // ========== ARTICLES PAGE FUNCTIONALITY ==========
+        function initArticlesPage() {
+            // Filter functionality
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const articlesContainer = document.getElementById('articlesContainer');
+            const articles = document.querySelectorAll('.article-card');
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+
+            // Filter articles
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    // Add active class to clicked button
+                    button.classList.add('active');
+
+                    const filter = button.getAttribute('data-filter');
+
+                    // Show/hide articles based on filter
+                    articles.forEach(article => {
+                        const category = article.closest('.col-lg-4').getAttribute('data-category');
+
+                        if (filter === 'all' || category === filter) {
+                            article.closest('.col-lg-4').style.display = 'block';
+                        } else {
+                            article.closest('.col-lg-4').style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // Load more functionality
+            let articlesToShow = 6; // Initial number of articles to show
+            const allArticles = document.querySelectorAll('.col-lg-4');
+
+            // Initially hide articles beyond the initial count
+            allArticles.forEach((article, index) => {
+                if (index >= articlesToShow) {
+                    article.style.display = 'none';
+                }
+            });
+
+            loadMoreBtn.addEventListener('click', () => {
+                articlesToShow += 3; // Load 3 more articles
+
+                // Show the additional articles
+                allArticles.forEach((article, index) => {
+                    if (index < articlesToShow) {
+                        article.style.display = 'block';
+                    }
+                });
+
+                // Hide the button if all articles are shown
+                if (articlesToShow >= allArticles.length) {
+                    loadMoreBtn.style.display = 'none';
+                }
+            });
+        }
     </script>
 </body>
 

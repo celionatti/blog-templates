@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,12 +11,12 @@
     <meta property="og:image" content="https://example.com/article-image.jpg">
     <meta property="og:type" content="article">
     <title>Breaking: Major Development Reshapes Global Economy - BlogName</title>
-    
+
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    
+
     <style>
         /* ========== LOADING STATE ========== */
         .page-loader {
@@ -104,17 +105,35 @@
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0.8; }
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
         }
 
         @keyframes fadeInOut {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
+
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
         }
 
         /* Hide content while loading */
@@ -295,7 +314,7 @@
             color: var(--text-primary);
         }
 
-        .breadcrumb-item + .breadcrumb-item::before {
+        .breadcrumb-item+.breadcrumb-item::before {
             color: var(--text-secondary);
         }
 
@@ -409,7 +428,8 @@
             border-radius: 0 8px 8px 0;
         }
 
-        .article-content ul, .article-content ol {
+        .article-content ul,
+        .article-content ol {
             margin: 1.5rem 0;
             padding-left: 2rem;
         }
@@ -737,282 +757,282 @@
         }
 
         /* ========== COMMENTS SECTION ========== */
-.comments-section {
-    margin: 3rem 0;
-}
+        .comments-section {
+            margin: 3rem 0;
+        }
 
-.comment-count {
-    color: var(--accent);
-    font-weight: 600;
-}
+        .comment-count {
+            color: var(--accent);
+            font-weight: 600;
+        }
 
-/* Comment Form */
-.comment-form-card {
-    background-color: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 2rem;
-    margin-bottom: 2.5rem;
-}
+        /* Comment Form */
+        .comment-form-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+        }
 
-.comment-form-card h3 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    color: var(--text-primary);
-}
+        .comment-form-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
 
-.form-control {
-    background-color: var(--bg-primary);
-    border: 1px solid var(--border-color);
-    color: var(--text-primary);
-    border-radius: 8px;
-    padding: 0.75rem 1rem;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-}
+        .form-control {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
 
-.form-control:focus {
-    background-color: var(--bg-primary);
-    border-color: var(--accent);
-    color: var(--text-primary);
-    box-shadow: 0 0 0 0.2rem rgba(220, 20, 60, 0.1);
-}
+        .form-control:focus {
+            background-color: var(--bg-primary);
+            border-color: var(--accent);
+            color: var(--text-primary);
+            box-shadow: 0 0 0 0.2rem rgba(220, 20, 60, 0.1);
+        }
 
-.dark-mode .form-control:focus {
-    box-shadow: 0 0 0 0.2rem rgba(255, 79, 90, 0.1);
-}
+        .dark-mode .form-control:focus {
+            box-shadow: 0 0 0 0.2rem rgba(255, 79, 90, 0.1);
+        }
 
-.form-check-input {
-    background-color: var(--bg-primary);
-    border: 1px solid var(--border-color);
-}
+        .form-check-input {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+        }
 
-.form-check-input:checked {
-    background-color: var(--accent);
-    border-color: var(--accent);
-}
+        .form-check-input:checked {
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
 
-.form-check-label {
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-}
+        .form-check-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
 
-/* Submit Button */
-.btn-submit-comment {
-    background-color: var(--accent);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 0.75rem 2rem;
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
+        /* Submit Button */
+        .btn-submit-comment {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-.btn-submit-comment:hover {
-    background-color: var(--accent-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(220, 20, 60, 0.2);
-}
+        .btn-submit-comment:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 20, 60, 0.2);
+        }
 
-.dark-mode .btn-submit-comment:hover {
-    box-shadow: 0 4px 12px rgba(255, 79, 90, 0.2);
-}
+        .dark-mode .btn-submit-comment:hover {
+            box-shadow: 0 4px 12px rgba(255, 79, 90, 0.2);
+        }
 
-/* Comments List */
-.comments-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    color: var(--text-primary);
-}
+        /* Comments List */
+        .comments-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
 
-/* Individual Comment */
-.comment {
-    display: flex;
-    gap: 1rem;
-    padding: 1.5rem 0;
-    border-bottom: 1px solid var(--border-color);
-}
+        /* Individual Comment */
+        .comment {
+            display: flex;
+            gap: 1rem;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
 
-.comment:last-child {
-    border-bottom: none;
-}
+        .comment:last-child {
+            border-bottom: none;
+        }
 
-.comment-avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-    flex-shrink: 0;
-}
+        .comment-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
 
-.comment-content {
-    flex: 1;
-}
+        .comment-content {
+            flex: 1;
+        }
 
-.comment-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 0.75rem;
-    flex-wrap: wrap;
-}
+        .comment-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
+        }
 
-.comment-author {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin: 0;
-}
+        .comment-author {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
 
-.author-badge {
-    background-color: var(--accent);
-    color: white;
-    padding: 0.2rem 0.6rem;
-    border-radius: 4px;
-    font-size: 0.7rem;
-    font-weight: 600;
-    text-transform: uppercase;
-}
+        .author-badge {
+            background-color: var(--accent);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
 
-.comment-time {
-    color: var(--text-secondary);
-    font-size: 0.85rem;
-}
+        .comment-time {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
 
-.comment-text {
-    color: var(--text-primary);
-    line-height: 1.6;
-    margin-bottom: 1rem;
-}
+        .comment-text {
+            color: var(--text-primary);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
 
-/* Comment Actions */
-.comment-actions {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-}
+        /* Comment Actions */
+        .comment-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
 
-.comment-action-btn {
-    background: none;
-    border: none;
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-    cursor: pointer;
-    padding: 0.4rem 0.8rem;
-    border-radius: 6px;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
-}
+        .comment-action-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            cursor: pointer;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
 
-.comment-action-btn:hover {
-    background-color: var(--bg-primary);
-    color: var(--text-primary);
-}
+        .comment-action-btn:hover {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
 
-.comment-action-btn.liked {
-    color: var(--accent);
-    background-color: rgba(220, 20, 60, 0.1);
-}
+        .comment-action-btn.liked {
+            color: var(--accent);
+            background-color: rgba(220, 20, 60, 0.1);
+        }
 
-.dark-mode .comment-action-btn.liked {
-    background-color: rgba(255, 79, 90, 0.1);
-}
+        .dark-mode .comment-action-btn.liked {
+            background-color: rgba(255, 79, 90, 0.1);
+        }
 
-/* Reply Form */
-.reply-form {
-    margin-top: 1rem;
-    padding: 1rem;
-    background-color: var(--bg-primary);
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
-}
+        /* Reply Form */
+        .reply-form {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: var(--bg-primary);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
 
-.reply-form textarea {
-    margin-bottom: 0.75rem;
-}
+        .reply-form textarea {
+            margin-bottom: 0.75rem;
+        }
 
-.reply-form-actions {
-    display: flex;
-    gap: 0.75rem;
-    justify-content: flex-end;
-}
+        .reply-form-actions {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: flex-end;
+        }
 
-.btn-cancel-reply {
-    background: none;
-    border: 1px solid var(--border-color);
-    color: var(--text-secondary);
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
+        .btn-cancel-reply {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
 
-.btn-cancel-reply:hover {
-    background-color: var(--bg-secondary);
-    color: var(--text-primary);
-}
+        .btn-cancel-reply:hover {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+        }
 
-.btn-post-reply {
-    background-color: var(--accent);
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
+        .btn-post-reply {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
 
-.btn-post-reply:hover {
-    background-color: var(--accent-hover);
-}
+        .btn-post-reply:hover {
+            background-color: var(--accent-hover);
+        }
 
-/* Nested Replies */
-.comment-reply {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1.5rem;
-    padding-left: 1.5rem;
-    border-left: 2px solid var(--border-color);
-}
+        /* Nested Replies */
+        .comment-reply {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            padding-left: 1.5rem;
+            border-left: 2px solid var(--border-color);
+        }
 
-.comment-reply .comment-avatar {
-    width: 40px;
-    height: 40px;
-}
+        .comment-reply .comment-avatar {
+            width: 40px;
+            height: 40px;
+        }
 
-/* Load More Button */
-.btn-load-more {
-    background-color: var(--bg-secondary);
-    color: var(--text-primary);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 0.75rem 1.5rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
+        /* Load More Button */
+        .btn-load-more {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-.btn-load-more:hover {
-    background-color: var(--bg-primary);
-    border-color: var(--accent);
-    color: var(--accent);
-    transform: translateY(-2px);
-}
+        .btn-load-more:hover {
+            background-color: var(--bg-primary);
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
 
         /* ========== RESPONSIVE ========== */
         @media (max-width: 768px) {
@@ -1039,35 +1059,35 @@
             }
 
             .comment-form-card {
-        padding: 1.5rem;
-    }
+                padding: 1.5rem;
+            }
 
-    .comment {
-        flex-direction: column;
-        gap: 0.75rem;
-    }
+            .comment {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
 
-    .comment-avatar {
-        width: 40px;
-        height: 40px;
-    }
+            .comment-avatar {
+                width: 40px;
+                height: 40px;
+            }
 
-    .comment-header {
-        gap: 0.5rem;
-    }
+            .comment-header {
+                gap: 0.5rem;
+            }
 
-    .comment-reply {
-        padding-left: 1rem;
-    }
+            .comment-reply {
+                padding-left: 1rem;
+            }
 
-    .reply-form-actions {
-        flex-direction: column;
-    }
+            .reply-form-actions {
+                flex-direction: column;
+            }
 
-    .btn-cancel-reply,
-    .btn-post-reply {
-        width: 100%;
-    }
+            .btn-cancel-reply,
+            .btn-post-reply {
+                width: 100%;
+            }
         }
 
         /* ========== COOKIE CONSENT BANNER ========== */
@@ -1222,6 +1242,7 @@
     }
     </script>
 </head>
+
 <body class="loading">
     <!-- ========== PAGE LOADER ========== -->
     <div class="page-loader" id="pageLoader">
@@ -1237,578 +1258,668 @@
 
     <!-- ========== MAIN CONTENT ========== -->
     <div class="main-content">
-    <!-- ========== TOP HEADER ========== -->
-    <header class="top-header">
-        <div class="container">
-            <div class="d-flex justify-content-between align-items-center">
-                <button class="btn btn-subscribe rounded-pill">
-                    <i class="bi bi-envelope-fill me-1"></i> Subscribe
-                </button>
-                <a href="/" class="brand">Blog<span>Name</span></a>
-                <div class="auth-links">
-                    <a href="#"><i class="bi bi-person-circle me-1"></i> Login</a>
-                    <a href="#"><i class="bi bi-person-plus-fill me-1"></i> Sign Up</a>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- ========== MAIN NAVBAR ========== -->
-    <nav class="navbar navbar-expand-lg main-navbar sticky-top">
-        <div class="container">
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
-                <i class="bi bi-list" style="font-size: 1.5rem; color: var(--text-primary);"></i>
-            </button>
-            <div class="collapse navbar-collapse" id="mainNav">
-                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="#">Articles</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">World</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Sports</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Politics</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Entertainment</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Nigeria</a></li>
-                </ul>
-            </div>
-            <div class="d-flex align-items-center gap-3">
-                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
-                    <i class="bi bi-sun-fill" id="themeIcon"></i>
-                </button>
-                <button class="btn" style="background: none; border: none; color: var(--text-primary); font-size: 1.2rem;">
-                    <i class="bi bi-search"></i>
-                </button>
-            </div>
-        </div>
-    </nav>
-
-    <!-- ========== BREADCRUMB ========== -->
-    <section class="breadcrumb-section">
-        <div class="container">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/">Home</a></li>
-                    <li class="breadcrumb-item"><a href="#">World</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Article Title</li>
-                </ol>
-            </nav>
-        </div>
-    </section>
-
-    <!-- ========== ARTICLE HEADER ========== -->
-    <article class="article-header animate-on-scroll">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-10">
-                    <span class="category-badge">World News</span>
-                    <h1 class="article-title">Breaking: Major Development Reshapes Global Economy</h1>
-                    
-                    <div class="article-meta">
-                        <div class="meta-item">
-                            <img src="https://i.pravatar.cc/80?img=12" alt="Author" class="author-avatar">
-                            <div class="author-info">
-                                <span class="author-name">John Doe</span>
-                                <span class="author-role">Senior Editor</span>
-                            </div>
-                        </div>
-                        <div class="meta-item">
-                            <i class="bi bi-calendar3"></i>
-                            <span>November 5, 2025</span>
-                        </div>
-                        <div class="meta-item">
-                            <i class="bi bi-clock"></i>
-                            <span>8 min read</span>
-                        </div>
-                        <div class="meta-item">
-                            <i class="bi bi-eye"></i>
-                            <span>12.5K views</span>
-                        </div>
+        <!-- ========== TOP HEADER ========== -->
+        <header class="top-header">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <button class="btn btn-subscribe rounded-pill">
+                        <i class="bi bi-envelope-fill me-1"></i> Subscribe
+                    </button>
+                    <a href="/" class="brand">Blog<span>Name</span></a>
+                    <div class="auth-links">
+                        <a href="#"><i class="bi bi-person-circle me-1"></i> Login</a>
+                        <a href="#"><i class="bi bi-person-plus-fill me-1"></i> Sign Up</a>
                     </div>
                 </div>
             </div>
-        </div>
-    </article>
+        </header>
 
-    <!-- ========== ARTICLE CONTENT ========== -->
-    <section class="article-section animate-on-scroll">
-        <div class="container">
-            <div class="row">
-                <!-- Main Content -->
-                <div class="col-lg-8">
-                    <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=600&fit=crop" 
-                         alt="Featured article image" 
-                         class="featured-image" 
-                         loading="lazy">
+        <!-- ========== MAIN NAVBAR ========== -->
+        <nav class="navbar navbar-expand-lg main-navbar sticky-top">
+            <div class="container">
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#mainNav">
+                    <i class="bi bi-list" style="font-size: 1.5rem; color: var(--text-primary);"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="mainNav">
+                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="#">Articles</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">World</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Sports</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Politics</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Entertainment</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Nigeria</a></li>
+                    </ul>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                        <i class="bi bi-sun-fill" id="themeIcon"></i>
+                    </button>
+                    <button class="btn"
+                        style="background: none; border: none; color: var(--text-primary); font-size: 1.2rem;">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
 
-                    <div class="article-content">
-                        <p>In a groundbreaking development that has sent shockwaves through financial markets worldwide, global economic leaders gathered today to announce unprecedented measures aimed at reshaping the international monetary system. The implications of these decisions will be felt for generations to come.</p>
+        <!-- ========== BREADCRUMB ========== -->
+        <section class="breadcrumb-section">
+            <div class="container">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">World</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Article Title</li>
+                    </ol>
+                </nav>
+            </div>
+        </section>
 
-                        <p>The announcement comes at a critical juncture, as economies around the world grapple with inflationary pressures, supply chain disruptions, and the lingering effects of recent global challenges. Experts suggest that this coordinated effort represents the most significant economic policy shift since the post-war era.</p>
+        <!-- ========== ARTICLE HEADER ========== -->
+        <article class="article-header animate-on-scroll">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <span class="category-badge">World News</span>
+                        <h1 class="article-title">Breaking: Major Development Reshapes Global Economy</h1>
 
-                        <h3>Market Reactions</h3>
-
-                        <p>Financial markets responded swiftly to the announcement, with major indices experiencing significant volatility in early trading. The S&P 500 initially surged by 2.3% before settling into more moderate gains, while European and Asian markets showed mixed reactions as investors digested the implications of the new policies.</p>
-
-                        <p>Currency markets saw particularly dramatic movements, with the dollar strengthening against most major currencies. Gold prices initially spiked but later retreated as clarity emerged around the specifics of the proposed measures.</p>
-
-                        <h3>Expert Analysis</h3>
-
-                        <p>Leading economists have offered varying perspectives on the potential impact of these developments. Dr. Sarah Chen, Chief Economist at Global Financial Institute, emphasized that "while the short-term market reaction has been volatile, the long-term implications could fundamentally alter how we think about monetary policy coordination."</p>
-
-                        <p>However, not all experts are convinced. Professor Michael Roberts of Harvard Business School cautioned that "implementing such sweeping changes across diverse economic systems presents enormous practical challenges. The devil will be in the details of execution."</p>
-
-                        <h2>Looking Ahead</h2>
-
-                        <p>As nations move forward with implementation, attention now turns to how these policies will affect everyday consumers and businesses. Early indications suggest that borrowing costs may stabilize, but the full impact won't be clear for several quarters.</p>
-
-                        <p>The agreement also includes provisions for regular review and adjustment, acknowledging that flexibility will be crucial as the global economic landscape continues to evolve. Quarterly meetings of finance ministers and central bank governors have been scheduled to monitor progress and address emerging challenges.</p>
-
-                        <p>For businesses and investors, the message is clear: adaptability and careful attention to policy developments will be more important than ever. As these historic changes unfold, the ability to respond quickly to new information will separate successful strategies from those caught flat-footed.</p>
-
-                        <p>The coming months will be critical in determining whether this ambitious initiative can deliver on its promise of greater economic stability and prosperity. One thing is certain—the global economic landscape has been fundamentally altered, and the ripple effects will be felt far and wide.</p>
-                    </div>
-
-                    <!-- Social Share -->
-                    <div class="social-share">
-                        <h3>Share this article</h3>
-                        <div class="share-buttons">
-                            <button class="share-btn twitter" onclick="shareOnTwitter()">
-                                <i class="bi bi-twitter"></i> Twitter
-                            </button>
-                            <button class="share-btn facebook" onclick="shareOnFacebook()">
-                                <i class="bi bi-facebook"></i> Facebook
-                            </button>
-                            <button class="share-btn linkedin" onclick="shareOnLinkedIn()">
-                                <i class="bi bi-linkedin"></i> LinkedIn
-                            </button>
-                            <button class="share-btn copy" onclick="copyLink()">
-                                <i class="bi bi-link-45deg"></i> Copy Link
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Author Bio -->
-                    <div class="author-bio animate-on-scroll">
-                        <img src="https://i.pravatar.cc/200?img=12" alt="John Doe" class="author-bio-avatar">
-                        <div class="author-bio-content">
-                            <h4>John Doe</h4>
-                            <p class="author-bio-role">Senior Editor | Economic Affairs</p>
-                            <p class="author-bio-text">John is an award-winning journalist with over 15 years of experience covering international economics and finance. He has reported from major financial centers around the world and holds a Master's degree in Economics from Oxford University.</p>
-                        </div>
-                    </div>
-
-                    <!-- Related Articles -->
-                    <div class="related-articles animate-on-scroll">
-                        <div class="section-header">
-                            <h2>Related Articles</h2>
-                            <div class="line"></div>
-                        </div>
-                        <div class="row g-4">
-                            <!-- PHP: Loop related posts here -->
-                            <div class="col-md-4">
-                                <a href="#" class="related-card">
-                                    <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&h=200&fit=crop" alt="Related article" loading="lazy">
-                                    <div class="card-body">
-                                        <span class="category-badge">Economy</span>
-                                        <h3>Central Banks Signal New Policy Direction</h3>
-                                        <div class="meta">
-                                            <span><i class="bi bi-clock me-1"></i> 2 days ago</span>
-                                        </div>
-                                    </div>
-                                </a>
+                        <div class="article-meta">
+                            <div class="meta-item">
+                                <img src="https://i.pravatar.cc/80?img=12" alt="Author" class="author-avatar">
+                                <div class="author-info">
+                                    <span class="author-name">John Doe</span>
+                                    <span class="author-role">Senior Editor</span>
+                                </div>
                             </div>
-                            <div class="col-md-4">
-                                <a href="#" class="related-card">
-                                    <img src="https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=400&h=200&fit=crop" alt="Related article" loading="lazy">
-                                    <div class="card-body">
-                                        <span class="category-badge">Markets</span>
-                                        <h3>Stock Markets Rally on Economic News</h3>
-                                        <div class="meta">
-                                            <span><i class="bi bi-clock me-1"></i> 3 days ago</span>
-                                        </div>
-                                    </div>
-                                </a>
+                            <div class="meta-item">
+                                <i class="bi bi-calendar3"></i>
+                                <span>November 5, 2025</span>
                             </div>
-                            <div class="col-md-4">
-                                <a href="#" class="related-card">
-                                    <img src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=400&h=200&fit=crop" alt="Related article" loading="lazy">
-                                    <div class="card-body">
-                                        <span class="category-badge">Analysis</span>
-                                        <h3>What These Changes Mean for You</h3>
-                                        <div class="meta">
-                                            <span><i class="bi bi-clock me-1"></i> 4 days ago</span>
-                                        </div>
-                                    </div>
-                                </a>
+                            <div class="meta-item">
+                                <i class="bi bi-clock"></i>
+                                <span>8 min read</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="bi bi-eye"></i>
+                                <span>12.5K views</span>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </article>
 
-                    <!-- Comments Section -->
-                    <div class="comments-section animate-on-scroll">
-                        <div class="section-header">
-                            <h2>Comments <span class="comment-count">(8)</span></h2>
-                            <div class="line"></div>
+        <!-- ========== ARTICLE CONTENT ========== -->
+        <section class="article-section animate-on-scroll">
+            <div class="container">
+                <div class="row">
+                    <!-- Main Content -->
+                    <div class="col-lg-8">
+                        <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&h=600&fit=crop"
+                            alt="Featured article image" class="featured-image" loading="lazy">
+
+                        <div class="article-content">
+                            <p>In a groundbreaking development that has sent shockwaves through financial markets
+                                worldwide, global economic leaders gathered today to announce unprecedented measures
+                                aimed at reshaping the international monetary system. The implications of these
+                                decisions will be felt for generations to come.</p>
+
+                            <p>The announcement comes at a critical juncture, as economies around the world grapple with
+                                inflationary pressures, supply chain disruptions, and the lingering effects of recent
+                                global challenges. Experts suggest that this coordinated effort represents the most
+                                significant economic policy shift since the post-war era.</p>
+
+                            <h3>Market Reactions</h3>
+
+                            <p>Financial markets responded swiftly to the announcement, with major indices experiencing
+                                significant volatility in early trading. The S&P 500 initially surged by 2.3% before
+                                settling into more moderate gains, while European and Asian markets showed mixed
+                                reactions as investors digested the implications of the new policies.</p>
+
+                            <p>Currency markets saw particularly dramatic movements, with the dollar strengthening
+                                against most major currencies. Gold prices initially spiked but later retreated as
+                                clarity emerged around the specifics of the proposed measures.</p>
+
+                            <h3>Expert Analysis</h3>
+
+                            <p>Leading economists have offered varying perspectives on the potential impact of these
+                                developments. Dr. Sarah Chen, Chief Economist at Global Financial Institute, emphasized
+                                that "while the short-term market reaction has been volatile, the long-term implications
+                                could fundamentally alter how we think about monetary policy coordination."</p>
+
+                            <p>However, not all experts are convinced. Professor Michael Roberts of Harvard Business
+                                School cautioned that "implementing such sweeping changes across diverse economic
+                                systems presents enormous practical challenges. The devil will be in the details of
+                                execution."</p>
+
+                            <h2>Looking Ahead</h2>
+
+                            <p>As nations move forward with implementation, attention now turns to how these policies
+                                will affect everyday consumers and businesses. Early indications suggest that borrowing
+                                costs may stabilize, but the full impact won't be clear for several quarters.</p>
+
+                            <p>The agreement also includes provisions for regular review and adjustment, acknowledging
+                                that flexibility will be crucial as the global economic landscape continues to evolve.
+                                Quarterly meetings of finance ministers and central bank governors have been scheduled
+                                to monitor progress and address emerging challenges.</p>
+
+                            <p>For businesses and investors, the message is clear: adaptability and careful attention to
+                                policy developments will be more important than ever. As these historic changes unfold,
+                                the ability to respond quickly to new information will separate successful strategies
+                                from those caught flat-footed.</p>
+
+                            <p>The coming months will be critical in determining whether this ambitious initiative can
+                                deliver on its promise of greater economic stability and prosperity. One thing is
+                                certain—the global economic landscape has been fundamentally altered, and the ripple
+                                effects will be felt far and wide.</p>
                         </div>
 
-                        <!-- Comment Form -->
-                        <div class="comment-form-card">
-                            <h3>Leave a Comment</h3>
-                            <form id="commentForm">
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control" placeholder="Your Name *" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="email" class="form-control" placeholder="Your Email *" required>
-                                    </div>
-                                    <div class="col-12">
-                                        <textarea class="form-control" rows="4" placeholder="Your Comment *" required></textarea>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="saveInfo">
-                                            <label class="form-check-label" for="saveInfo">
-                                                Save my name and email for next time
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <button type="submit" class="btn-submit-comment">
-                                            <i class="bi bi-chat-dots-fill me-2"></i> Post Comment
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-
-                        <!-- Comments List -->
-                        <div class="comments-list">
-                            <h3 class="comments-title">All Comments (8)</h3>
-
-                            <!-- PHP: Loop comments here -->
-                            <!-- Comment 1 -->
-                            <div class="comment">
-                                <img src="https://i.pravatar.cc/80?img=32" alt="Commenter" class="comment-avatar">
-                                <div class="comment-content">
-                                    <div class="comment-header">
-                                        <h4 class="comment-author">Sarah Mitchell</h4>
-                                        <span class="comment-time"><i class="bi bi-clock me-1"></i> 2 hours ago</span>
-                                    </div>
-                                    <p class="comment-text">This is exactly the kind of in-depth analysis we need. The implications for emerging markets are particularly interesting. Great work!</p>
-                                    <div class="comment-actions">
-                                        <button class="comment-action-btn" onclick="likeComment(this)">
-                                            <i class="bi bi-hand-thumbs-up"></i> <span>24</span>
-                                        </button>
-                                        <button class="comment-action-btn reply-btn" onclick="toggleReplyForm(this)">
-                                            <i class="bi bi-reply-fill"></i> Reply
-                                        </button>
-                                    </div>
-
-                                    <!-- Reply Form (Hidden by default) -->
-                                    <div class="reply-form" style="display: none;">
-                                        <textarea class="form-control" rows="2" placeholder="Write a reply..."></textarea>
-                                        <div class="reply-form-actions">
-                                            <button class="btn-cancel-reply" onclick="toggleReplyForm(this.closest('.comment-actions').querySelector('.reply-btn'))">Cancel</button>
-                                            <button class="btn-post-reply">Post Reply</button>
-                                        </div>
-                                    </div>
-
-                                    <!-- Nested Reply -->
-                                    <div class="comment-reply">
-                                        <img src="https://i.pravatar.cc/80?img=12" alt="Author" class="comment-avatar">
-                                        <div class="comment-content">
-                                            <div class="comment-header">
-                                                <h4 class="comment-author">John Doe <span class="author-badge">Author</span></h4>
-                                                <span class="comment-time"><i class="bi bi-clock me-1"></i> 1 hour ago</span>
-                                            </div>
-                                            <p class="comment-text">Thank you Sarah! I'm glad you found it valuable. The emerging markets angle is definitely something we'll be following closely.</p>
-                                            <div class="comment-actions">
-                                                <button class="comment-action-btn" onclick="likeComment(this)">
-                                                    <i class="bi bi-hand-thumbs-up"></i> <span>12</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Comment 2 -->
-                            <div class="comment">
-                                <img src="https://i.pravatar.cc/80?img=45" alt="Commenter" class="comment-avatar">
-                                <div class="comment-content">
-                                    <div class="comment-header">
-                                        <h4 class="comment-author">Michael Chen</h4>
-                                        <span class="comment-time"><i class="bi bi-clock me-1"></i> 4 hours ago</span>
-                                    </div>
-                                    <p class="comment-text">I've been following this story for weeks. Your breakdown of the policy implications is spot on. Bookmarking this for future reference.</p>
-                                    <div class="comment-actions">
-                                        <button class="comment-action-btn" onclick="likeComment(this)">
-                                            <i class="bi bi-hand-thumbs-up"></i> <span>18</span>
-                                        </button>
-                                        <button class="comment-action-btn reply-btn" onclick="toggleReplyForm(this)">
-                                            <i class="bi bi-reply-fill"></i> Reply
-                                        </button>
-                                    </div>
-
-                                    <div class="reply-form" style="display: none;">
-                                        <textarea class="form-control" rows="2" placeholder="Write a reply..."></textarea>
-                                        <div class="reply-form-actions">
-                                            <button class="btn-cancel-reply" onclick="toggleReplyForm(this.closest('.comment-actions').querySelector('.reply-btn'))">Cancel</button>
-                                            <button class="btn-post-reply">Post Reply</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Comment 3 -->
-                            <div class="comment">
-                                <img src="https://i.pravatar.cc/80?img=28" alt="Commenter" class="comment-avatar">
-                                <div class="comment-content">
-                                    <div class="comment-header">
-                                        <h4 class="comment-author">Emily Rodriguez</h4>
-                                        <span class="comment-time"><i class="bi bi-clock me-1"></i> 6 hours ago</span>
-                                    </div>
-                                    <p class="comment-text">Excellent article! Could you expand on how this might affect small businesses? That's an angle I'd love to see explored.</p>
-                                    <div class="comment-actions">
-                                        <button class="comment-action-btn" onclick="likeComment(this)">
-                                            <i class="bi bi-hand-thumbs-up"></i> <span>31</span>
-                                        </button>
-                                        <button class="comment-action-btn reply-btn" onclick="toggleReplyForm(this)">
-                                            <i class="bi bi-reply-fill"></i> Reply
-                                        </button>
-                                    </div>
-
-                                    <div class="reply-form" style="display: none;">
-                                        <textarea class="form-control" rows="2" placeholder="Write a reply..."></textarea>
-                                        <div class="reply-form-actions">
-                                            <button class="btn-cancel-reply" onclick="toggleReplyForm(this.closest('.comment-actions').querySelector('.reply-btn'))">Cancel</button>
-                                            <button class="btn-post-reply">Post Reply</button>
-                                        </div>
-                                    </div>
-
-                                    <!-- Nested Replies -->
-                                    <div class="comment-reply">
-                                        <img src="https://i.pravatar.cc/80?img=67" alt="Commenter" class="comment-avatar">
-                                        <div class="comment-content">
-                                            <div class="comment-header">
-                                                <h4 class="comment-author">David Park</h4>
-                                                <span class="comment-time"><i class="bi bi-clock me-1"></i> 5 hours ago</span>
-                                            </div>
-                                            <p class="comment-text">Great question Emily! I'd also like to know more about the SME impact.</p>
-                                            <div class="comment-actions">
-                                                <button class="comment-action-btn" onclick="likeComment(this)">
-                                                    <i class="bi bi-hand-thumbs-up"></i> <span>8</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Comment 4 -->
-                            <div class="comment">
-                                <img src="https://i.pravatar.cc/80?img=51" alt="Commenter" class="comment-avatar">
-                                <div class="comment-content">
-                                    <div class="comment-header">
-                                        <h4 class="comment-author">Amanda Johnson</h4>
-                                        <span class="comment-time"><i class="bi bi-clock me-1"></i> 8 hours ago</span>
-                                    </div>
-                                    <p class="comment-text">As an economist, I appreciate the thorough research behind this piece. Well done! 📊</p>
-                                    <div class="comment-actions">
-                                        <button class="comment-action-btn" onclick="likeComment(this)">
-                                            <i class="bi bi-hand-thumbs-up"></i> <span>42</span>
-                                        </button>
-                                        <button class="comment-action-btn reply-btn" onclick="toggleReplyForm(this)">
-                                            <i class="bi bi-reply-fill"></i> Reply
-                                        </button>
-                                    </div>
-
-                                    <div class="reply-form" style="display: none;">
-                                        <textarea class="form-control" rows="2" placeholder="Write a reply..."></textarea>
-                                        <div class="reply-form-actions">
-                                            <button class="btn-cancel-reply" onclick="toggleReplyForm(this.closest('.comment-actions').querySelector('.reply-btn'))">Cancel</button>
-                                            <button class="btn-post-reply">Post Reply</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Comment 5 -->
-                            <div class="comment">
-                                <img src="https://i.pravatar.cc/80?img=39" alt="Commenter" class="comment-avatar">
-                                <div class="comment-content">
-                                    <div class="comment-header">
-                                        <h4 class="comment-author">Robert Taylor</h4>
-                                        <span class="comment-time"><i class="bi bi-clock me-1"></i> 10 hours ago</span>
-                                    </div>
-                                    <p class="comment-text">Very informative! Sharing this with my team. This is going to be a hot topic in our next meeting.</p>
-                                    <div class="comment-actions">
-                                        <button class="comment-action-btn" onclick="likeComment(this)">
-                                            <i class="bi bi-hand-thumbs-up"></i> <span>15</span>
-                                        </button>
-                                        <button class="comment-action-btn reply-btn" onclick="toggleReplyForm(this)">
-                                            <i class="bi bi-reply-fill"></i> Reply
-                                        </button>
-                                    </div>
-
-                                    <div class="reply-form" style="display: none;">
-                                        <textarea class="form-control" rows="2" placeholder="Write a reply..."></textarea>
-                                        <div class="reply-form-actions">
-                                            <button class="btn-cancel-reply" onclick="toggleReplyForm(this.closest('.comment-actions').querySelector('.reply-btn'))">Cancel</button>
-                                            <button class="btn-post-reply">Post Reply</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Load More Button -->
-                            <div class="text-center mt-4">
-                                <button class="btn-load-more" onclick="loadMoreComments()">
-                                    <i class="bi bi-arrow-down-circle me-2"></i> Load More Comments
+                        <!-- Social Share -->
+                        <div class="social-share">
+                            <h3>Share this article</h3>
+                            <div class="share-buttons">
+                                <button class="share-btn twitter" onclick="shareOnTwitter()">
+                                    <i class="bi bi-twitter"></i> Twitter
+                                </button>
+                                <button class="share-btn facebook" onclick="shareOnFacebook()">
+                                    <i class="bi bi-facebook"></i> Facebook
+                                </button>
+                                <button class="share-btn linkedin" onclick="shareOnLinkedIn()">
+                                    <i class="bi bi-linkedin"></i> LinkedIn
+                                </button>
+                                <button class="share-btn copy" onclick="copyLink()">
+                                    <i class="bi bi-link-45deg"></i> Copy Link
                                 </button>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <!-- Sidebar -->
-                <div class="col-lg-4">
-                    <div class="sidebar-sticky">
-                        <!-- Popular Posts Widget -->
-                        <div class="sidebar-widget animate-on-scroll">
-                            <h4>Popular Posts</h4>
-                            <!-- PHP: Loop popular posts here -->
-                            <a href="#" class="sidebar-post">
-                                <img src="https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=160&h=160&fit=crop" alt="Popular post" loading="lazy">
-                                <div class="sidebar-post-content">
-                                    <h5>AI Revolution Transforms Healthcare Industry</h5>
-                                    <div class="sidebar-post-meta">
-                                        <i class="bi bi-eye me-1"></i> 15.2K views
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="#" class="sidebar-post">
-                                <img src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=160&h=160&fit=crop" alt="Popular post" loading="lazy">
-                                <div class="sidebar-post-content">
-                                    <h5>Champions League: Historic Comeback Victory</h5>
-                                    <div class="sidebar-post-meta">
-                                        <i class="bi bi-eye me-1"></i> 12.8K views
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="#" class="sidebar-post">
-                                <img src="https://images.unsplash.com/photo-1495020689067-958852a7765e?w=160&h=160&fit=crop" alt="Popular post" loading="lazy">
-                                <div class="sidebar-post-content">
-                                    <h5>Climate Summit Reaches Breakthrough Deal</h5>
-                                    <div class="sidebar-post-meta">
-                                        <i class="bi bi-eye me-1"></i> 11.5K views
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="#" class="sidebar-post">
-                                <img src="https://images.unsplash.com/photo-1483058712412-4245e9b90334?w=160&h=160&fit=crop" alt="Popular post" loading="lazy">
-                                <div class="sidebar-post-content">
-                                    <h5>Top Travel Destinations for 2025 Revealed</h5>
-                                    <div class="sidebar-post-meta">
-                                        <i class="bi bi-eye me-1"></i> 9.7K views
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-
-                        <!-- Tags Widget -->
-                        <div class="sidebar-widget animate-on-scroll">
-                            <h4>Popular Tags</h4>
-                            <div class="tag-cloud">
-                                <a href="#" class="tag">Economy</a>
-                                <a href="#" class="tag">Finance</a>
-                                <a href="#" class="tag">Markets</a>
-                                <a href="#" class="tag">Business</a>
-                                <a href="#" class="tag">Technology</a>
-                                <a href="#" class="tag">Politics</a>
-                                <a href="#" class="tag">World</a>
-                                <a href="#" class="tag">Analysis</a>
-                                <a href="#" class="tag">Breaking</a>
-                                <a href="#" class="tag">Investment</a>
+                        <!-- Author Bio -->
+                        <div class="author-bio animate-on-scroll">
+                            <img src="https://i.pravatar.cc/200?img=12" alt="John Doe" class="author-bio-avatar">
+                            <div class="author-bio-content">
+                                <h4>John Doe</h4>
+                                <p class="author-bio-role">Senior Editor | Economic Affairs</p>
+                                <p class="author-bio-text">John is an award-winning journalist with over 15 years of
+                                    experience covering international economics and finance. He has reported from major
+                                    financial centers around the world and holds a Master's degree in Economics from
+                                    Oxford University.</p>
                             </div>
                         </div>
 
-                        <!-- Newsletter Widget -->
-                        <div class="sidebar-widget animate-on-scroll" style="background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%); color: white; border: none;">
-                            <h4 style="color: white; border-color: rgba(255,255,255,0.3);">Newsletter</h4>
-                            <p style="margin-bottom: 1rem; opacity: 0.95;">Get the latest news delivered directly to your inbox.</p>
-                            <form onsubmit="event.preventDefault(); alert('Newsletter subscription feature coming soon!');">
-                                <div class="mb-3">
-                                    <input type="email" class="form-control" placeholder="Your email address" required style="border-radius: 8px;">
+                        <!-- Related Articles -->
+                        <div class="related-articles animate-on-scroll">
+                            <div class="section-header">
+                                <h2>Related Articles</h2>
+                                <div class="line"></div>
+                            </div>
+                            <div class="row g-4">
+                                <!-- PHP: Loop related posts here -->
+                                <div class="col-md-4">
+                                    <a href="#" class="related-card">
+                                        <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&h=200&fit=crop"
+                                            alt="Related article" loading="lazy">
+                                        <div class="card-body">
+                                            <span class="category-badge">Economy</span>
+                                            <h3>Central Banks Signal New Policy Direction</h3>
+                                            <div class="meta">
+                                                <span><i class="bi bi-clock me-1"></i> 2 days ago</span>
+                                            </div>
+                                        </div>
+                                    </a>
                                 </div>
-                                <button type="submit" class="btn w-100" style="background: white; color: var(--accent); font-weight: 600; border-radius: 8px;">
-                                    Subscribe Now
-                                </button>
-                            </form>
+                                <div class="col-md-4">
+                                    <a href="#" class="related-card">
+                                        <img src="https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=400&h=200&fit=crop"
+                                            alt="Related article" loading="lazy">
+                                        <div class="card-body">
+                                            <span class="category-badge">Markets</span>
+                                            <h3>Stock Markets Rally on Economic News</h3>
+                                            <div class="meta">
+                                                <span><i class="bi bi-clock me-1"></i> 3 days ago</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-md-4">
+                                    <a href="#" class="related-card">
+                                        <img src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=400&h=200&fit=crop"
+                                            alt="Related article" loading="lazy">
+                                        <div class="card-body">
+                                            <span class="category-badge">Analysis</span>
+                                            <h3>What These Changes Mean for You</h3>
+                                            <div class="meta">
+                                                <span><i class="bi bi-clock me-1"></i> 4 days ago</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Comments Section -->
+                        <div class="comments-section animate-on-scroll">
+                            <div class="section-header">
+                                <h2>Comments <span class="comment-count">(8)</span></h2>
+                                <div class="line"></div>
+                            </div>
+
+                            <!-- Comment Form -->
+                            <div class="comment-form-card">
+                                <h3>Leave a Comment</h3>
+                                <form id="commentForm">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <input type="text" class="form-control" placeholder="Your Name *" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="email" class="form-control" placeholder="Your Email *"
+                                                required>
+                                        </div>
+                                        <div class="col-12">
+                                            <textarea class="form-control" rows="4" placeholder="Your Comment *"
+                                                required></textarea>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="saveInfo">
+                                                <label class="form-check-label" for="saveInfo">
+                                                    Save my name and email for next time
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <button type="submit" class="btn-submit-comment">
+                                                <i class="bi bi-chat-dots-fill me-2"></i> Post Comment
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Comments List -->
+                            <div class="comments-list">
+                                <h3 class="comments-title">All Comments (8)</h3>
+
+                                <!-- PHP: Loop comments here -->
+                                <!-- Comment 1 -->
+                                <div class="comment">
+                                    <img src="https://i.pravatar.cc/80?img=32" alt="Commenter" class="comment-avatar">
+                                    <div class="comment-content">
+                                        <div class="comment-header">
+                                            <h4 class="comment-author">Sarah Mitchell</h4>
+                                            <span class="comment-time"><i class="bi bi-clock me-1"></i> 2 hours
+                                                ago</span>
+                                        </div>
+                                        <p class="comment-text">This is exactly the kind of in-depth analysis we need.
+                                            The implications for emerging markets are particularly interesting. Great
+                                            work!</p>
+                                        <div class="comment-actions">
+                                            <button class="comment-action-btn" onclick="likeComment(this)">
+                                                <i class="bi bi-hand-thumbs-up"></i> <span>24</span>
+                                            </button>
+                                            <button class="comment-action-btn reply-btn"
+                                                onclick="toggleReplyForm(this)">
+                                                <i class="bi bi-reply-fill"></i> Reply
+                                            </button>
+                                        </div>
+
+                                        <!-- Reply Form (Hidden by default) -->
+                                        <div class="reply-form" style="display: none;">
+                                            <textarea class="form-control" rows="2"
+                                                placeholder="Write a reply..."></textarea>
+                                            <div class="reply-form-actions">
+                                                <button class="btn-cancel-reply"
+                                                    onclick="toggleReplyForm(this.closest('.comment-actions').querySelector('.reply-btn'))">Cancel</button>
+                                                <button class="btn-post-reply">Post Reply</button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Nested Reply -->
+                                        <div class="comment-reply">
+                                            <img src="https://i.pravatar.cc/80?img=12" alt="Author"
+                                                class="comment-avatar">
+                                            <div class="comment-content">
+                                                <div class="comment-header">
+                                                    <h4 class="comment-author">John Doe <span
+                                                            class="author-badge">Author</span></h4>
+                                                    <span class="comment-time"><i class="bi bi-clock me-1"></i> 1 hour
+                                                        ago</span>
+                                                </div>
+                                                <p class="comment-text">Thank you Sarah! I'm glad you found it valuable.
+                                                    The emerging markets angle is definitely something we'll be
+                                                    following closely.</p>
+                                                <div class="comment-actions">
+                                                    <button class="comment-action-btn" onclick="likeComment(this)">
+                                                        <i class="bi bi-hand-thumbs-up"></i> <span>12</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Comment 2 -->
+                                <div class="comment">
+                                    <img src="https://i.pravatar.cc/80?img=45" alt="Commenter" class="comment-avatar">
+                                    <div class="comment-content">
+                                        <div class="comment-header">
+                                            <h4 class="comment-author">Michael Chen</h4>
+                                            <span class="comment-time"><i class="bi bi-clock me-1"></i> 4 hours
+                                                ago</span>
+                                        </div>
+                                        <p class="comment-text">I've been following this story for weeks. Your breakdown
+                                            of the policy implications is spot on. Bookmarking this for future
+                                            reference.</p>
+                                        <div class="comment-actions">
+                                            <button class="comment-action-btn" onclick="likeComment(this)">
+                                                <i class="bi bi-hand-thumbs-up"></i> <span>18</span>
+                                            </button>
+                                            <button class="comment-action-btn reply-btn"
+                                                onclick="toggleReplyForm(this)">
+                                                <i class="bi bi-reply-fill"></i> Reply
+                                            </button>
+                                        </div>
+
+                                        <div class="reply-form" style="display: none;">
+                                            <textarea class="form-control" rows="2"
+                                                placeholder="Write a reply..."></textarea>
+                                            <div class="reply-form-actions">
+                                                <button class="btn-cancel-reply"
+                                                    onclick="toggleReplyForm(this.closest('.comment-actions').querySelector('.reply-btn'))">Cancel</button>
+                                                <button class="btn-post-reply">Post Reply</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Comment 3 -->
+                                <div class="comment">
+                                    <img src="https://i.pravatar.cc/80?img=28" alt="Commenter" class="comment-avatar">
+                                    <div class="comment-content">
+                                        <div class="comment-header">
+                                            <h4 class="comment-author">Emily Rodriguez</h4>
+                                            <span class="comment-time"><i class="bi bi-clock me-1"></i> 6 hours
+                                                ago</span>
+                                        </div>
+                                        <p class="comment-text">Excellent article! Could you expand on how this might
+                                            affect small businesses? That's an angle I'd love to see explored.</p>
+                                        <div class="comment-actions">
+                                            <button class="comment-action-btn" onclick="likeComment(this)">
+                                                <i class="bi bi-hand-thumbs-up"></i> <span>31</span>
+                                            </button>
+                                            <button class="comment-action-btn reply-btn"
+                                                onclick="toggleReplyForm(this)">
+                                                <i class="bi bi-reply-fill"></i> Reply
+                                            </button>
+                                        </div>
+
+                                        <div class="reply-form" style="display: none;">
+                                            <textarea class="form-control" rows="2"
+                                                placeholder="Write a reply..."></textarea>
+                                            <div class="reply-form-actions">
+                                                <button class="btn-cancel-reply"
+                                                    onclick="toggleReplyForm(this.closest('.comment-actions').querySelector('.reply-btn'))">Cancel</button>
+                                                <button class="btn-post-reply">Post Reply</button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Nested Replies -->
+                                        <div class="comment-reply">
+                                            <img src="https://i.pravatar.cc/80?img=67" alt="Commenter"
+                                                class="comment-avatar">
+                                            <div class="comment-content">
+                                                <div class="comment-header">
+                                                    <h4 class="comment-author">David Park</h4>
+                                                    <span class="comment-time"><i class="bi bi-clock me-1"></i> 5 hours
+                                                        ago</span>
+                                                </div>
+                                                <p class="comment-text">Great question Emily! I'd also like to know more
+                                                    about the SME impact.</p>
+                                                <div class="comment-actions">
+                                                    <button class="comment-action-btn" onclick="likeComment(this)">
+                                                        <i class="bi bi-hand-thumbs-up"></i> <span>8</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Comment 4 -->
+                                <div class="comment">
+                                    <img src="https://i.pravatar.cc/80?img=51" alt="Commenter" class="comment-avatar">
+                                    <div class="comment-content">
+                                        <div class="comment-header">
+                                            <h4 class="comment-author">Amanda Johnson</h4>
+                                            <span class="comment-time"><i class="bi bi-clock me-1"></i> 8 hours
+                                                ago</span>
+                                        </div>
+                                        <p class="comment-text">As an economist, I appreciate the thorough research
+                                            behind this piece. Well done! 📊</p>
+                                        <div class="comment-actions">
+                                            <button class="comment-action-btn" onclick="likeComment(this)">
+                                                <i class="bi bi-hand-thumbs-up"></i> <span>42</span>
+                                            </button>
+                                            <button class="comment-action-btn reply-btn"
+                                                onclick="toggleReplyForm(this)">
+                                                <i class="bi bi-reply-fill"></i> Reply
+                                            </button>
+                                        </div>
+
+                                        <div class="reply-form" style="display: none;">
+                                            <textarea class="form-control" rows="2"
+                                                placeholder="Write a reply..."></textarea>
+                                            <div class="reply-form-actions">
+                                                <button class="btn-cancel-reply"
+                                                    onclick="toggleReplyForm(this.closest('.comment-actions').querySelector('.reply-btn'))">Cancel</button>
+                                                <button class="btn-post-reply">Post Reply</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Comment 5 -->
+                                <div class="comment">
+                                    <img src="https://i.pravatar.cc/80?img=39" alt="Commenter" class="comment-avatar">
+                                    <div class="comment-content">
+                                        <div class="comment-header">
+                                            <h4 class="comment-author">Robert Taylor</h4>
+                                            <span class="comment-time"><i class="bi bi-clock me-1"></i> 10 hours
+                                                ago</span>
+                                        </div>
+                                        <p class="comment-text">Very informative! Sharing this with my team. This is
+                                            going to be a hot topic in our next meeting.</p>
+                                        <div class="comment-actions">
+                                            <button class="comment-action-btn" onclick="likeComment(this)">
+                                                <i class="bi bi-hand-thumbs-up"></i> <span>15</span>
+                                            </button>
+                                            <button class="comment-action-btn reply-btn"
+                                                onclick="toggleReplyForm(this)">
+                                                <i class="bi bi-reply-fill"></i> Reply
+                                            </button>
+                                        </div>
+
+                                        <div class="reply-form" style="display: none;">
+                                            <textarea class="form-control" rows="2"
+                                                placeholder="Write a reply..."></textarea>
+                                            <div class="reply-form-actions">
+                                                <button class="btn-cancel-reply"
+                                                    onclick="toggleReplyForm(this.closest('.comment-actions').querySelector('.reply-btn'))">Cancel</button>
+                                                <button class="btn-post-reply">Post Reply</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Load More Button -->
+                                <div class="text-center mt-4">
+                                    <button class="btn-load-more" onclick="loadMoreComments()">
+                                        <i class="bi bi-arrow-down-circle me-2"></i> Load More Comments
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar -->
+                    <div class="col-lg-4">
+                        <div class="sidebar-sticky">
+                            <!-- Popular Posts Widget -->
+                            <div class="sidebar-widget animate-on-scroll">
+                                <h4>Popular Posts</h4>
+                                <!-- PHP: Loop popular posts here -->
+                                <a href="#" class="sidebar-post">
+                                    <img src="https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=160&h=160&fit=crop"
+                                        alt="Popular post" loading="lazy">
+                                    <div class="sidebar-post-content">
+                                        <h5>AI Revolution Transforms Healthcare Industry</h5>
+                                        <div class="sidebar-post-meta">
+                                            <i class="bi bi-eye me-1"></i> 15.2K views
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="#" class="sidebar-post">
+                                    <img src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=160&h=160&fit=crop"
+                                        alt="Popular post" loading="lazy">
+                                    <div class="sidebar-post-content">
+                                        <h5>Champions League: Historic Comeback Victory</h5>
+                                        <div class="sidebar-post-meta">
+                                            <i class="bi bi-eye me-1"></i> 12.8K views
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="#" class="sidebar-post">
+                                    <img src="https://images.unsplash.com/photo-1495020689067-958852a7765e?w=160&h=160&fit=crop"
+                                        alt="Popular post" loading="lazy">
+                                    <div class="sidebar-post-content">
+                                        <h5>Climate Summit Reaches Breakthrough Deal</h5>
+                                        <div class="sidebar-post-meta">
+                                            <i class="bi bi-eye me-1"></i> 11.5K views
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="#" class="sidebar-post">
+                                    <img src="https://images.unsplash.com/photo-1483058712412-4245e9b90334?w=160&h=160&fit=crop"
+                                        alt="Popular post" loading="lazy">
+                                    <div class="sidebar-post-content">
+                                        <h5>Top Travel Destinations for 2025 Revealed</h5>
+                                        <div class="sidebar-post-meta">
+                                            <i class="bi bi-eye me-1"></i> 9.7K views
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <!-- Tags Widget -->
+                            <div class="sidebar-widget animate-on-scroll">
+                                <h4>Popular Tags</h4>
+                                <div class="tag-cloud">
+                                    <a href="#" class="tag">Economy</a>
+                                    <a href="#" class="tag">Finance</a>
+                                    <a href="#" class="tag">Markets</a>
+                                    <a href="#" class="tag">Business</a>
+                                    <a href="#" class="tag">Technology</a>
+                                    <a href="#" class="tag">Politics</a>
+                                    <a href="#" class="tag">World</a>
+                                    <a href="#" class="tag">Analysis</a>
+                                    <a href="#" class="tag">Breaking</a>
+                                    <a href="#" class="tag">Investment</a>
+                                </div>
+                            </div>
+
+                            <!-- Newsletter Widget -->
+                            <div class="sidebar-widget animate-on-scroll"
+                                style="background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%); color: white; border: none;">
+                                <h4 style="color: white; border-color: rgba(255,255,255,0.3);">Newsletter</h4>
+                                <p style="margin-bottom: 1rem; opacity: 0.95;">Get the latest news delivered directly to
+                                    your inbox.</p>
+                                <form
+                                    onsubmit="event.preventDefault(); alert('Newsletter subscription feature coming soon!');">
+                                    <div class="mb-3">
+                                        <input type="email" class="form-control" placeholder="Your email address"
+                                            required style="border-radius: 8px;">
+                                    </div>
+                                    <button type="submit" class="btn w-100"
+                                        style="background: white; color: var(--accent); font-weight: 600; border-radius: 8px;">
+                                        Subscribe Now
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- ========== FOOTER ========== -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-lg-4">
-                    <a href="/" class="brand d-block mb-3">Blog<span>Name</span></a>
-                    <p style="color: var(--text-secondary);">Your trusted source for breaking news, in-depth analysis, and compelling stories from around the world.</p>
-                </div>
-                <div class="col-lg-2 col-md-4 col-6">
-                    <h5>Categories</h5>
-                    <ul>
-                        <li><a href="#">World</a></li>
-                        <li><a href="#">Politics</a></li>
-                        <li><a href="#">Sports</a></li>
-                        <li><a href="#">Entertainment</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-2 col-md-4 col-6">
-                    <h5>Company</h5>
-                    <ul>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Contact</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Advertise</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-2 col-md-4 col-6">
-                    <h5>Legal</h5>
-                    <ul>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">Cookie Policy</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-2 col-md-12">
-                    <h5>Follow Us</h5>
-                    <div class="d-flex gap-3">
-                        <a href="#" style="color: var(--text-secondary); font-size: 1.5rem; transition: color 0.3s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-secondary)'">
-                            <i class="bi bi-twitter"></i>
-                        </a>
-                        <a href="#" style="color: var(--text-secondary); font-size: 1.5rem; transition: color 0.3s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-secondary)'">
-                            <i class="bi bi-facebook"></i>
-                        </a>
-                        <a href="#" style="color: var(--text-secondary); font-size: 1.5rem; transition: color 0.3s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-secondary)'">
-                            <i class="bi bi-instagram"></i>
-                        </a>
-                        <a href="#" style="color: var(--text-secondary); font-size: 1.5rem; transition: color 0.3s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-secondary)'">
-                            <i class="bi bi-youtube"></i>
-                        </a>
+        <!-- ========== FOOTER ========== -->
+        <footer class="footer">
+            <div class="container">
+                <div class="row g-4">
+                    <div class="col-lg-4">
+                        <a href="/" class="brand d-block mb-3">Blog<span>Name</span></a>
+                        <p style="color: var(--text-secondary);">Your trusted source for breaking news, in-depth
+                            analysis, and compelling stories from around the world.</p>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <h5>Categories</h5>
+                        <ul>
+                            <li><a href="#">World</a></li>
+                            <li><a href="#">Politics</a></li>
+                            <li><a href="#">Sports</a></li>
+                            <li><a href="#">Entertainment</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <h5>Company</h5>
+                        <ul>
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">Careers</a></li>
+                            <li><a href="#">Advertise</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <h5>Legal</h5>
+                        <ul>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms of Service</a></li>
+                            <li><a href="#">Cookie Policy</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-2 col-md-12">
+                        <h5>Follow Us</h5>
+                        <div class="d-flex gap-3">
+                            <a href="#" style="color: var(--text-secondary); font-size: 1.5rem; transition: color 0.3s;"
+                                onmouseover="this.style.color='var(--accent)'"
+                                onmouseout="this.style.color='var(--text-secondary)'">
+                                <i class="bi bi-twitter"></i>
+                            </a>
+                            <a href="#" style="color: var(--text-secondary); font-size: 1.5rem; transition: color 0.3s;"
+                                onmouseover="this.style.color='var(--accent)'"
+                                onmouseout="this.style.color='var(--text-secondary)'">
+                                <i class="bi bi-facebook"></i>
+                            </a>
+                            <a href="#" style="color: var(--text-secondary); font-size: 1.5rem; transition: color 0.3s;"
+                                onmouseover="this.style.color='var(--accent)'"
+                                onmouseout="this.style.color='var(--text-secondary)'">
+                                <i class="bi bi-instagram"></i>
+                            </a>
+                            <a href="#" style="color: var(--text-secondary); font-size: 1.5rem; transition: color 0.3s;"
+                                onmouseover="this.style.color='var(--accent)'"
+                                onmouseout="this.style.color='var(--text-secondary)'">
+                                <i class="bi bi-youtube"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
+                <div class="copyright">
+                    <p>&copy; 2025 BlogName. All rights reserved. | Designed with <i class="bi bi-heart-fill"
+                            style="color: var(--accent);"></i></p>
+                </div>
             </div>
-            <div class="copyright">
-                <p>&copy; 2025 BlogName. All rights reserved. | Designed with <i class="bi bi-heart-fill" style="color: var(--accent);"></i></p>
-            </div>
-        </div>
-    </footer>
+        </footer>
     </div>
     <!-- END MAIN CONTENT -->
 
@@ -1817,7 +1928,8 @@
         <div class="cookie-content">
             <div class="cookie-text">
                 <h4><i class="bi bi-cookie me-2"></i>We Value Your Privacy</h4>
-                <p>We use cookies to enhance your browsing experience, remember your preferences, and analyze site traffic. By clicking "Accept All", you consent to our use of cookies. <a href="#">Learn more</a></p>
+                <p>We use cookies to enhance your browsing experience, remember your preferences, and analyze site
+                    traffic. By clicking "Accept All", you consent to our use of cookies. <a href="#">Learn more</a></p>
             </div>
             <div class="cookie-buttons">
                 <button class="cookie-btn settings" onclick="openCookieSettings()">
@@ -1835,10 +1947,10 @@
 
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <script>
         // ========== PAGE LOADER ==========
-        window.addEventListener('load', function() {
+        window.addEventListener('load', function () {
             const pageLoader = document.getElementById('pageLoader');
             const mainContent = document.querySelector('.main-content');
             const body = document.body;
@@ -1847,7 +1959,7 @@
                 pageLoader.classList.add('hidden');
                 mainContent.classList.add('visible');
                 body.classList.remove('loading');
-                
+
                 setTimeout(() => {
                     pageLoader.style.display = 'none';
                 }, 500);
@@ -1909,7 +2021,7 @@
         function getCookie(name) {
             const nameEQ = name + "=";
             const ca = document.cookie.split(';');
-            for(let i = 0; i < ca.length; i++) {
+            for (let i = 0; i < ca.length; i++) {
                 let c = ca[i];
                 while (c.charAt(0) === ' ') c = c.substring(1, c.length);
                 if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
@@ -1920,7 +2032,7 @@
         function initTheme() {
             const savedTheme = getCookie('site_theme');
             const pageLoader = document.getElementById('pageLoader');
-            
+
             if (savedTheme === 'dark') {
                 body.classList.add('dark-mode');
                 if (pageLoader) pageLoader.classList.add('dark');
@@ -1964,7 +2076,7 @@
         // ========== SCROLL ANIMATIONS ==========
         const animateOnScroll = () => {
             const elements = document.querySelectorAll('.animate-on-scroll');
-            
+
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach((entry, index) => {
                     if (entry.isIntersecting) {
@@ -2002,7 +2114,7 @@
 
         window.addEventListener('scroll', () => {
             const currentScroll = window.pageYOffset;
-            
+
             if (currentScroll > 100) {
                 navbar.style.boxShadow = '0 2px 10px var(--card-shadow)';
             } else {
@@ -2077,64 +2189,64 @@
 
         // ========== COMMENT FORM SUBMISSION ==========
         // Enhanced comment functionality
-document.addEventListener('DOMContentLoaded', function() {
-    // Add smooth transitions for comment actions
-    addCommentAnimations();
-});
-
-function addCommentAnimations() {
-    // Animate new comments when added
-    const observer = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
-            mutation.addedNodes.forEach(function(node) {
-                if (node.nodeType === 1 && node.classList && node.classList.contains('comment')) {
-                    node.style.opacity = '0';
-                    node.style.transform = 'translateY(20px)';
-
-                    setTimeout(() => {
-                        node.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-                        node.style.opacity = '1';
-                        node.style.transform = 'translateY(0)';
-                    }, 10);
-                }
-            });
+        document.addEventListener('DOMContentLoaded', function () {
+            // Add smooth transitions for comment actions
+            addCommentAnimations();
         });
-    });
 
-    const commentsList = document.querySelector('.comments-list');
-    if (commentsList) {
-        observer.observe(commentsList, { childList: true, subtree: true });
-    }
-}
+        function addCommentAnimations() {
+            // Animate new comments when added
+            const observer = new MutationObserver(function (mutations) {
+                mutations.forEach(function (mutation) {
+                    mutation.addedNodes.forEach(function (node) {
+                        if (node.nodeType === 1 && node.classList && node.classList.contains('comment')) {
+                            node.style.opacity = '0';
+                            node.style.transform = 'translateY(20px)';
 
-// ==========================================================
+                            setTimeout(() => {
+                                node.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                                node.style.opacity = '1';
+                                node.style.transform = 'translateY(0)';
+                            }, 10);
+                        }
+                    });
+                });
+            });
+
+            const commentsList = document.querySelector('.comments-list');
+            if (commentsList) {
+                observer.observe(commentsList, { childList: true, subtree: true });
+            }
+        }
+
+        // ==========================================================
         const commentForm = document.getElementById('commentForm');
-        
+
         if (commentForm) {
-            commentForm.addEventListener('submit', function(e) {
+            commentForm.addEventListener('submit', function (e) {
                 e.preventDefault();
-                
+
                 const submitBtn = this.querySelector('.btn-submit-comment');
                 const originalText = submitBtn.innerHTML;
-                
+
                 // Show loading state
                 submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i> Posting...';
                 submitBtn.disabled = true;
-                
+
                 // Simulate comment posting (replace with actual API call)
                 setTimeout(() => {
                     submitBtn.innerHTML = '<i class="bi bi-check-circle-fill me-2"></i> Comment Posted!';
                     submitBtn.style.backgroundColor = '#28a745';
-                    
+
                     // Show success message
                     const alertDiv = document.createElement('div');
                     alertDiv.className = 'alert alert-success mt-3';
                     alertDiv.innerHTML = '<i class="bi bi-check-circle-fill me-2"></i> Your comment has been posted successfully!';
                     this.appendChild(alertDiv);
-                    
+
                     // Reset form
                     this.reset();
-                    
+
                     // Reset button after 3 seconds
                     setTimeout(() => {
                         submitBtn.innerHTML = originalText;
@@ -2147,12 +2259,12 @@ function addCommentAnimations() {
         }
 
         // ========== COMMENT INTERACTIONS ==========
-        
+
         // Like/Unlike comment
         function likeComment(button) {
             const likeCount = button.querySelector('span');
             const currentCount = parseInt(likeCount.textContent);
-            
+
             if (button.classList.contains('liked')) {
                 // Unlike
                 button.classList.remove('liked');
@@ -2168,7 +2280,7 @@ function addCommentAnimations() {
         function toggleReplyForm(button) {
             const comment = button.closest('.comment-content');
             const replyForm = comment.querySelector('.reply-form');
-            
+
             if (replyForm) {
                 if (replyForm.style.display === 'none') {
                     replyForm.style.display = 'block';
@@ -2181,28 +2293,28 @@ function addCommentAnimations() {
 
         // Post reply
         document.querySelectorAll('.btn-post-reply').forEach(btn => {
-            btn.addEventListener('click', function() {
+            btn.addEventListener('click', function () {
                 const replyForm = this.closest('.reply-form');
                 const textarea = replyForm.querySelector('textarea');
                 const replyText = textarea.value.trim();
-                
+
                 if (replyText) {
                     const originalText = this.innerHTML;
                     this.innerHTML = '<i class="bi bi-hourglass-split"></i> Posting...';
                     this.disabled = true;
-                    
+
                     // Simulate posting (replace with actual API call)
                     setTimeout(() => {
                         this.innerHTML = '<i class="bi bi-check-lg"></i> Posted!';
                         this.style.backgroundColor = '#28a745';
-                        
+
                         setTimeout(() => {
                             textarea.value = '';
                             replyForm.style.display = 'none';
                             this.innerHTML = originalText;
                             this.style.backgroundColor = '';
                             this.disabled = false;
-                            
+
                             // Show success message
                             alert('Reply posted successfully! In production, this would add the reply to the comment thread.');
                         }, 1500);
@@ -2217,15 +2329,15 @@ function addCommentAnimations() {
         function loadMoreComments() {
             const btn = event.target;
             const originalText = btn.innerHTML;
-            
+
             btn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i> Loading...';
             btn.disabled = true;
-            
+
             // Simulate loading (replace with actual API call)
             setTimeout(() => {
                 btn.innerHTML = originalText;
                 btn.disabled = false;
-                
+
                 // In production, append new comments here
                 alert('More comments loaded! In production, this would fetch and display additional comments.');
             }, 1500);
@@ -2237,4 +2349,5 @@ function addCommentAnimations() {
         window.loadMoreComments = loadMoreComments;
     </script>
 </body>
+
 </html>
