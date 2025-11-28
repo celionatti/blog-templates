@@ -1,0 +1,1948 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Modern responsive blog template with dark mode">
+    <title>Summer Music Festival 2025 | BlogName Events</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ========== CSS VARIABLES & THEME ========== */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6c757d;
+            --accent: #dc143c;
+            --accent-hover: #b01030;
+            --border-color: #dee2e6;
+            --card-shadow: rgba(0, 0, 0, 0.1);
+            --font-heading: 'Inter', sans-serif;
+            --font-brand: 'Dancing Script', cursive;
+        }
+
+        .dark-mode {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --text-primary: #f5f5f5;
+            --text-secondary: #b0b0b0;
+            --accent: #ff4f5a;
+            --accent-hover: #ff6b75;
+            --border-color: #333;
+            --card-shadow: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-heading);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            line-height: 1.6;
+        }
+
+        /* ========== LOADING STATE ========== */
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .page-loader.dark {
+            background-color: #121212;
+        }
+
+        .page-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-content {
+            text-align: center;
+        }
+
+        .loader-logo {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            animation: pulse 1.5s ease-in-out infinite;
+            font-family: var(--font-brand);
+        }
+
+        .loader-logo .light-theme {
+            color: #1a1a1a;
+        }
+
+        .loader-logo .light-theme span {
+            color: #dc143c;
+        }
+
+        .loader-logo .dark-theme {
+            color: #f5f5f5;
+            display: none;
+        }
+
+        .loader-logo .dark-theme span {
+            color: #ff4f5a;
+        }
+
+        .page-loader.dark .loader-logo .light-theme {
+            display: none;
+        }
+
+        .page-loader.dark .loader-logo .dark-theme {
+            display: inline;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(220, 20, 60, 0.1);
+            border-top-color: #dc143c;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .page-loader.dark .spinner {
+            border: 4px solid rgba(255, 79, 90, 0.1);
+            border-top-color: #ff4f5a;
+        }
+
+        .loader-text {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #6c757d;
+            animation: fadeInOut 2s ease-in-out infinite;
+        }
+
+        .page-loader.dark .loader-text {
+            color: #b0b0b0;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
+        }
+
+        @keyframes fadeInOut {
+
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* Hide content while loading */
+        body.loading {
+            overflow: hidden;
+        }
+
+        .main-content {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .main-content.visible {
+            opacity: 1;
+        }
+
+        /* ========== ANIMATIONS ========== */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .animate-on-scroll {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+        }
+
+        /* ========== TOP HEADER ========== */
+        .top-header {
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.75rem 0;
+            font-size: 0.9rem;
+        }
+
+        .top-header .btn-subscribe {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.4rem 1.2rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .top-header .btn-subscribe:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .top-header .brand {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-family: var(--font-brand);
+        }
+
+        .top-header .brand span {
+            color: var(--accent);
+        }
+
+        .top-header .auth-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            margin-left: 1rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .top-header .auth-links a:hover {
+            color: var(--accent);
+        }
+
+        /* ========== MAIN NAVBAR ========== */
+        .main-navbar {
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .main-navbar .navbar-nav .nav-link {
+            color: var(--text-primary);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .main-navbar .navbar-nav .nav-link:hover,
+        .main-navbar .navbar-nav .nav-link.active {
+            color: var(--accent);
+        }
+
+        .main-navbar .navbar-nav .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 1rem;
+            right: 1rem;
+            height: 2px;
+            background-color: var(--accent);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            color: var(--accent);
+            transform: rotate(20deg);
+        }
+
+        /* ========== SEARCH BAR - FIXED FOR MOBILE ========== */
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-toggle {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: color 0.3s ease;
+            z-index: 1001;
+        }
+
+        .search-toggle:hover {
+            color: var(--accent);
+        }
+
+        .search-input-container {
+            position: absolute;
+            right: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            overflow: hidden;
+            transition: width 0.3s ease;
+            background-color: var(--bg-primary);
+            border-radius: 50px;
+            box-shadow: 0 2px 10px var(--card-shadow);
+            z-index: 1000;
+        }
+
+        .search-input-container.active {
+            width: 250px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.5rem 1rem;
+            border: none;
+            background: transparent;
+            color: var(--text-primary);
+            outline: none;
+            font-size: 0.9rem;
+        }
+
+        .search-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .search-close {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1rem;
+            z-index: 1002;
+        }
+
+        .search-close:hover {
+            color: var(--accent);
+        }
+
+        /* ========== EVENT PAGE STYLES ========== */
+        .event-hero {
+            position: relative;
+            height: 60vh;
+            min-height: 500px;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)),
+                        url('https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=1200&h=600&fit=crop');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: flex-end;
+            color: white;
+            padding: 3rem 0;
+        }
+
+        .event-hero-content {
+            max-width: 800px;
+        }
+
+        .event-category {
+            background-color: var(--accent);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .event-hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .event-hero-meta {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .event-hero-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .event-hero-meta-item i {
+            font-size: 1.2rem;
+        }
+
+        .event-hero-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary-event {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary-event:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .btn-secondary-event {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-secondary-event:hover {
+            background-color: white;
+            color: var(--text-primary);
+        }
+
+        .event-content-section {
+            padding: 4rem 0;
+        }
+
+        .event-details-card {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .event-details-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .event-detail-item {
+            display: flex;
+            margin-bottom: 1.5rem;
+        }
+
+        .event-detail-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .event-detail-content h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .event-detail-content p {
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .event-description {
+            margin-bottom: 3rem;
+        }
+
+        .event-description h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .event-description p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        .event-lineup {
+            margin-bottom: 3rem;
+        }
+
+        .event-lineup h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .artist-card {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+
+        .artist-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px var(--card-shadow);
+        }
+
+        .artist-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .artist-card .card-body {
+            padding: 1.5rem;
+        }
+
+        .artist-card h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .artist-card p {
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .ticket-section {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .ticket-section h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .ticket-option {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .ticket-option:hover {
+            border-color: var(--accent);
+        }
+
+        .ticket-option.selected {
+            border-color: var(--accent);
+            background-color: rgba(220, 20, 60, 0.05);
+        }
+
+        .ticket-option h5 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .ticket-option .ticket-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .ticket-option .ticket-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .ticket-quantity {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .quantity-btn:hover {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .quantity-display {
+            font-size: 1.2rem;
+            font-weight: 600;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .checkout-summary {
+            background-color: var(--bg-primary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .checkout-summary h5 {
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .btn-checkout {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-checkout:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .event-map {
+            margin-bottom: 3rem;
+        }
+
+        .event-map h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .map-container {
+            height: 400px;
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .map-placeholder {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* ========== SECTION HEADERS ========== */
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin: 3rem 0 2rem;
+        }
+
+        .section-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0;
+            padding-right: 1.5rem;
+            white-space: nowrap;
+        }
+
+        .section-header .line {
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(to right, var(--accent), transparent);
+        }
+
+        /* ========== CONTENT CARDS ========== */
+        .content-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            height: 100%;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .content-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px var(--card-shadow);
+        }
+
+        .content-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .content-card .card-body {
+            padding: 1.25rem;
+        }
+
+        .content-card .category-badge {
+            background-color: var(--accent);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+
+        .content-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .content-card .meta {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 0 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .footer .brand {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-family: var(--font-brand);
+        }
+
+        .footer .brand span {
+            color: var(--accent);
+        }
+
+        .footer h5 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer ul li a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer ul li a:hover {
+            color: var(--accent);
+        }
+
+        .footer .copyright {
+            text-align: center;
+            color: var(--text-secondary);
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 991px) {
+            .top-header .d-flex {
+                flex-direction: row;
+                justify-content: space-between;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .top-header .btn-subscribe {
+                display: none;
+            }
+
+            .top-header .auth-links a {
+                margin-left: 0.5rem;
+            }
+
+            .event-hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .search-input-container.active {
+                width: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-header .d-flex {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .top-header .auth-links a {
+                margin-left: 0.5rem;
+            }
+
+            .event-hero {
+                height: auto;
+                min-height: 400px;
+            }
+
+            .event-hero h1 {
+                font-size: 2rem;
+            }
+
+            .event-hero-meta {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .event-hero-actions {
+                flex-direction: column;
+            }
+
+            .btn-primary-event, .btn-secondary-event {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .search-input-container.active {
+                width: 180px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .search-input-container {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                width: 100% !important;
+                height: 60px;
+                transform: translateY(-100%);
+                border-radius: 0;
+                transition: transform 0.3s ease;
+                z-index: 9999;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+
+            .search-input-container.active {
+                transform: translateY(0);
+            }
+
+            .search-input {
+                height: 100%;
+                padding: 1rem 3rem 1rem 1rem;
+                font-size: 1rem;
+            }
+
+            .search-close {
+                right: 1rem;
+                font-size: 1.2rem;
+            }
+
+            .navbar-toggler {
+                z-index: 10000;
+            }
+
+            .event-detail-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .event-detail-icon {
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        /* ========== COOKIE CONSENT BANNER ========== */
+        .cookie-consent {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--bg-secondary);
+            border-top: 2px solid var(--accent);
+            padding: 1.5rem;
+            box-shadow: 0 -4px 20px var(--card-shadow);
+            z-index: 9997;
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+        }
+
+        .cookie-consent.show {
+            transform: translateY(0);
+        }
+
+        .cookie-consent.hidden {
+            display: none;
+        }
+
+        .cookie-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .cookie-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .cookie-text h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .cookie-text p {
+            color: var(--text-secondary);
+            margin: 0;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .cookie-text a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .cookie-text a:hover {
+            text-decoration: underline;
+        }
+
+        .cookie-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .cookie-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .cookie-btn.accept {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .cookie-btn.accept:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+
+        .cookie-btn.decline {
+            background-color: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .cookie-btn.decline:hover {
+            border-color: var(--text-primary);
+        }
+
+        .cookie-btn.settings {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .cookie-btn.settings:hover {
+            background-color: var(--bg-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .cookie-content {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+
+            .cookie-buttons {
+                justify-content: center;
+            }
+
+            .cookie-btn {
+                flex: 1;
+                min-width: 120px;
+            }
+        }
+    </style>
+</head>
+
+<body class="loading">
+    <!-- ========== PAGE LOADER ========== -->
+    <div class="page-loader" id="pageLoader">
+        <div class="loader-content">
+            <div class="loader-logo">
+                <span class="light-theme">Blog<span>Name</span></span>
+                <span class="dark-theme">Blog<span>Name</span></span>
+            </div>
+            <div class="spinner"></div>
+            <p class="loader-text">Loading amazing content...</p>
+        </div>
+    </div>
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <div class="main-content">
+        <!-- ========== TOP HEADER ========== -->
+        <header class="top-header">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <button class="btn btn-subscribe rounded-pill">
+                        <i class="bi bi-envelope-fill me-1"></i> Subscribe
+                    </button>
+                    <a href="/" class="brand">Blog<span>Name</span></a>
+                    <div class="auth-links">
+                        <a href="#"><i class="bi bi-person-circle me-1"></i> Login</a>
+                        <a href="#"><i class="bi bi-person-plus-fill me-1"></i> Sign Up</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ========== MAIN NAVBAR ========== -->
+        <nav class="navbar navbar-expand-lg main-navbar sticky-top">
+            <div class="container">
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#mainNav">
+                    <i class="bi bi-list" style="font-size: 1.5rem; color: var(--text-primary);"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="mainNav">
+                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Articles</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">World</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Sports</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Politics</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Entertainment</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="events.html">Events</a></li>
+                    </ul>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="search-container">
+                        <div class="search-input-container" id="searchInputContainer">
+                            <input type="text" class="search-input" placeholder="Search events...">
+                            <button class="search-close" id="searchClose">
+                                <i class="bi bi-x"></i>
+                            </button>
+                        </div>
+                        <button class="search-toggle" id="searchToggle">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                        <i class="bi bi-sun-fill" id="themeIcon"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- ========== EVENT HERO SECTION ========== -->
+        <section class="event-hero animate-on-scroll">
+            <div class="container">
+                <div class="event-hero-content">
+                    <span class="event-category">Music Festival</span>
+                    <h1>Summer Music Festival 2025</h1>
+                    <div class="event-hero-meta">
+                        <div class="event-hero-meta-item">
+                            <i class="bi bi-calendar-event"></i>
+                            <span>June 15-17, 2025</span>
+                        </div>
+                        <div class="event-hero-meta-item">
+                            <i class="bi bi-geo-alt"></i>
+                            <span>Central Park, New York</span>
+                        </div>
+                        <div class="event-hero-meta-item">
+                            <i class="bi bi-clock"></i>
+                            <span>2:00 PM - 11:00 PM</span>
+                        </div>
+                    </div>
+                    <div class="event-hero-actions">
+                        <button class="btn-primary-event" id="buyTicketsBtn">
+                            <i class="bi bi-ticket-perforated"></i> Buy Tickets Now
+                        </button>
+                        <button class="btn-secondary-event">
+                            <i class="bi bi-share"></i> Share Event
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== EVENT CONTENT SECTION ========== -->
+        <section class="event-content-section">
+            <div class="container">
+                <div class="row">
+                    <!-- Main Content Column -->
+                    <div class="col-lg-8">
+                        <!-- Event Description -->
+                        <div class="event-description animate-on-scroll">
+                            <h2>About the Event</h2>
+                            <p>Get ready for the most electrifying music experience of the year! The Summer Music Festival 2025 returns to Central Park with an incredible lineup of world-renowned artists, emerging talents, and unforgettable performances across multiple stages.</p>
+                            <p>This three-day extravaganza will feature genres spanning from rock and pop to electronic and hip-hop, ensuring there's something for every music lover. With state-of-the-art production, immersive art installations, and gourmet food vendors, this is more than just a concert—it's a complete sensory experience.</p>
+                            <p>Join over 50,000 music enthusiasts as we celebrate the power of music under the summer sky. From sunset performances to late-night DJ sets, every moment promises to be magical.</p>
+                        </div>
+
+                        <!-- Event Lineup -->
+                        <div class="event-lineup animate-on-scroll">
+                            <h2>Featured Artists</h2>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="artist-card">
+                                        <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=300&fit=crop" alt="The Midnight Riders">
+                                        <div class="card-body">
+                                            <h4>The Midnight Riders</h4>
+                                            <p>Headliner • Saturday, 9:00 PM</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="artist-card">
+                                        <img src="https://images.unsplash.com/photo-1511735111819-9a3f7709049c?w=400&h=300&fit=crop" alt="Electric Dreams">
+                                        <div class="card-body">
+                                            <h4>Electric Dreams</h4>
+                                            <p>Electronic • Friday, 10:30 PM</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="artist-card">
+                                        <img src="https://images.unsplash.com/photo-1506157786151-b8491531f063?w=400&h=300&fit=crop" alt="Soul Revival">
+                                        <div class="card-body">
+                                            <h4>Soul Revival</h4>
+                                            <p>R&B/Soul • Sunday, 7:00 PM</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="artist-card">
+                                        <img src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=400&h=300&fit=crop" alt="Urban Beats Collective">
+                                        <div class="card-body">
+                                            <h4>Urban Beats Collective</h4>
+                                            <p>Hip-Hop • Saturday, 6:30 PM</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Event Map -->
+                        <div class="event-map animate-on-scroll">
+                            <h2>Location</h2>
+                            <div class="map-container">
+                                <div class="map-placeholder">
+                                    <div class="text-center">
+                                        <i class="bi bi-map" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                                        <p>Central Park, New York, NY</p>
+                                        <p>Main Stage: Near the Great Lawn</p>
+                                        <button class="btn btn-outline-primary mt-2">View on Google Maps</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar Column -->
+                    <div class="col-lg-4">
+                        <!-- Event Details Card -->
+                        <div class="event-details-card animate-on-scroll">
+                            <h3>Event Details</h3>
+                            <div class="event-detail-item">
+                                <div class="event-detail-icon">
+                                    <i class="bi bi-calendar-event"></i>
+                                </div>
+                                <div class="event-detail-content">
+                                    <h4>Date & Time</h4>
+                                    <p>June 15-17, 2025<br>2:00 PM - 11:00 PM Daily</p>
+                                </div>
+                            </div>
+                            <div class="event-detail-item">
+                                <div class="event-detail-icon">
+                                    <i class="bi bi-geo-alt"></i>
+                                </div>
+                                <div class="event-detail-content">
+                                    <h4>Location</h4>
+                                    <p>Central Park<br>New York, NY 10022</p>
+                                </div>
+                            </div>
+                            <div class="event-detail-item">
+                                <div class="event-detail-icon">
+                                    <i class="bi bi-people"></i>
+                                </div>
+                                <div class="event-detail-content">
+                                    <h4>Age Restriction</h4>
+                                    <p>All Ages Welcome<br>Under 16 must be accompanied by an adult</p>
+                                </div>
+                            </div>
+                            <div class="event-detail-item">
+                                <div class="event-detail-icon">
+                                    <i class="bi bi-info-circle"></i>
+                                </div>
+                                <div class="event-detail-content">
+                                    <h4>Additional Info</h4>
+                                    <p>Rain or Shine Event<br>Re-entry allowed with wristband</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ticket Selection -->
+                        <div class="ticket-section animate-on-scroll" id="ticketSection">
+                            <h2>Get Your Tickets</h2>
+
+                            <div class="ticket-option" data-price="89">
+                                <h5>General Admission</h5>
+                                <div class="ticket-price">$89</div>
+                                <p class="ticket-description">Standard entry to the event with access to all general areas.</p>
+                                <div class="ticket-quantity">
+                                    <div class="quantity-btn minus">-</div>
+                                    <div class="quantity-display">0</div>
+                                    <div class="quantity-btn plus">+</div>
+                                </div>
+                            </div>
+
+                            <div class="ticket-option" data-price="149">
+                                <h5>VIP Experience</h5>
+                                <div class="ticket-price">$149</div>
+                                <p class="ticket-description">Includes premium seating, exclusive lounge access, and complimentary drinks.</p>
+                                <div class="ticket-quantity">
+                                    <div class="quantity-btn minus">-</div>
+                                    <div class="quantity-display">0</div>
+                                    <div class="quantity-btn plus">+</div>
+                                </div>
+                            </div>
+
+                            <div class="ticket-option" data-price="249">
+                                <h5>Platinum Package</h5>
+                                <div class="ticket-price">$249</div>
+                                <p class="ticket-description">Front row seating, backstage access, meet & greet with performers, and premium merchandise.</p>
+                                <div class="ticket-quantity">
+                                    <div class="quantity-btn minus">-</div>
+                                    <div class="quantity-display">0</div>
+                                    <div class="quantity-btn plus">+</div>
+                                </div>
+                            </div>
+
+                            <div class="checkout-summary">
+                                <h5>Order Summary</h5>
+                                <div class="summary-item">
+                                    <span>General Admission (x0)</span>
+                                    <span>$0</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span>VIP Experience (x0)</span>
+                                    <span>$0</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span>Platinum Package (x0)</span>
+                                    <span>$0</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span>Service Fee</span>
+                                    <span>$0</span>
+                                </div>
+                                <div class="summary-total">
+                                    <span>Total</span>
+                                    <span id="totalAmount">$0</span>
+                                </div>
+                            </div>
+
+                            <button class="btn-checkout" id="checkoutBtn">Proceed to Checkout</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== RELATED EVENTS SECTION ========== -->
+        <section class="related-events-section animate-on-scroll">
+            <div class="container">
+                <div class="section-header">
+                    <h2>You Might Also Like</h2>
+                    <div class="line"></div>
+                </div>
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+                    <div class="col">
+                        <div class="content-card">
+                            <img src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=400&h=200&fit=crop"
+                                alt="Tech Conference" loading="lazy">
+                            <div class="card-body">
+                                <span class="category-badge">Technology</span>
+                                <h3>Future Tech Conference 2025</h3>
+                                <div class="meta">
+                                    <span><i class="bi bi-calendar me-1"></i> Jul 22-24</span>
+                                    <span><i class="bi bi-geo-alt me-1"></i> San Francisco</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="content-card">
+                            <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=400&h=200&fit=crop"
+                                alt="Food Festival" loading="lazy">
+                            <div class="card-body">
+                                <span class="category-badge">Food & Drink</span>
+                                <h3>International Food Festival</h3>
+                                <div class="meta">
+                                    <span><i class="bi bi-calendar me-1"></i> Aug 5-7</span>
+                                    <span><i class="bi bi-geo-alt me-1"></i> Chicago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="content-card">
+                            <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&h=200&fit=crop"
+                                alt="Art Exhibition" loading="lazy">
+                            <div class="card-body">
+                                <span class="category-badge">Art</span>
+                                <h3>Modern Art Exhibition</h3>
+                                <div class="meta">
+                                    <span><i class="bi bi-calendar me-1"></i> Sep 12-30</span>
+                                    <span><i class="bi bi-geo-alt me-1"></i> New York</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="content-card">
+                            <img src="https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=400&h=200&fit=crop"
+                                alt="Film Festival" loading="lazy">
+                            <div class="card-body">
+                                <span class="category-badge">Film</span>
+                                <h3>Independent Film Festival</h3>
+                                <div class="meta">
+                                    <span><i class="bi bi-calendar me-1"></i> Oct 10-15</span>
+                                    <span><i class="bi bi-geo-alt me-1"></i> Los Angeles</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== FOOTER ========== -->
+        <footer class="footer">
+            <div class="container">
+                <div class="row g-4">
+                    <div class="col-lg-4">
+                        <a href="/" class="brand d-block mb-3">Blog<span>Name</span></a>
+                        <p style="color: var(--text-secondary);">Your trusted source for breaking news, in-depth
+                            analysis, and compelling stories from around the world.</p>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <h5>Categories</h5>
+                        <ul>
+                            <li><a href="#">World</a></li>
+                            <li><a href="#">Politics</a></li>
+                            <li><a href="#">Sports</a></li>
+                            <li><a href="#">Entertainment</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <h5>Company</h5>
+                        <ul>
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">Careers</a></li>
+                            <li><a href="#">Advertise</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <h5>Legal</h5>
+                        <ul>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms of Service</a></li>
+                            <li><a href="#">Cookie Policy</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-2 col-md-12">
+                        <h5>Follow Us</h5>
+                        <div class="d-flex gap-3">
+                            <a href="#" style="color: var(--text-secondary); font-size: 1.5rem; transition: color 0.3s;"
+                                onmouseover="this.style.color='var(--accent)'"
+                                onmouseout="this.style.color='var(--text-secondary)'">
+                                <i class="bi bi-facebook"></i>
+                            </a>
+                            <a href="#" style="color: var(--text-secondary); font-size: 1.5rem; transition: color 0.3s;"
+                                onmouseover="this.style.color='var(--accent)'"
+                                onmouseout="this.style.color='var(--text-secondary)'">
+                                <i class="bi bi-instagram"></i>
+                            </a>
+                            <a href="#" style="color: var(--text-secondary); font-size: 1.5rem; transition: color 0.3s;"
+                                onmouseover="this.style.color='var(--accent)'"
+                                onmouseout="this.style.color='var(--text-secondary)'">
+                                <i class="bi bi-youtube"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="copyright">
+                    <p>&copy; 2025 BlogName. All rights reserved. | Designed with <i class="bi bi-heart-fill"
+                            style="color: var(--accent);"></i></p>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!-- END MAIN CONTENT -->
+
+    <!-- ========== COOKIE CONSENT BANNER ========== -->
+    <div class="cookie-consent" id="cookieConsent">
+        <div class="cookie-content">
+            <div class="cookie-text">
+                <h4><i class="bi bi-cookie me-2"></i>We Value Your Privacy</h4>
+                <p>We use cookies to enhance your browsing experience, remember your preferences, and analyze site
+                    traffic. By clicking "Accept All", you consent to our use of cookies. <a href="#">Learn more</a></p>
+            </div>
+            <div class="cookie-buttons">
+                <button class="cookie-btn settings" onclick="openCookieSettings()">
+                    <i class="bi bi-gear me-1"></i> Settings
+                </button>
+                <button class="cookie-btn decline" onclick="declineCookies()">
+                    Decline
+                </button>
+                <button class="cookie-btn accept" onclick="acceptCookies()">
+                    <i class="bi bi-check-lg me-1"></i> Accept All
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Initialize cookie consent when page loads
+        document.addEventListener('DOMContentLoaded', function () {
+            checkCookieConsent();
+            initEventPage();
+        });
+
+        // ========== PAGE LOADER ==========
+        window.addEventListener('load', function () {
+            const pageLoader = document.getElementById('pageLoader');
+            const mainContent = document.querySelector('.main-content');
+            const body = document.body;
+
+            // Minimum loading time to ensure smooth animation (optional)
+            setTimeout(() => {
+                pageLoader.classList.add('hidden');
+                mainContent.classList.add('visible');
+                body.classList.remove('loading');
+
+                // Remove loader from DOM after transition
+                setTimeout(() => {
+                    pageLoader.style.display = 'none';
+                }, 500);
+            }, 800); // Adjust this delay as needed (800ms = 0.8 seconds)
+        });
+
+        // ========== SEARCH TOGGLE FUNCTIONALITY ==========
+        const searchToggle = document.getElementById('searchToggle');
+        const searchInputContainer = document.getElementById('searchInputContainer');
+        const searchClose = document.getElementById('searchClose');
+        const searchInput = document.querySelector('.search-input');
+
+        searchToggle.addEventListener('click', function () {
+            searchInputContainer.classList.toggle('active');
+            if (searchInputContainer.classList.contains('active')) {
+                searchInput.focus();
+            }
+        });
+
+        searchClose.addEventListener('click', function () {
+            searchInputContainer.classList.remove('active');
+            searchInput.value = '';
+        });
+
+        // Close search when clicking outside (for desktop)
+        document.addEventListener('click', function (event) {
+            if (window.innerWidth > 576) {
+                if (!searchInputContainer.contains(event.target) && !searchToggle.contains(event.target)) {
+                    searchInputContainer.classList.remove('active');
+                }
+            }
+        });
+
+        // Close search on escape key
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                searchInputContainer.classList.remove('active');
+            }
+        });
+
+        // ========== THEME TOGGLE & COOKIE MANAGEMENT ==========
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const body = document.body;
+
+        // ========== COOKIE CONSENT FUNCTIONS ==========
+        const cookieConsent = document.getElementById('cookieConsent');
+
+        // Check if user has already made a choice
+        function checkCookieConsent() {
+            const consentGiven = getCookie('cookie_consent');
+            if (!consentGiven) {
+                // Show banner after a short delay
+                setTimeout(() => {
+                    cookieConsent.classList.add('show');
+                }, 1000);
+            }
+        }
+
+        // Accept all cookies
+        function acceptCookies() {
+            setCookie('cookie_consent', 'accepted', 365);
+            setCookie('analytics_cookies', 'true', 365);
+            setCookie('preference_cookies', 'true', 365);
+            setCookie('marketing_cookies', 'true', 365);
+
+            hideCookieBanner();
+            console.log('All cookies accepted');
+        }
+
+        // Decline all cookies (only essential)
+        function declineCookies() {
+            setCookie('cookie_consent', 'declined', 365);
+            setCookie('analytics_cookies', 'false', 365);
+            setCookie('preference_cookies', 'false', 365);
+            setCookie('marketing_cookies', 'false', 365);
+
+            hideCookieBanner();
+            console.log('Cookies declined - only essential cookies will be used');
+        }
+
+        // Open cookie settings (for future implementation)
+        function openCookieSettings() {
+            // You can implement a modal with individual cookie toggles here
+            alert('Cookie settings would open here. This feature can be implemented with a modal.');
+            console.log('Open cookie settings modal');
+        }
+
+        // Hide the cookie banner
+        function hideCookieBanner() {
+            cookieConsent.classList.remove('show');
+            setTimeout(() => {
+                cookieConsent.classList.add('hidden');
+            }, 400); // Match the CSS transition duration
+        }
+
+        // Cookie utility functions
+        function setCookie(name, value, days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + date.toUTCString();
+            const secure = window.location.protocol === 'https:' ? '; Secure' : '';
+            document.cookie = `${name}=${value}; ${expires}; path=/; SameSite=Lax${secure}`;
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+
+        // Initialize theme from cookie or system preference
+        function initTheme() {
+            const savedTheme = getCookie('site_theme');
+            const pageLoader = document.getElementById('pageLoader');
+
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+                if (pageLoader) pageLoader.classList.add('dark');
+                updateThemeIcon(true);
+            } else if (savedTheme === 'light') {
+                body.classList.remove('dark-mode');
+                if (pageLoader) pageLoader.classList.remove('dark');
+                updateThemeIcon(false);
+            } else {
+                // No saved preference, check system preference
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (prefersDark) {
+                    body.classList.add('dark-mode');
+                    if (pageLoader) pageLoader.classList.add('dark');
+                    updateThemeIcon(true);
+                    setCookie('site_theme', 'dark', 365);
+                } else {
+                    setCookie('site_theme', 'light', 365);
+                }
+            }
+        }
+
+        function updateThemeIcon(isDark) {
+            if (isDark) {
+                themeIcon.classList.remove('bi-sun-fill');
+                themeIcon.classList.add('bi-moon-stars-fill');
+            } else {
+                themeIcon.classList.remove('bi-moon-stars-fill');
+                themeIcon.classList.add('bi-sun-fill');
+            }
+        }
+
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            updateThemeIcon(isDark);
+            setCookie('site_theme', isDark ? 'dark' : 'light', 365);
+        });
+
+        // Initialize on page load
+        initTheme();
+
+        // Listen for system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            const savedTheme = getCookie('site_theme');
+            // Only update if user hasn't set a preference
+            if (!savedTheme) {
+                if (e.matches) {
+                    body.classList.add('dark-mode');
+                    updateThemeIcon(true);
+                } else {
+                    body.classList.remove('dark-mode');
+                    updateThemeIcon(false);
+                }
+            }
+        });
+
+        // ========== SCROLL ANIMATIONS ==========
+        const animateOnScroll = () => {
+            const elements = document.querySelectorAll('.animate-on-scroll');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        // Stagger animation slightly for each element
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, index * 100);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            elements.forEach(element => {
+                observer.observe(element);
+            });
+
+            // Respect reduced motion preference
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                elements.forEach(element => {
+                    element.classList.add('visible');
+                });
+            }
+        };
+
+        // Initialize animations when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', animateOnScroll);
+        } else {
+            animateOnScroll();
+        }
+
+        // ========== NAVBAR SCROLL EFFECT ==========
+        let lastScroll = 0;
+        const navbar = document.querySelector('.main-navbar');
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll > 100) {
+                navbar.style.boxShadow = '0 2px 10px var(--card-shadow)';
+            } else {
+                navbar.style.boxShadow = 'none';
+            }
+
+            lastScroll = currentScroll;
+        });
+
+        // ========== ACTIVE NAV LINK ==========
+        const navLinks = document.querySelectorAll('.main-navbar .nav-link');
+        const currentPage = window.location.pathname;
+
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === currentPage ||
+                (currentPage === '/' && link.getAttribute('href') === '/')) {
+                link.classList.add('active');
+            }
+
+            link.addEventListener('click', function () {
+                navLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // ========== SMOOTH SCROLL FOR ANCHOR LINKS ==========
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // ========== EVENT PAGE FUNCTIONALITY ==========
+        function initEventPage() {
+            const buyTicketsBtn = document.getElementById('buyTicketsBtn');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            const ticketSection = document.getElementById('ticketSection');
+
+            // Scroll to ticket section when "Buy Tickets" is clicked
+            buyTicketsBtn.addEventListener('click', function() {
+                ticketSection.scrollIntoView({ behavior: 'smooth' });
+            });
+
+            // Quantity button functionality
+            document.querySelectorAll('.ticket-option').forEach(option => {
+                const minusBtn = option.querySelector('.minus');
+                const plusBtn = option.querySelector('.plus');
+                const quantityDisplay = option.querySelector('.quantity-display');
+
+                let quantity = 0;
+
+                minusBtn.addEventListener('click', function() {
+                    if (quantity > 0) {
+                        quantity--;
+                        quantityDisplay.textContent = quantity;
+                        updateOrderSummary();
+                    }
+                });
+
+                plusBtn.addEventListener('click', function() {
+                    quantity++;
+                    quantityDisplay.textContent = quantity;
+                    updateOrderSummary();
+                });
+            });
+
+            // Update order summary
+            function updateOrderSummary() {
+                const ticketOptions = document.querySelectorAll('.ticket-option');
+                let subtotal = 0;
+
+                ticketOptions.forEach(option => {
+                    const quantity = parseInt(option.querySelector('.quantity-display').textContent);
+                    const price = parseInt(option.getAttribute('data-price'));
+                    subtotal += quantity * price;
+                });
+
+                const serviceFee = subtotal > 0 ? Math.max(5, subtotal * 0.05) : 0;
+                const total = subtotal + serviceFee;
+
+                // Update summary items
+                document.querySelectorAll('.summary-item').forEach((item, index) => {
+                    const spans = item.querySelectorAll('span');
+                    if (index === 0) {
+                        const quantity = parseInt(ticketOptions[0].querySelector('.quantity-display').textContent);
+                        spans[0].textContent = `General Admission (x${quantity})`;
+                        spans[1].textContent = `$${quantity * 89}`;
+                    } else if (index === 1) {
+                        const quantity = parseInt(ticketOptions[1].querySelector('.quantity-display').textContent);
+                        spans[0].textContent = `VIP Experience (x${quantity})`;
+                        spans[1].textContent = `$${quantity * 149}`;
+                    } else if (index === 2) {
+                        const quantity = parseInt(ticketOptions[2].querySelector('.quantity-display').textContent);
+                        spans[0].textContent = `Platinum Package (x${quantity})`;
+                        spans[1].textContent = `$${quantity * 249}`;
+                    } else if (index === 3) {
+                        spans[1].textContent = `$${serviceFee.toFixed(2)}`;
+                    }
+                });
+
+                // Update total
+                document.getElementById('totalAmount').textContent = `$${total.toFixed(2)}`;
+
+                // Enable/disable checkout button
+                checkoutBtn.disabled = total === 0;
+            }
+
+            // Checkout button functionality
+            checkoutBtn.addEventListener('click', function() {
+                const total = parseFloat(document.getElementById('totalAmount').textContent.replace('$', ''));
+                if (total > 0) {
+                    alert(`Proceeding to checkout for Summer Music Festival 2025. Total: $${total.toFixed(2)}`);
+                    // In a real implementation, this would redirect to a checkout page
+                }
+            });
+
+            // Share button functionality
+            document.querySelector('.btn-secondary-event').addEventListener('click', function() {
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'Summer Music Festival 2025',
+                        text: 'Check out this amazing music festival!',
+                        url: window.location.href,
+                    })
+                    .then(() => console.log('Successful share'))
+                    .catch((error) => console.log('Error sharing', error));
+                } else {
+                    // Fallback for browsers that don't support the Web Share API
+                    alert('Share this event with your friends! URL: ' + window.location.href);
+                }
+            });
+        }
+
+        // ========== LAZY LOADING FALLBACK ==========
+        if ('loading' in HTMLImageElement.prototype) {
+            // Browser supports native lazy loading
+            console.log('Native lazy loading supported');
+        } else {
+            // Fallback for browsers that don't support lazy loading
+            const images = document.querySelectorAll('img[loading="lazy"]');
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.src;
+                        observer.unobserve(img);
+                    }
+                });
+            });
+
+            images.forEach(img => imageObserver.observe(img));
+        }
+    </script>
+</body>
+
+</html>

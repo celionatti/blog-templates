@@ -1,0 +1,1592 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Modern responsive blog template with dark mode">
+    <title>BlogName - Your Daily News Source</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ========== CSS VARIABLES & THEME ========== */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6c757d;
+            --accent: #dc143c;
+            --accent-hover: #b01030;
+            --border-color: #dee2e6;
+            --card-shadow: rgba(0, 0, 0, 0.1);
+            --font-heading: 'Inter', sans-serif;
+            --font-brand: 'Dancing Script', cursive;
+        }
+
+        .dark-mode {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --text-primary: #f5f5f5;
+            --text-secondary: #b0b0b0;
+            --accent: #ff4f5a;
+            --accent-hover: #ff6b75;
+            --border-color: #333;
+            --card-shadow: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-heading);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            line-height: 1.6;
+        }
+
+        /* ========== LOADING STATE ========== */
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .page-loader.dark {
+            background-color: #121212;
+        }
+
+        .page-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-content {
+            text-align: center;
+        }
+
+        .loader-logo {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            animation: pulse 1.5s ease-in-out infinite;
+            font-family: var(--font-brand);
+        }
+
+        .loader-logo .light-theme {
+            color: #1a1a1a;
+        }
+
+        .loader-logo .light-theme span {
+            color: #dc143c;
+        }
+
+        .loader-logo .dark-theme {
+            color: #f5f5f5;
+            display: none;
+        }
+
+        .loader-logo .dark-theme span {
+            color: #ff4f5a;
+        }
+
+        .page-loader.dark .loader-logo .light-theme {
+            display: none;
+        }
+
+        .page-loader.dark .loader-logo .dark-theme {
+            display: inline;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(220, 20, 60, 0.1);
+            border-top-color: #dc143c;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .page-loader.dark .spinner {
+            border: 4px solid rgba(255, 79, 90, 0.1);
+            border-top-color: #ff4f5a;
+        }
+
+        .loader-text {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #6c757d;
+            animation: fadeInOut 2s ease-in-out infinite;
+        }
+
+        .page-loader.dark .loader-text {
+            color: #b0b0b0;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
+        }
+
+        @keyframes fadeInOut {
+
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* Hide content while loading */
+        body.loading {
+            overflow: hidden;
+        }
+
+        .main-content {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .main-content.visible {
+            opacity: 1;
+        }
+
+        /* ========== ANIMATIONS ========== */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .animate-on-scroll {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+        }
+
+        /* ========== TOP HEADER ========== */
+        .top-header {
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.75rem 0;
+            font-size: 0.9rem;
+        }
+
+        .top-header .btn-subscribe {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.4rem 1.2rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .top-header .btn-subscribe:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .top-header .brand {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-family: var(--font-brand);
+        }
+
+        .top-header .brand span {
+            color: var(--accent);
+        }
+
+        .top-header .auth-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            margin-left: 1rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .top-header .auth-links a:hover {
+            color: var(--accent);
+        }
+
+        /* ========== MAIN NAVBAR ========== */
+        .main-navbar {
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .main-navbar .navbar-nav .nav-link {
+            color: var(--text-primary);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .main-navbar .navbar-nav .nav-link:hover,
+        .main-navbar .navbar-nav .nav-link.active {
+            color: var(--accent);
+        }
+
+        .main-navbar .navbar-nav .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 1rem;
+            right: 1rem;
+            height: 2px;
+            background-color: var(--accent);
+        }
+
+        /* ========== DROPDOWN MENU STYLES ========== */
+        .dropdown-menu {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 12px var(--card-shadow);
+            border-radius: 8px;
+            padding: 0.5rem 0;
+            margin-top: 0.5rem;
+        }
+
+        .dropdown-item {
+            color: var(--text-primary);
+            padding: 0.6rem 1.5rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .dropdown-item i {
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--bg-secondary);
+            color: var(--accent);
+            padding-left: 1.75rem;
+        }
+
+        .dropdown-item:active {
+            background-color: var(--bg-secondary);
+        }
+
+        .dropdown-divider {
+            border-color: var(--border-color);
+            margin: 0.5rem 0;
+        }
+
+        .nav-item.dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        @media (min-width: 992px) {
+            .dropdown-menu {
+                animation: slideDown 0.3s ease;
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            color: var(--accent);
+            transform: rotate(20deg);
+        }
+
+        /* ========== SEARCH BAR - FIXED FOR MOBILE ========== */
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-toggle {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: color 0.3s ease;
+            z-index: 1001;
+        }
+
+        .search-toggle:hover {
+            color: var(--accent);
+        }
+
+        .search-input-container {
+            position: absolute;
+            right: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            overflow: hidden;
+            transition: width 0.3s ease;
+            background-color: var(--bg-primary);
+            border-radius: 50px;
+            box-shadow: 0 2px 10px var(--card-shadow);
+            z-index: 1000;
+        }
+
+        .search-input-container.active {
+            width: 250px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.5rem 1rem;
+            border: none;
+            background: transparent;
+            color: var(--text-primary);
+            outline: none;
+            font-size: 0.9rem;
+        }
+
+        .search-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .search-close {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1rem;
+            z-index: 1002;
+        }
+
+        .search-close:hover {
+            color: var(--accent);
+        }
+
+        /* ========== HERO SECTION ========== */
+        .hero-section {
+            padding: 3rem 0;
+        }
+
+        .hero-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            height: 100%;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .hero-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px var(--card-shadow);
+        }
+
+        .hero-card img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .hero-card.small img {
+            height: 200px;
+        }
+
+        .hero-card .card-body {
+            padding: 1.5rem;
+        }
+
+        .hero-card .category-badge {
+            background-color: var(--accent);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 0.75rem;
+        }
+
+        .hero-card h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+        }
+
+        .hero-card.small h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .hero-card .meta {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        /* ========== SECTION HEADERS ========== */
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin: 3rem 0 2rem;
+        }
+
+        .section-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0;
+            padding-right: 1.5rem;
+            white-space: nowrap;
+        }
+
+        .section-header .line {
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(to right, var(--accent), transparent);
+        }
+
+        /* ========== CONTENT CARDS ========== */
+        .content-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            height: 100%;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .content-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px var(--card-shadow);
+        }
+
+        .content-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .content-card .card-body {
+            padding: 1.25rem;
+        }
+
+        .content-card .category-badge {
+            background-color: var(--accent);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+
+        .content-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .content-card .meta {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 0 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .footer .brand {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-family: var(--font-brand);
+        }
+
+        .footer .brand span {
+            color: var(--accent);
+        }
+
+        .footer h5 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer ul li a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer ul li a:hover {
+            color: var(--accent);
+        }
+
+        .footer .copyright {
+            text-align: center;
+            color: var(--text-secondary);
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 991px) {
+            .top-header .d-flex {
+                flex-direction: row;
+                justify-content: space-between;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .top-header .btn-subscribe {
+                display: none;
+            }
+
+            .top-header .auth-links a {
+                margin-left: 0.5rem;
+            }
+
+            .hero-card img {
+                height: 250px;
+            }
+
+            .section-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .search-input-container.active {
+                width: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-header .d-flex {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .top-header .auth-links a {
+                margin-left: 0.5rem;
+            }
+
+            .search-input-container.active {
+                width: 180px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .search-input-container {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                width: 100% !important;
+                height: 60px;
+                transform: translateY(-100%);
+                border-radius: 0;
+                transition: transform 0.3s ease;
+                z-index: 9999;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+
+            .search-input-container.active {
+                transform: translateY(0);
+            }
+
+            .search-input {
+                height: 100%;
+                padding: 1rem 3rem 1rem 1rem;
+                font-size: 1rem;
+            }
+
+            .search-close {
+                right: 1rem;
+                font-size: 1.2rem;
+            }
+
+            .navbar-toggler {
+                z-index: 10000;
+            }
+        }
+
+        /* ========== COOKIE CONSENT BANNER ========== */
+        .cookie-consent {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--bg-secondary);
+            border-top: 2px solid var(--accent);
+            padding: 1.5rem;
+            box-shadow: 0 -4px 20px var(--card-shadow);
+            z-index: 9997;
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+        }
+
+        .cookie-consent.show {
+            transform: translateY(0);
+        }
+
+        .cookie-consent.hidden {
+            display: none;
+        }
+
+        .cookie-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .cookie-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .cookie-text h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .cookie-text p {
+            color: var(--text-secondary);
+            margin: 0;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .cookie-text a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .cookie-text a:hover {
+            text-decoration: underline;
+        }
+
+        .cookie-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .cookie-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .cookie-btn.accept {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .cookie-btn.accept:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+
+        .cookie-btn.decline {
+            background-color: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .cookie-btn.decline:hover {
+            border-color: var(--text-primary);
+        }
+
+        .cookie-btn.settings {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .cookie-btn.settings:hover {
+            background-color: var(--bg-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .cookie-content {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+
+            .cookie-buttons {
+                justify-content: center;
+            }
+
+            .cookie-btn {
+                flex: 1;
+                min-width: 120px;
+            }
+        }
+    </style>
+</head>
+
+<body class="loading">
+    <!-- ========== PAGE LOADER ========== -->
+    <div class="page-loader" id="pageLoader">
+        <div class="loader-content">
+            <div class="loader-logo">
+                <span class="light-theme">Blog<span>Name</span></span>
+                <span class="dark-theme">Blog<span>Name</span></span>
+            </div>
+            <div class="spinner"></div>
+            <p class="loader-text">Loading amazing content...</p>
+        </div>
+    </div>
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <div class="main-content">
+        <!-- ========== TOP HEADER ========== -->
+        <header class="top-header">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <button class="btn btn-subscribe rounded-pill">
+                        <i class="bi bi-envelope-fill me-1"></i> Subscribe
+                    </button>
+                    <a href="/" class="brand">Blog<span>Name</span></a>
+                    <div class="auth-links">
+                        <a href="#"><i class="bi bi-person-circle me-1"></i> Login</a>
+                        <a href="#"><i class="bi bi-person-plus-fill me-1"></i> Sign Up</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ========== MAIN NAVBAR ========== -->
+        <nav class="navbar navbar-expand-lg main-navbar sticky-top">
+            <div class="container">
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#mainNav">
+                    <i class="bi bi-list" style="font-size: 1.5rem; color: var(--text-primary);"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="mainNav">
+                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Articles</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">World</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Sports</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Politics</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Entertainment</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Nigeria</a></li>
+
+                        <!-- Resources Menu -->
+                        <li class="nav-item"><a class="nav-link" href="#resources">
+                            <i class="bi bi-folder-fill me-1"></i> Resources
+                        </a></li>
+
+                        <!-- Services Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-briefcase-fill me-1"></i> Services
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="servicesDropdown">
+                                <li>
+                                    <a class="dropdown-item" href="#escrow-service">
+                                        <i class="bi bi-shield-check"></i>
+                                        <span>Escrow Service</span>
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" href="#content-writing">
+                                        <i class="bi bi-pencil-square"></i>
+                                        <span>Content Writing</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#consultation">
+                                        <i class="bi bi-chat-dots"></i>
+                                        <span>Consultation</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#web-design">
+                                        <i class="bi bi-code-slash"></i>
+                                        <span>Web Design & Development</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#seo-services">
+                                        <i class="bi bi-graph-up-arrow"></i>
+                                        <span>SEO Services</span>
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" href="#all-services">
+                                        <i class="bi bi-grid-3x3-gap"></i>
+                                        <span>View All Services</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="search-container">
+                        <div class="search-input-container" id="searchInputContainer">
+                            <input type="text" class="search-input" placeholder="Search articles...">
+                            <button class="search-close" id="searchClose">
+                                <i class="bi bi-x"></i>
+                            </button>
+                        </div>
+                        <button class="search-toggle" id="searchToggle">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                        <i class="bi bi-sun-fill" id="themeIcon"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- ========== HERO SECTION ========== -->
+        <section class="hero-section animate-on-scroll">
+            <div class="container">
+                <div class="row g-4">
+                    <!-- Main Featured Post -->
+                    <div class="col-lg-8">
+                        <div class="hero-card">
+                            <img src="https://images.unsplash.com/photo-504711434969-e33886168f5c?w=800&h=400&fit=crop"
+                                alt="Featured article" loading="lazy">
+                            <div class="card-body">
+                                <span class="category-badge">Featured</span>
+                                <h2>Breaking: Major Development Reshapes Global Economy</h2>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+                                    incididunt ut labore et dolore magna aliqua.</p>
+                                <div class="meta">
+                                    <span><i class="bi bi-person-circle me-1"></i> John Doe</span>
+                                    <span><i class="bi bi-clock me-1"></i> 2 hours ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Side Featured Posts -->
+                    <div class="col-lg-4">
+                        <div class="row g-4">
+                            <div class="col-12">
+                                <div class="hero-card small">
+                                    <img src="https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=400&h=200&fit=crop"
+                                        alt="Tech news" loading="lazy">
+                                    <div class="card-body">
+                                        <span class="category-badge">Technology</span>
+                                        <h3>AI Revolution: New Breakthrough Changes Everything</h3>
+                                        <div class="meta">
+                                            <span><i class="bi bi-clock me-1"></i> 4 hours ago</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="hero-card small">
+                                    <img src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400&h=200&fit=crop"
+                                        alt="Sports news" loading="lazy">
+                                    <div class="card-body">
+                                        <span class="category-badge">Sports</span>
+                                        <h3>Champions League: Stunning Upset Shocks Fans</h3>
+                                        <div class="meta">
+                                            <span><i class="bi bi-clock me-1"></i> 6 hours ago</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== TRENDING SECTION ========== -->
+        <section class="trending-section animate-on-scroll">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Trending</h2>
+                    <div class="line"></div>
+                </div>
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+                    <div class="col">
+                        <div class="content-card">
+                            <img src="https://images.unsplash.com/photo-1495020689067-958852a7765e?w=400&h=200&fit=crop"
+                                alt="News" loading="lazy">
+                            <div class="card-body">
+                                <span class="category-badge">World</span>
+                                <h3>Climate Summit Reaches Historic Agreement</h3>
+                                <div class="meta">
+                                    <span><i class="bi bi-clock me-1"></i> 1h ago</span>
+                                    <span><i class="bi bi-eye me-1"></i> 2.5k</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="content-card">
+                            <img src="https://images.unsplash.com/photo-1483058712412-4245e9b90334?w=400&h=200&fit=crop"
+                                alt="Travel" loading="lazy">
+                            <div class="card-body">
+                                <span class="category-badge">Travel</span>
+                                <h3>10 Hidden Gems You Must Visit in 2025</h3>
+                                <div class="meta">
+                                    <span><i class="bi bi-clock me-1"></i> 3h ago</span>
+                                    <span><i class="bi bi-eye me-1"></i> 1.8k</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="content-card">
+                            <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=200&fit=crop"
+                                alt="Tech" loading="lazy">
+                            <div class="card-body">
+                                <span class="category-badge">Technology</span>
+                                <h3>Quantum Computing Makes Giant Leap Forward</h3>
+                                <div class="meta">
+                                    <span><i class="bi bi-clock me-1"></i> 5h ago</span>
+                                    <span><i class="bi bi-eye me-1"></i> 3.2k</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="content-card">
+                            <img src="https://images.unsplash.com/photo-1490730141103-6cac27aaab94?w=400&h=200&fit=crop"
+                                alt="Fashion" loading="lazy">
+                            <div class="card-body">
+                                <span class="category-badge">Fashion</span>
+                                <h3>Fashion Week 2025: Top Trends Revealed</h3>
+                                <div class="meta">
+                                    <span><i class="bi bi-clock me-1"></i> 8h ago</span>
+                                    <span><i class="bi bi-eye me-1"></i> 1.5k</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== ENTERTAINMENT SECTION ========== -->
+        <section class="entertainment-section animate-on-scroll">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Entertainment</h2>
+                    <div class="line"></div>
+                </div>
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+                    <div class="col">
+                        <div class="content-card">
+                            <img src="https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=400&h=200&fit=crop"
+                                alt="Movie" loading="lazy">
+                            <div class="card-body">
+                                <span class="category-badge">Movies</span>
+                                <h3>Box Office: New Blockbuster Breaks Records</h3>
+                                <div class="meta">
+                                    <span><i class="bi bi-clock me-1"></i> 2h ago</span>
+                                    <span><i class="bi bi-eye me-1"></i> 4.1k</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="content-card">
+                            <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=400&h=200&fit=crop"
+                                alt="Music" loading="lazy">
+                            <div class="card-body">
+                                <span class="category-badge">Music</span>
+                                <h3>Grammy Winner Announces World Tour</h3>
+                                <div class="meta">
+                                    <span><i class="bi bi-clock me-1"></i> 4h ago</span>
+                                    <span><i class="bi bi-eye me-1"></i> 2.7k</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="content-card">
+                            <img src="https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=400&h=200&fit=crop"
+                                alt="TV" loading="lazy">
+                            <div class="card-body">
+                                <span class="category-badge">TV Shows</span>
+                                <h3>Most Anticipated Series of 2025 Unveiled</h3>
+                                <div class="meta">
+                                    <span><i class="bi bi-clock me-1"></i> 6h ago</span>
+                                    <span><i class="bi bi-eye me-1"></i> 3.5k</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="content-card">
+                            <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400&h=200&fit=crop"
+                                alt="Celebrity" loading="lazy">
+                            <div class="card-body">
+                                <span class="category-badge">Celebrity</span>
+                                <h3>Hollywood Stars Unite for Charity Event</h3>
+                                <div class="meta">
+                                    <span><i class="bi bi-clock me-1"></i> 9h ago</span>
+                                    <span><i class="bi bi-eye me-1"></i> 2.9k</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== POLITICS SECTION ========== -->
+        <section class="politics-section animate-on-scroll">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Politics</h2>
+                    <div class="line"></div>
+                </div>
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+                    <div class="col">
+                        <div class="content-card">
+                            <img src="https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=400&h=200&fit=crop"
+                                alt="Politics" loading="lazy">
+                            <div class="card-body">
+                                <span class="category-badge">Politics</span>
+                                <h3>Senate Passes Major Infrastructure Bill</h3>
+                                <div class="meta">
+                                    <span><i class="bi bi-clock me-1"></i> 1h ago</span>
+                                    <span><i class="bi bi-eye me-1"></i> 5.2k</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="content-card">
+                            <img src="https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=400&h=200&fit=crop"
+                                alt="Policy" loading="lazy">
+                            <div class="card-body">
+                                <span class="category-badge">Policy</span>
+                                <h3>New Healthcare Reform Announced Today</h3>
+                                <div class="meta">
+                                    <span><i class="bi bi-clock me-1"></i> 3h ago</span>
+                                    <span><i class="bi bi-eye me-1"></i> 4.6k</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="content-card">
+                            <img src="https://images.unsplash.com/photo-1591258739299-5b65d5cbb235?w=400&h=200&fit=crop"
+                                alt="Elections" loading="lazy">
+                            <div class="card-body">
+                                <span class="category-badge">Elections</span>
+                                <h3>Polls Show Tight Race in Upcoming Vote</h3>
+                                <div class="meta">
+                                    <span><i class="bi bi-clock me-1"></i> 5h ago</span>
+                                    <span><i class="bi bi-eye me-1"></i> 3.8k</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="content-card">
+                            <img src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=400&h=200&fit=crop"
+                                alt="International" loading="lazy">
+                            <div class="card-body">
+                                <span class="category-badge">International</span>
+                                <h3>G20 Summit Addresses Global Challenges</h3>
+                                <div class="meta">
+                                    <span><i class="bi bi-clock me-1"></i> 7h ago</span>
+                                    <span><i class="bi bi-eye me-1"></i> 4.3k</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== FOOTER ========== -->
+        <footer class="footer">
+            <div class="container">
+                <div class="row g-4">
+                    <div class="col-lg-4">
+                        <a href="/" class="brand d-block mb-3">Blog<span>Name</span></a>
+                        <p style="color: var(--text-secondary);">Your trusted source for breaking news, in-depth
+                            analysis, and compelling stories from around the world.</p>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <h5>Categories</h5>
+                        <ul>
+                            <li><a href="#">World</a></li>
+                            <li><a href="#">Politics</a></li>
+                            <li><a href="#">Sports</a></li>
+                            <li><a href="#">Entertainment</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <h5>Company</h5>
+                        <ul>
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">Careers</a></li>
+                            <li><a href="#">Advertise</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <h5>Legal</h5>
+                        <ul>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms of Service</a></li>
+                            <li><a href="#">Cookie Policy</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-2 col-md-12">
+                        <h5>Follow Us</h5>
+                        <div class="d-flex gap-3">
+                            <a href="#" style="color: var(--text-secondary); font-size: 1.5rem; transition: color 0.3s;"
+                                onmouseover="this.style.color='var(--accent)'"
+                                onmouseout="this.style.color='var(--text-secondary)'">
+                                <i class="bi bi-facebook"></i>
+                            </a>
+                            <a href="#" style="color: var(--text-secondary); font-size: 1.5rem; transition: color 0.3s;"
+                                onmouseover="this.style.color='var(--accent)'"
+                                onmouseout="this.style.color='var(--text-secondary)'">
+                                <i class="bi bi-instagram"></i>
+                            </a>
+                            <a href="#" style="color: var(--text-secondary); font-size: 1.5rem; transition: color 0.3s;"
+                                onmouseover="this.style.color='var(--accent)'"
+                                onmouseout="this.style.color='var(--text-secondary)'">
+                                <i class="bi bi-youtube"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="copyright">
+                    <p>&copy; 2025 BlogName. All rights reserved. | Designed with <i class="bi bi-heart-fill"
+                            style="color: var(--accent);"></i></p>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!-- END MAIN CONTENT -->
+
+    <!-- ========== COOKIE CONSENT BANNER ========== -->
+    <div class="cookie-consent" id="cookieConsent">
+        <div class="cookie-content">
+            <div class="cookie-text">
+                <h4><i class="bi bi-cookie me-2"></i>We Value Your Privacy</h4>
+                <p>We use cookies to enhance your browsing experience, remember your preferences, and analyze site
+                    traffic. By clicking "Accept All", you consent to our use of cookies. <a href="#">Learn more</a></p>
+            </div>
+            <div class="cookie-buttons">
+                <button class="cookie-btn settings" onclick="openCookieSettings()">
+                    <i class="bi bi-gear me-1"></i> Settings
+                </button>
+                <button class="cookie-btn decline" onclick="declineCookies()">
+                    Decline
+                </button>
+                <button class="cookie-btn accept" onclick="acceptCookies()">
+                    <i class="bi bi-check-lg me-1"></i> Accept All
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            checkCookieConsent();
+        });
+
+        window.addEventListener('load', function () {
+            const pageLoader = document.getElementById('pageLoader');
+            const mainContent = document.querySelector('.main-content');
+            const body = document.body;
+
+            setTimeout(() => {
+                pageLoader.classList.add('hidden');
+                mainContent.classList.add('visible');
+                body.classList.remove('loading');
+
+                setTimeout(() => {
+                    pageLoader.style.display = 'none';
+                }, 500);
+            }, 800);
+        });
+
+        const searchToggle = document.getElementById('searchToggle');
+        const searchInputContainer = document.getElementById('searchInputContainer');
+        const searchClose = document.getElementById('searchClose');
+        const searchInput = document.querySelector('.search-input');
+
+        searchToggle.addEventListener('click', function () {
+            searchInputContainer.classList.toggle('active');
+            if (searchInputContainer.classList.contains('active')) {
+                searchInput.focus();
+            }
+        });
+
+        searchClose.addEventListener('click', function () {
+            searchInputContainer.classList.remove('active');
+            searchInput.value = '';
+        });
+
+        document.addEventListener('click', function (event) {
+            if (window.innerWidth > 576) {
+                if (!searchInputContainer.contains(event.target) && !searchToggle.contains(event.target)) {
+                    searchInputContainer.classList.remove('active');
+                }
+            }
+        });
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                searchInputContainer.classList.remove('active');
+            }
+        });
+
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const body = document.body;
+        const cookieConsent = document.getElementById('cookieConsent');
+
+        function checkCookieConsent() {
+            const consentGiven = getCookie('cookie_consent');
+            if (!consentGiven) {
+                setTimeout(() => {
+                    cookieConsent.classList.add('show');
+                }, 1000);
+            }
+        }
+
+        function acceptCookies() {
+            setCookie('cookie_consent', 'accepted', 365);
+            setCookie('analytics_cookies', 'true', 365);
+            setCookie('preference_cookies', 'true', 365);
+            setCookie('marketing_cookies', 'true', 365);
+            hideCookieBanner();
+            console.log('All cookies accepted');
+        }
+
+        function declineCookies() {
+            setCookie('cookie_consent', 'declined', 365);
+            setCookie('analytics_cookies', 'false', 365);
+            setCookie('preference_cookies', 'false', 365);
+            setCookie('marketing_cookies', 'false', 365);
+            hideCookieBanner();
+            console.log('Cookies declined - only essential cookies will be used');
+        }
+
+        function openCookieSettings() {
+            alert('Cookie settings would open here. This feature can be implemented with a modal.');
+            console.log('Open cookie settings modal');
+        }
+
+        function hideCookieBanner() {
+            cookieConsent.classList.remove('show');
+            setTimeout(() => {
+                cookieConsent.classList.add('hidden');
+            }, 400);
+        }
+
+        function setCookie(name, value, days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + date.toUTCString();
+            const secure = window.location.protocol === 'https:' ? '; Secure' : '';
+            document.cookie = `${name}=${value}; ${expires}; path=/; SameSite=Lax${secure}`;
+        }
+
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+
+        function initTheme() {
+            const savedTheme = getCookie('site_theme');
+            const pageLoader = document.getElementById('pageLoader');
+
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+                if (pageLoader) pageLoader.classList.add('dark');
+                updateThemeIcon(true);
+            } else if (savedTheme === 'light') {
+                body.classList.remove('dark-mode');
+                if (pageLoader) pageLoader.classList.remove('dark');
+                updateThemeIcon(false);
+            } else {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (prefersDark) {
+                    body.classList.add('dark-mode');
+                    if (pageLoader) pageLoader.classList.add('dark');
+                    updateThemeIcon(true);
+                    setCookie('site_theme', 'dark', 365);
+                } else {
+                    setCookie('site_theme', 'light', 365);
+                }
+            }
+        }
+
+        function updateThemeIcon(isDark) {
+            if (isDark) {
+                themeIcon.classList.remove('bi-sun-fill');
+                themeIcon.classList.add('bi-moon-stars-fill');
+            } else {
+                themeIcon.classList.remove('bi-moon-stars-fill');
+                themeIcon.classList.add('bi-sun-fill');
+            }
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            updateThemeIcon(isDark);
+            setCookie('site_theme', isDark ? 'dark' : 'light', 365);
+        });
+
+        initTheme();
+
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            const savedTheme = getCookie('site_theme');
+            if (!savedTheme) {
+                if (e.matches) {
+                    body.classList.add('dark-mode');
+                    updateThemeIcon(true);
+                } else {
+                    body.classList.remove('dark-mode');
+                    updateThemeIcon(false);
+                }
+            }
+        });
+
+        const animateOnScroll = () => {
+            const elements = document.querySelectorAll('.animate-on-scroll');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, index * 100);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            elements.forEach(element => {
+                observer.observe(element);
+            });
+
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                elements.forEach(element => {
+                    element.classList.add('visible');
+                });
+            }
+        };
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', animateOnScroll);
+        } else {
+            animateOnScroll();
+        }
+
+        let lastScroll = 0;
+        const navbar = document.querySelector('.main-navbar');
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll > 100) {
+                navbar.style.boxShadow = '0 2px 10px var(--card-shadow)';
+            } else {
+                navbar.style.boxShadow = 'none';
+            }
+
+            lastScroll = currentScroll;
+        });
+
+        const navLinks = document.querySelectorAll('.main-navbar .nav-link');
+        const currentPage = window.location.pathname;
+
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === currentPage ||
+                (currentPage === '/' && link.getAttribute('href') === '/')) {
+                link.classList.add('active');
+            }
+
+            link.addEventListener('click', function () {
+                navLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        document.querySelectorAll('.hero-card, .content-card').forEach(card => {
+            card.addEventListener('click', function () {
+                console.log('Navigate to article page');
+            });
+        });
+
+        if ('loading' in HTMLImageElement.prototype) {
+            console.log('Native lazy loading supported');
+        } else {
+            const images = document.querySelectorAll('img[loading="lazy"]');
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.src;
+                        observer.unobserve(img);
+                    }
+                });
+            });
+
+            images.forEach(img => imageObserver.observe(img));
+        }
+    </script>
+</body>
+
+</html>

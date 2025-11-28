@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Create new category - BlogName">
+    <title>Create Category - BlogName Admin</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ========== CSS VARIABLES & THEME ========== */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-tertiary: #e9ecef;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6c757d;
+            --accent: #dc143c;
+            --accent-hover: #b01030;
+            --accent-light: rgba(220, 20, 60, 0.1);
+            --border-color: #dee2e6;
+            --card-shadow: rgba(0, 0, 0, 0.1);
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --info: #17a2b8;
+            --sidebar-width: 280px;
+            --font-heading: 'Inter', sans-serif;
+            --font-brand: 'Dancing Script', cursive;
+        }
+
+        .dark-mode {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #f5f5f5;
+            --text-secondary: #b0b0b0;
+            --accent: #ff4f5a;
+            --accent-hover: #ff6b75;
+            --accent-light: rgba(255, 79, 90, 0.15);
+            --border-color: #333;
+            --card-shadow: rgba(255, 255, 255, 0.05);
+            --success: #4caf50;
+            --warning: #ffb300;
+            --danger: #f44336;
+            --info: #29b6f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            font-family: var(--font-heading);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            line-height: 1.6;
+        }
+
+        /* ========== SIDEBAR ========== */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            background-color: var(--bg-primary);
+            border-right: 1px solid var(--border-color);
+            padding: 1.5rem 0;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar.hidden {
+            transform: translateX(-100%);
+        }
+
+        .sidebar-brand {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-brand a {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-family: var(--font-brand);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sidebar-brand span {
+            color: var(--accent);
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-nav-item {
+            margin-bottom: 0.25rem;
+        }
+
+        .sidebar-nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.875rem 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            font-weight: 500;
+        }
+
+        .sidebar-nav-link i {
+            font-size: 1.2rem;
+            margin-right: 1rem;
+            min-width: 24px;
+        }
+
+        .sidebar-nav-link:hover {
+            background-color: var(--accent-light);
+            color: var(--accent);
+        }
+
+        .sidebar-nav-link.active {
+            background-color: var(--accent-light);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .sidebar-nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: var(--accent);
+        }
+
+        .sidebar-section-title {
+            padding: 1.5rem 1.5rem 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+        }
+
+        /* ========== MAIN CONTENT ========== */
+        .main-wrapper {
+            margin-left: var(--sidebar-width);
+            transition: margin-left 0.3s ease;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-wrapper.expanded {
+            margin-left: 0;
+        }
+
+        /* ========== TOP HEADER ========== */
+        .top-header {
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: color 0.3s ease;
+            display: none;
+        }
+
+        .menu-toggle:hover {
+            color: var(--accent);
+        }
+
+        .search-box {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-icon {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .header-icon:hover {
+            color: var(--accent);
+            transform: scale(1.1);
+        }
+
+        .header-icon .badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: var(--danger);
+            color: white;
+            font-size: 0.65rem;
+            padding: 0.2rem 0.4rem;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--bg-secondary);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .user-menu:hover {
+            background-color: var(--accent-light);
+        }
+
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* ========== CREATE CATEGORY CONTENT ========== */
+        .create-category-content {
+            flex: 1;
+            padding: 2rem;
+            width: 100%;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        /* ========== FORM CARD ========== */
+        .form-card {
+            background-color: var(--bg-primary);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px var(--card-shadow);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .form-card-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .form-card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .form-card-body {
+            padding: 2rem;
+        }
+
+        /* ========== FORM STYLES ========== */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .form-text {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .color-picker {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .color-input {
+            width: 60px;
+            height: 40px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .color-input::-webkit-color-swatch {
+            border: none;
+            border-radius: 4px;
+        }
+
+        .color-input::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        .icon-preview {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .icon-preview-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background-color: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        /* ========== BUTTON STYLES ========== */
+        .btn-custom {
+            padding: 0.6rem 1.25rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 20, 60, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        }
+
+        /* ========== FORM ACTIONS ========== */
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            padding: 1.5rem 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* ========== PREVIEW CARD ========== */
+        .preview-card {
+            background-color: var(--bg-primary);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px var(--card-shadow);
+            overflow: hidden;
+            margin-top: 2rem;
+        }
+
+        .preview-card-header {
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            background-color: var(--bg-secondary);
+        }
+
+        .preview-card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .preview-card-body {
+            padding: 2rem;
+        }
+
+        .category-preview {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .category-preview-color {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+        }
+
+        .category-preview-info {
+            flex: 1;
+        }
+
+        .category-preview-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .category-preview-slug {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-family: monospace;
+        }
+
+        .category-preview-description {
+            margin-top: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 1199px) {
+            :root {
+                --sidebar-width: 250px;
+            }
+        }
+
+        @media (max-width: 991px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-wrapper {
+                margin-left: 0;
+            }
+
+            .search-box {
+                max-width: 100%;
+            }
+
+            .user-info {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .create-category-content {
+                padding: 1.5rem;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .form-card-body,
+            .preview-card-body {
+                padding: 1.5rem;
+            }
+
+            .form-card-header,
+            .preview-card-header {
+                padding: 1.25rem 1.5rem;
+            }
+
+            .form-actions {
+                flex-direction: column;
+                padding: 1.25rem 1.5rem;
+            }
+
+            .form-actions .btn-custom {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .top-header {
+                padding: 1rem 1.5rem;
+            }
+
+            .search-box input {
+                font-size: 0.85rem;
+                padding: 0.65rem 1rem 0.65rem 2.5rem;
+            }
+
+            .header-right {
+                gap: 0.5rem;
+            }
+
+            .header-icon {
+                font-size: 1.2rem;
+            }
+
+            .color-picker {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .icon-preview {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .category-preview {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        /* ========== OVERLAY FOR MOBILE SIDEBAR ========== */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ========== SIDEBAR ========== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <a href="/">
+                <i class="bi bi-lightning-charge-fill"></i>
+                Blog<span>Admin</span>
+            </a>
+        </div>
+
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-speedometer2"></i>
+                    Dashboard
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-file-earmark-text"></i>
+                    Posts
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link active">
+                    <i class="bi bi-folder"></i>
+                    Categories
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-chat-dots"></i>
+                    Comments
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-people"></i>
+                    Users
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-section-title">Analytics</div>
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-graph-up"></i>
+                    Analytics
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-bar-chart"></i>
+                    Reports
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-section-title">Settings</div>
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-gear"></i>
+                    Settings
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-palette"></i>
+                    Appearance
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-box-arrow-right"></i>
+                    Logout
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- ========== SIDEBAR OVERLAY ========== -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <div class="main-wrapper" id="mainWrapper">
+        <!-- ========== TOP HEADER ========== -->
+        <header class="top-header">
+            <div class="header-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="bi bi-list"></i>
+                </button>
+                <div class="search-box">
+                    <i class="bi bi-search"></i>
+                    <input type="text" placeholder="Search categories...">
+                </div>
+            </div>
+
+            <div class="header-right">
+                <button class="header-icon" id="themeToggle" aria-label="Toggle dark mode">
+                    <i class="bi bi-sun-fill" id="themeIcon"></i>
+                </button>
+                <button class="header-icon">
+                    <i class="bi bi-bell"></i>
+                    <span class="badge">3</span>
+                </button>
+                <div class="user-menu">
+                    <div class="user-avatar">JD</div>
+                    <div class="user-info">
+                        <div class="user-name">John Doe</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                    <i class="bi bi-chevron-down" style="color: var(--text-secondary);"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- ========== CREATE CATEGORY CONTENT ========== -->
+        <main class="create-category-content">
+            <h1 class="page-title">Create New Category</h1>
+            <p class="page-subtitle">Add a new category to organize your content effectively.</p>
+
+            <!-- ========== CATEGORY FORM ========== -->
+            <div class="form-card">
+                <div class="form-card-header">
+                    <h2 class="form-card-title">Category Details</h2>
+                </div>
+                <div class="form-card-body">
+                    <form id="categoryForm">
+                        <div class="form-group">
+                            <label for="categoryName" class="form-label">Category Name</label>
+                            <input type="text" class="form-control" id="categoryName" placeholder="Enter category name" required>
+                            <div class="form-text">The name is how it appears on your site.</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="categorySlug" class="form-label">Slug</label>
+                            <input type="text" class="form-control" id="categorySlug" placeholder="category-slug">
+                            <div class="form-text">The "slug" is the URL-friendly version of the name.</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="categoryDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="categoryDescription" rows="3" placeholder="Enter a description (optional)"></textarea>
+                            <div class="form-text">The description is not prominent by default; however, some themes may show it.</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="categoryColor" class="form-label">Color</label>
+                            <div class="color-picker">
+                                <input type="color" class="color-input" id="categoryColor" value="#667eea">
+                                <span>Choose a color to represent this category</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="categoryIcon" class="form-label">Icon</label>
+                            <select class="form-control" id="categoryIcon">
+                                <option value="bi-folder">Default</option>
+                                <option value="bi-cpu">Technology</option>
+                                <option value="bi-geo-alt">Travel</option>
+                                <option value="bi-heart">Lifestyle</option>
+                                <option value="bi-egg-fried">Food</option>
+                                <option value="bi-book">Education</option>
+                                <option value="bi-briefcase">Business</option>
+                                <option value="bi-film">Entertainment</option>
+                            </select>
+                            <div class="icon-preview">
+                                <div class="icon-preview-box">
+                                    <i class="bi bi-folder" id="iconPreview"></i>
+                                </div>
+                                <span>This is how the icon will appear in the category list</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="parentCategory" class="form-label">Parent Category</label>
+                            <select class="form-control" id="parentCategory">
+                                <option value="">None</option>
+                                <option value="1">Technology</option>
+                                <option value="2">Travel</option>
+                                <option value="3">Lifestyle</option>
+                            </select>
+                            <div class="form-text">Categories can have a hierarchy. You might have a Jazz category, and under that have children categories for Bebop and Big Band.</div>
+                        </div>
+                    </form>
+                </div>
+                <div class="form-actions">
+                    <button class="btn-custom btn-secondary" id="cancelButton">
+                        <i class="bi bi-x-lg"></i>
+                        Cancel
+                    </button>
+                    <button class="btn-custom btn-success" id="saveButton">
+                        <i class="bi bi-check-lg"></i>
+                        Create Category
+                    </button>
+                </div>
+            </div>
+
+            <!-- ========== PREVIEW CARD ========== -->
+            <div class="preview-card">
+                <div class="preview-card-header">
+                    <h3 class="preview-card-title">Preview</h3>
+                </div>
+                <div class="preview-card-body">
+                    <div class="category-preview">
+                        <div class="category-preview-color" id="previewColor"></div>
+                        <div class="category-preview-info">
+                            <div class="category-preview-name" id="previewName">Category Name</div>
+                            <div class="category-preview-slug" id="previewSlug">category-slug</div>
+                            <div class="category-preview-description" id="previewDescription">Category description will appear here</div>
+                        </div>
+                        <div class="category-preview-icon">
+                            <i class="bi bi-folder" id="previewIcon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // ========== SIDEBAR TOGGLE ==========
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const mainWrapper = document.getElementById('mainWrapper');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            sidebarOverlay.classList.toggle('active');
+        });
+
+        sidebarOverlay.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
+        });
+
+        // Close sidebar when clicking a link on mobile
+        document.querySelectorAll('.sidebar-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 991) {
+                    sidebar.classList.remove('active');
+                    sidebarOverlay.classList.remove('active');
+                }
+            });
+        });
+
+        // ========== THEME TOGGLE ==========
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const body = document.body;
+
+        function updateThemeIcon(isDark) {
+            if (isDark) {
+                themeIcon.classList.remove('bi-sun-fill');
+                themeIcon.classList.add('bi-moon-stars-fill');
+            } else {
+                themeIcon.classList.remove('bi-moon-stars-fill');
+                themeIcon.classList.add('bi-sun-fill');
+            }
+        }
+
+        function initTheme() {
+            const savedTheme = localStorage.getItem('admin_theme');
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+                updateThemeIcon(true);
+            } else if (savedTheme === 'light') {
+                body.classList.remove('dark-mode');
+                updateThemeIcon(false);
+            } else {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (prefersDark) {
+                    body.classList.add('dark-mode');
+                    updateThemeIcon(true);
+                }
+            }
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            updateThemeIcon(isDark);
+            localStorage.setItem('admin_theme', isDark ? 'dark' : 'light');
+        });
+
+        initTheme();
+
+        // ========== FORM FUNCTIONALITY ==========
+        const categoryName = document.getElementById('categoryName');
+        const categorySlug = document.getElementById('categorySlug');
+        const categoryDescription = document.getElementById('categoryDescription');
+        const categoryColor = document.getElementById('categoryColor');
+        const categoryIcon = document.getElementById('categoryIcon');
+        const parentCategory = document.getElementById('parentCategory');
+        const saveButton = document.getElementById('saveButton');
+        const cancelButton = document.getElementById('cancelButton');
+        
+        // Preview elements
+        const previewName = document.getElementById('previewName');
+        const previewSlug = document.getElementById('previewSlug');
+        const previewDescription = document.getElementById('previewDescription');
+        const previewColor = document.getElementById('previewColor');
+        const previewIcon = document.getElementById('previewIcon');
+        const iconPreview = document.getElementById('iconPreview');
+
+        // ========== AUTO-GENERATE SLUG ==========
+        categoryName.addEventListener('input', function() {
+            if (!categorySlug.dataset.manual) {
+                const slug = this.value
+                    .toLowerCase()
+                    .trim()
+                    .replace(/[^\w\s-]/g, '')
+                    .replace(/[\s_-]+/g, '-')
+                    .replace(/^-+|-+$/g, '');
+                categorySlug.value = slug;
+                
+                // Update preview
+                previewName.textContent = this.value || 'Category Name';
+                previewSlug.textContent = slug || 'category-slug';
+            }
+        });
+
+        categorySlug.addEventListener('input', function() {
+            this.dataset.manual = 'true';
+            previewSlug.textContent = this.value || 'category-slug';
+        });
+
+        // ========== UPDATE PREVIEW ==========
+        categoryDescription.addEventListener('input', function() {
+            previewDescription.textContent = this.value || 'Category description will appear here';
+        });
+
+        categoryColor.addEventListener('input', function() {
+            previewColor.style.backgroundColor = this.value;
+        });
+
+        categoryIcon.addEventListener('change', function() {
+            const iconClass = this.value;
+            previewIcon.className = `bi ${iconClass}`;
+            iconPreview.className = `bi ${iconClass}`;
+        });
+
+        // ========== FORM SUBMISSION ==========
+        saveButton.addEventListener('click', function() {
+            const name = categoryName.value.trim();
+            if (!name) {
+                alert('Please enter a category name.');
+                categoryName.focus();
+                return;
+            }
+
+            // In a real application, this would save to a database
+            const categoryData = {
+                name: name,
+                slug: categorySlug.value,
+                description: categoryDescription.value,
+                color: categoryColor.value,
+                icon: categoryIcon.value,
+                parent: parentCategory.value
+            };
+
+            console.log('Category created:', categoryData);
+            
+            // Show success message and redirect
+            alert('Category created successfully!');
+            // In a real application, you might redirect to the categories list
+            // window.location.href = 'categories-manage.html';
+        });
+
+        cancelButton.addEventListener('click', function() {
+            if (confirm('Are you sure you want to cancel? Any unsaved changes will be lost.')) {
+                // In a real application, you might redirect to the categories list
+                // window.location.href = 'categories-manage.html';
+                console.log('Category creation cancelled');
+            }
+        });
+
+        // ========== RESPONSIVE HANDLING ==========
+        function handleResize() {
+            if (window.innerWidth > 991) {
+                sidebar.classList.remove('active');
+                sidebarOverlay.classList.remove('active');
+            }
+        }
+
+        window.addEventListener('resize', handleResize);
+    </script>
+</body>
+
+</html>

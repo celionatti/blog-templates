@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Download premium resources, templates, guides and more">
+    <title>Resources - BlogName</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6c757d;
+            --accent: #dc143c;
+            --accent-hover: #b01030;
+            --border-color: #dee2e6;
+            --card-shadow: rgba(0, 0, 0, 0.1);
+            --success: #28a745;
+            --font-heading: 'Inter', sans-serif;
+            --font-brand: 'Dancing Script', cursive;
+        }
+
+        .dark-mode {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --text-primary: #f5f5f5;
+            --text-secondary: #b0b0b0;
+            --accent: #ff4f5a;
+            --accent-hover: #ff6b75;
+            --border-color: #333;
+            --card-shadow: rgba(255, 255, 255, 0.05);
+            --success: #4ade80;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-heading);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            line-height: 1.6;
+        }
+
+        /* ========== TOP HEADER ========== */
+        .top-header {
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.75rem 0;
+            font-size: 0.9rem;
+        }
+
+        .top-header .btn-subscribe {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.4rem 1.2rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .top-header .btn-subscribe:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .top-header .brand {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-family: var(--font-brand);
+        }
+
+        .top-header .brand span {
+            color: var(--accent);
+        }
+
+        .top-header .auth-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            margin-left: 1rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .top-header .auth-links a:hover {
+            color: var(--accent);
+        }
+
+        /* ========== MAIN NAVBAR ========== */
+        .main-navbar {
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .main-navbar .navbar-nav .nav-link {
+            color: var(--text-primary);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .main-navbar .navbar-nav .nav-link:hover,
+        .main-navbar .navbar-nav .nav-link.active {
+            color: var(--accent);
+        }
+
+        .main-navbar .navbar-nav .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 1rem;
+            right: 1rem;
+            height: 2px;
+            background-color: var(--accent);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            color: var(--accent);
+            transform: rotate(20deg);
+        }
+
+        /* ========== PAGE HERO ========== */
+        .page-hero {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+            padding: 4rem 0 3rem;
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="%23ffffff"/><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" fill="%23ffffff"/><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="%23ffffff"/></svg>') no-repeat bottom;
+            background-size: cover;
+            opacity: 0.1;
+        }
+
+        .page-hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .page-hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            position: relative;
+        }
+
+        /* ========== FILTER SECTION ========== */
+        .filter-section {
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 2rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .filter-btn {
+            background-color: var(--bg-primary);
+            border: 2px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background-color: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        .filter-btn i {
+            font-size: 1.1rem;
+        }
+
+        .search-box {
+            max-width: 400px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.6rem 1rem 0.6rem 2.5rem;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        /* ========== RESOURCE CARDS ========== */
+        .resources-section {
+            padding: 3rem 0;
+        }
+
+        .resource-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            height: 100%;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px var(--card-shadow);
+            border-color: var(--accent);
+        }
+
+        .resource-icon {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+            padding: 3rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .resource-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        }
+
+        .resource-icon i {
+            font-size: 4rem;
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .resource-body {
+            padding: 1.5rem;
+        }
+
+        .resource-category {
+            display: inline-block;
+            background-color: var(--accent);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
+
+        .resource-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .resource-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .resource-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .resource-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .resource-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .resource-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .resource-price.free {
+            color: var(--success);
+        }
+
+        .download-btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .download-btn:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 20, 60, 0.3);
+        }
+
+        .download-btn.free {
+            background-color: var(--success);
+        }
+
+        .download-btn.free:hover {
+            background-color: #218838;
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        }
+
+        /* ========== POPULAR BADGE ========== */
+        .popular-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: #ffc107;
+            color: #1a1a1a;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            z-index: 10;
+            box-shadow: 0 2px 8px rgba(255, 193, 7, 0.4);
+        }
+
+        /* ========== STATS SECTION ========== */
+        .stats-section {
+            background-color: var(--bg-secondary);
+            padding: 3rem 0;
+            margin-top: 3rem;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .stat-card i {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .stat-card h3 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 0 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .footer .brand {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-family: var(--font-brand);
+        }
+
+        .footer .brand span {
+            color: var(--accent);
+        }
+
+        .footer h5 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer ul li a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer ul li a:hover {
+            color: var(--accent);
+        }
+
+        .footer .copyright {
+            text-align: center;
+            color: var(--text-secondary);
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .page-hero h1 {
+                font-size: 2rem;
+            }
+
+            .page-hero p {
+                font-size: 1rem;
+            }
+
+            .filter-buttons {
+                justify-content: flex-start;
+            }
+
+            .search-box {
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+
+        /* ========== ANIMATIONS ========== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .resource-card {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .resource-card:nth-child(1) { animation-delay: 0.1s; }
+        .resource-card:nth-child(2) { animation-delay: 0.2s; }
+        .resource-card:nth-child(3) { animation-delay: 0.3s; }
+        .resource-card:nth-child(4) { animation-delay: 0.4s; }
+    </style>
+</head>
+
+<body>
+    <!-- ========== TOP HEADER ========== -->
+    <header class="top-header">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <button class="btn btn-subscribe rounded-pill">
+                    <i class="bi bi-envelope-fill me-1"></i> Subscribe
+                </button>
+                <a href="/" class="brand">Blog<span>Name</span></a>
+                <div class="auth-links">
+                    <a href="#"><i class="bi bi-person-circle me-1"></i> Login</a>
+                    <a href="#"><i class="bi bi-person-plus-fill me-1"></i> Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========== MAIN NAVBAR ========== -->
+    <nav class="navbar navbar-expand-lg main-navbar sticky-top">
+        <div class="container">
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                <i class="bi bi-list" style="font-size: 1.5rem; color: var(--text-primary);"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Articles</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#resources">
+                        <i class="bi bi-folder-fill me-1"></i> Resources
+                    </a></li>
+                </ul>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                    <i class="bi bi-sun-fill" id="themeIcon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ========== PAGE HERO ========== -->
+    <section class="page-hero">
+        <div class="container">
+            <h1><i class="bi bi-download me-3"></i>Premium Resources</h1>
+            <p>Download high-quality templates, guides, tools, and more to enhance your projects</p>
+        </div>
+    </section>
+
+    <!-- ========== FILTER SECTION ========== -->
+    <section class="filter-section">
+        <div class="container">
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">
+                    <i class="bi bi-grid-3x3-gap"></i>
+                    <span>All Resources</span>
+                </button>
+                <button class="filter-btn" data-filter="templates">
+                    <i class="bi bi-file-earmark-code"></i>
+                    <span>Templates</span>
+                </button>
+                <button class="filter-btn" data-filter="ebooks">
+                    <i class="bi bi-book"></i>
+                    <span>eBooks</span>
+                </button>
+                <button class="filter-btn" data-filter="guides">
+                    <i class="bi bi-signpost-2"></i>
+                    <span>Guides</span>
+                </button>
+                <button class="filter-btn" data-filter="tools">
+                    <i class="bi bi-tools"></i>
+                    <span>Tools</span>
+                </button>
+                <button class="filter-btn" data-filter="free">
+                    <i class="bi bi-gift"></i>
+                    <span>Free</span>
+                </button>
+                <div class="search-box ms-auto">
+                    <i class="bi bi-search"></i>
+                    <input type="text" placeholder="Search resources..." id="searchInput">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== RESOURCES SECTION ========== -->
+    <section class="resources-section">
+        <div class="container">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="resourcesGrid">
+
+                <!-- Resource 1 -->
+                <div class="col" data-category="templates" data-price="free">
+                    <div class="resource-card">
+                        <div class="popular-badge">
+                            <i class="bi bi-star-fill"></i>
+                            <span>Popular</span>
+                        </div>
+                        <div class="resource-icon">
+                            <i class="bi bi-file-earmark-code-fill"></i>
+                        </div>
+                        <div class="resource-body">
+                            <span class="resource-category">Template</span>
+                            <h3>Modern Landing Page Template</h3>
+                            <p>Fully responsive HTML5 template with beautiful animations and clean code. Perfect for startups and businesses.</p>
+                            <div class="resource-meta">
+                                <span><i class="bi bi-download"></i> 2,345 downloads</span>
+                                <span><i class="bi bi-file-zip"></i> 2.5 MB</span>
+                            </div>
+                            <div class="resource-footer">
+                                <span class="resource-price">$24.99</span>
+                                <button class="download-btn">
+                                    <i class="bi bi-cart-plus"></i>
+                                    <span>Buy Now</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resource 7 -->
+                <div class="col" data-category="guides" data-price="free">
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="bi bi-lightbulb-fill"></i>
+                        </div>
+                        <div class="resource-body">
+                            <span class="resource-category">Guide</span>
+                            <h3>Beginner's Guide to Blogging</h3>
+                            <p>Everything you need to know to start a successful blog from choosing a niche to monetization strategies.</p>
+                            <div class="resource-meta">
+                                <span><i class="bi bi-download"></i> 4,567 downloads</span>
+                                <span><i class="bi bi-file-pdf"></i> 5 MB</span>
+                            </div>
+                            <div class="resource-footer">
+                                <span class="resource-price free">FREE</span>
+                                <button class="download-btn free">
+                                    <i class="bi bi-download"></i>
+                                    <span>Download</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resource 8 -->
+                <div class="col" data-category="tools" data-price="paid">
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="bi bi-graph-up-arrow"></i>
+                        </div>
+                        <div class="resource-body">
+                            <span class="resource-category">Tool</span>
+                            <h3>Business Analytics Dashboard</h3>
+                            <p>Excel-based dashboard template with interactive charts and KPI tracking for business performance monitoring.</p>
+                            <div class="resource-meta">
+                                <span><i class="bi bi-download"></i> 789 downloads</span>
+                                <span><i class="bi bi-file-excel"></i> 3 MB</span>
+                            </div>
+                            <div class="resource-footer">
+                                <span class="resource-price">$49.99</span>
+                                <button class="download-btn">
+                                    <i class="bi bi-cart-plus"></i>
+                                    <span>Buy Now</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resource 9 -->
+                <div class="col" data-category="templates" data-price="free">
+                    <div class="resource-card">
+                        <div class="popular-badge">
+                            <i class="bi bi-star-fill"></i>
+                            <span>Popular</span>
+                        </div>
+                        <div class="resource-icon">
+                            <i class="bi bi-palette-fill"></i>
+                        </div>
+                        <div class="resource-body">
+                            <span class="resource-category">Template</span>
+                            <h3>Brand Identity Kit</h3>
+                            <p>Complete branding template with logo guidelines, color palettes, typography, and brand usage examples.</p>
+                            <div class="resource-meta">
+                                <span><i class="bi bi-download"></i> 5,231 downloads</span>
+                                <span><i class="bi bi-file-ppt"></i> 8 MB</span>
+                            </div>
+                            <div class="resource-footer">
+                                <span class="resource-price free">FREE</span>
+                                <button class="download-btn free">
+                                    <i class="bi bi-download"></i>
+                                    <span>Download</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== STATS SECTION ========== -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-6">
+                    <div class="stat-card">
+                        <i class="bi bi-download"></i>
+                        <h3>50K+</h3>
+                        <p>Total Downloads</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-card">
+                        <i class="bi bi-files"></i>
+                        <h3>200+</h3>
+                        <p>Resources Available</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-card">
+                        <i class="bi bi-people"></i>
+                        <h3>15K+</h3>
+                        <p>Happy Users</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="stat-card">
+                        <i class="bi bi-star-fill"></i>
+                        <h3>4.9/5</h3>
+                        <p>Average Rating</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <a href="/" class="brand d-block mb-3">Blog<span>Name</span></a>
+                    <p style="color: var(--text-secondary);">Your trusted source for premium resources, breaking news, and compelling stories from around the world.</p>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6">
+                    <h5>Categories</h5>
+                    <ul>
+                        <li><a href="#">Templates</a></li>
+                        <li><a href="#">eBooks</a></li>
+                        <li><a href="#">Guides</a></li>
+                        <li><a href="#">Tools</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6">
+                    <h5>Company</h5>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Affiliate</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6">
+                    <h5>Legal</h5>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Refund Policy</a></li>
+                        <li><a href="#">License</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-12">
+                    <h5>Follow Us</h5>
+                    <div class="d-flex gap-3">
+                        <a href="#" style="color: var(--text-secondary); font-size: 1.5rem; transition: color 0.3s;"
+                            onmouseover="this.style.color='var(--accent)'"
+                            onmouseout="this.style.color='var(--text-secondary)'">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                        <a href="#" style="color: var(--text-secondary); font-size: 1.5rem; transition: color 0.3s;"
+                            onmouseover="this.style.color='var(--accent)'"
+                            onmouseout="this.style.color='var(--text-secondary)'">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                        <a href="#" style="color: var(--text-secondary); font-size: 1.5rem; transition: color 0.3s;"
+                            onmouseover="this.style.color='var(--accent)'"
+                            onmouseout="this.style.color='var(--text-secondary)'">
+                            <i class="bi bi-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 BlogName. All rights reserved. | Designed with <i class="bi bi-heart-fill"
+                        style="color: var(--accent);"></i></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // ========== THEME TOGGLE ==========
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const body = document.body;
+
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+
+        function setCookie(name, value, days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + date.toUTCString();
+            document.cookie = `${name}=${value}; ${expires}; path=/; SameSite=Lax`;
+        }
+
+        function updateThemeIcon(isDark) {
+            if (isDark) {
+                themeIcon.classList.remove('bi-sun-fill');
+                themeIcon.classList.add('bi-moon-stars-fill');
+            } else {
+                themeIcon.classList.remove('bi-moon-stars-fill');
+                themeIcon.classList.add('bi-sun-fill');
+            }
+        }
+
+        function initTheme() {
+            const savedTheme = getCookie('site_theme');
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+                updateThemeIcon(true);
+            } else if (savedTheme === 'light') {
+                body.classList.remove('dark-mode');
+                updateThemeIcon(false);
+            } else {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (prefersDark) {
+                    body.classList.add('dark-mode');
+                    updateThemeIcon(true);
+                    setCookie('site_theme', 'dark', 365);
+                } else {
+                    setCookie('site_theme', 'light', 365);
+                }
+            }
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            updateThemeIcon(isDark);
+            setCookie('site_theme', isDark ? 'dark' : 'light', 365);
+        });
+
+        initTheme();
+
+        // ========== FILTER FUNCTIONALITY ==========
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const resourceCards = document.querySelectorAll('.resource-card');
+        const searchInput = document.getElementById('searchInput');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+
+                const filterValue = button.getAttribute('data-filter');
+
+                resourceCards.forEach(card => {
+                    const cardCategory = card.parentElement.getAttribute('data-category');
+                    const cardPrice = card.parentElement.getAttribute('data-price');
+
+                    if (filterValue === 'all') {
+                        card.parentElement.style.display = 'block';
+                    } else if (filterValue === 'free') {
+                        if (cardPrice === 'free') {
+                            card.parentElement.style.display = 'block';
+                        } else {
+                            card.parentElement.style.display = 'none';
+                        }
+                    } else {
+                        if (cardCategory === filterValue) {
+                            card.parentElement.style.display = 'block';
+                        } else {
+                            card.parentElement.style.display = 'none';
+                        }
+                    }
+                });
+            });
+        });
+
+        // ========== SEARCH FUNCTIONALITY ==========
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+
+            resourceCards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const description = card.querySelector('p').textContent.toLowerCase();
+
+                if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                    card.parentElement.style.display = 'block';
+                } else {
+                    card.parentElement.style.display = 'none';
+                }
+            });
+        });
+
+        // ========== DOWNLOAD/BUY BUTTON FUNCTIONALITY ==========
+        const downloadButtons = document.querySelectorAll('.download-btn');
+
+        downloadButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isFree = button.classList.contains('free');
+
+                if (isFree) {
+                    // Simulate download
+                    const originalContent = button.innerHTML;
+                    button.innerHTML = '<i class="bi bi-check-circle"></i> <span>Downloaded!</span>';
+                    button.style.backgroundColor = 'var(--success)';
+
+                    setTimeout(() => {
+                        button.innerHTML = originalContent;
+                    }, 2000);
+
+                    console.log('Downloading free resource...');
+                } else {
+                    // Simulate purchase
+                    console.log('Redirecting to checkout...');
+                    alert('Redirecting to secure checkout page...');
+                }
+            });
+        });
+
+        // ========== CARD CLICK HANDLING ==========
+        resourceCards.forEach(card => {
+            card.addEventListener('click', function(e) {
+                // Don't trigger if clicking the button
+                if (!e.target.closest('.download-btn')) {
+                    console.log('Opening resource detail page...');
+                    // In real implementation: window.location.href = 'resource-detail.html?id=123';
+                }
+            });
+        });
+
+        // ========== NAVBAR SCROLL EFFECT ==========
+        const navbar = document.querySelector('.main-navbar');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 100) {
+                navbar.style.boxShadow = '0 2px 10px var(--card-shadow)';
+            } else {
+                navbar.style.boxShadow = 'none';
+            }
+        });
+    </script>
+</body>
+
+</html>price free">FREE</span>
+                                <button class="download-btn free">
+                                    <i class="bi bi-download"></i>
+                                    <span>Download</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resource 2 -->
+                <div class="col" data-category="ebooks" data-price="paid">
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="bi bi-book-fill"></i>
+                        </div>
+                        <div class="resource-body">
+                            <span class="resource-category">eBook</span>
+                            <h3>Complete SEO Guide 2025</h3>
+                            <p>Comprehensive 200-page guide covering everything from keyword research to technical SEO and link building strategies.</p>
+                            <div class="resource-meta">
+                                <span><i class="bi bi-download"></i> 1,892 downloads</span>
+                                <span><i class="bi bi-file-pdf"></i> 15 MB</span>
+                            </div>
+                            <div class="resource-footer">
+                                <span class="resource-price">$29.99</span>
+                                <button class="download-btn">
+                                    <i class="bi bi-cart-plus"></i>
+                                    <span>Buy Now</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resource 3 -->
+                <div class="col" data-category="guides" data-price="paid">
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="bi bi-signpost-2-fill"></i>
+                        </div>
+                        <div class="resource-body">
+                            <span class="resource-category">Guide</span>
+                            <h3>Digital Marketing Blueprint</h3>
+                            <p>Step-by-step guide to building a successful digital marketing strategy for your business from scratch.</p>
+                            <div class="resource-meta">
+                                <span><i class="bi bi-download"></i> 956 downloads</span>
+                                <span><i class="bi bi-file-pdf"></i> 8 MB</span>
+                            </div>
+                            <div class="resource-footer">
+                                <span class="resource-price">$19.99</span>
+                                <button class="download-btn">
+                                    <i class="bi bi-cart-plus"></i>
+                                    <span>Buy Now</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resource 4 -->
+                <div class="col" data-category="tools" data-price="free">
+                    <div class="resource-card">
+                        <div class="popular-badge">
+                            <i class="bi bi-star-fill"></i>
+                            <span>Popular</span>
+                        </div>
+                        <div class="resource-icon">
+                            <i class="bi bi-calculator-fill"></i>
+                        </div>
+                        <div class="resource-body">
+                            <span class="resource-category">Tool</span>
+                            <h3>Content Calendar Spreadsheet</h3>
+                            <p>Pre-formatted Excel spreadsheet to plan and organize your content marketing for the entire year.</p>
+                            <div class="resource-meta">
+                                <span><i class="bi bi-download"></i> 3,421 downloads</span>
+                                <span><i class="bi bi-file-excel"></i> 500 KB</span>
+                            </div>
+                            <div class="resource-footer">
+                                <span class="resource-price free">FREE</span>
+                                <button class="download-btn free">
+                                    <i class="bi bi-download"></i>
+                                    <span>Download</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resource 5 -->
+                <div class="col" data-category="templates" data-price="paid">
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="bi bi-envelope-paper-fill"></i>
+                        </div>
+                        <div class="resource-body">
+                            <span class="resource-category">Template</span>
+                            <h3>Email Marketing Template Pack</h3>
+                            <p>50+ professionally designed email templates for newsletters, promotions, and transactional emails.</p>
+                            <div class="resource-meta">
+                                <span><i class="bi bi-download"></i> 1,234 downloads</span>
+                                <span><i class="bi bi-file-zip"></i> 12 MB</span>
+                            </div>
+                            <div class="resource-footer">
+                                <span class="resource-price">$39.99</span>
+                                <button class="download-btn">
+                                    <i class="bi bi-cart-plus"></i>
+                                    <span>Buy Now</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resource 6 -->
+                <div class="col" data-category="ebooks" data-price="paid">
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="bi bi-book-half"></i>
+                        </div>
+                        <div class="resource-body">
+                            <span class="resource-category">eBook</span>
+                            <h3>Social Media Mastery</h3>
+                            <p>Master Instagram, Facebook, Twitter, and TikTok marketing with proven strategies and real case studies.</p>
+                            <div class="resource-meta">
+                                <span><i class="bi bi-download"></i> 2,103 downloads</span>
+                                <span><i class="bi bi-file-pdf"></i> 18 MB</span>
+                            </div>
+                            <div class="resource-footer">
+                                <span class="resource-

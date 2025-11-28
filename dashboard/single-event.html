@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Event management - BlogName">
+    <title>Manage Event - BlogName Admin</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ========== CSS VARIABLES & THEME ========== */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-tertiary: #e9ecef;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6c757d;
+            --accent: #dc143c;
+            --accent-hover: #b01030;
+            --accent-light: rgba(220, 20, 60, 0.1);
+            --border-color: #dee2e6;
+            --card-shadow: rgba(0, 0, 0, 0.1);
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --info: #17a2b8;
+            --sidebar-width: 280px;
+            --font-heading: 'Inter', sans-serif;
+            --font-brand: 'Dancing Script', cursive;
+        }
+
+        .dark-mode {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #f5f5f5;
+            --text-secondary: #b0b0b0;
+            --accent: #ff4f5a;
+            --accent-hover: #ff6b75;
+            --accent-light: rgba(255, 79, 90, 0.15);
+            --border-color: #333;
+            --card-shadow: rgba(255, 255, 255, 0.05);
+            --success: #4caf50;
+            --warning: #ffb300;
+            --danger: #f44336;
+            --info: #29b6f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            font-family: var(--font-heading);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            line-height: 1.6;
+        }
+
+        /* ========== SIDEBAR ========== */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            background-color: var(--bg-primary);
+            border-right: 1px solid var(--border-color);
+            padding: 1.5rem 0;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar.hidden {
+            transform: translateX(-100%);
+        }
+
+        .sidebar-brand {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-brand a {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-family: var(--font-brand);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sidebar-brand span {
+            color: var(--accent);
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-nav-item {
+            margin-bottom: 0.25rem;
+        }
+
+        .sidebar-nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.875rem 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            font-weight: 500;
+        }
+
+        .sidebar-nav-link i {
+            font-size: 1.2rem;
+            margin-right: 1rem;
+            min-width: 24px;
+        }
+
+        .sidebar-nav-link:hover {
+            background-color: var(--accent-light);
+            color: var(--accent);
+        }
+
+        .sidebar-nav-link.active {
+            background-color: var(--accent-light);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .sidebar-nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: var(--accent);
+        }
+
+        .sidebar-section-title {
+            padding: 1.5rem 1.5rem 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+        }
+
+        /* ========== MAIN CONTENT ========== */
+        .main-wrapper {
+            margin-left: var(--sidebar-width);
+            transition: margin-left 0.3s ease;
+        }
+
+        .main-wrapper.expanded {
+            margin-left: 0;
+        }
+
+        /* ========== TOP HEADER ========== */
+        .top-header {
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: color 0.3s ease;
+            display: none;
+        }
+
+        .menu-toggle:hover {
+            color: var(--accent);
+        }
+
+        .search-box {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-icon {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .header-icon:hover {
+            color: var(--accent);
+            transform: scale(1.1);
+        }
+
+        .header-icon .badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: var(--danger);
+            color: white;
+            font-size: 0.65rem;
+            padding: 0.2rem 0.4rem;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--bg-secondary);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .user-menu:hover {
+            background-color: var(--accent-light);
+        }
+
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* ========== DASHBOARD CONTENT ========== */
+        .dashboard-content {
+            padding: 2rem 1.5rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        /* ========== EVENT HEADER ========== */
+        .event-header {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .event-info {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            flex: 1;
+        }
+
+        .event-thumbnail {
+            width: 120px;
+            height: 90px;
+            border-radius: 8px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .event-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            flex: 1;
+        }
+
+        .event-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .event-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .event-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            max-width: 600px;
+        }
+
+        .event-stats {
+            display: flex;
+            gap: 2rem;
+            font-size: 0.9rem;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-value {
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--text-primary);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .event-actions {
+            display: flex;
+            gap: 1rem;
+            flex-shrink: 0;
+        }
+
+        /* ========== TABS NAVIGATION ========== */
+        .tabs-navigation {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 0;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .tabs-list {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            overflow-x: auto;
+        }
+
+        .tab-item {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .tab-link {
+            display: block;
+            padding: 1rem 1.5rem;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .tab-link:hover {
+            background-color: var(--accent-light);
+            color: var(--accent);
+        }
+
+        .tab-link.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+            background-color: var(--accent-light);
+        }
+
+        /* ========== CONTENT CARDS ========== */
+        .content-card {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        /* ========== FORM STYLES ========== */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .form-text {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .form-col {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        /* ========== TICKET TYPES ========== */
+        .ticket-types {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .ticket-type-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .ticket-type-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 1;
+        }
+
+        .ticket-type-badge {
+            width: 60px;
+            height: 45px;
+            border-radius: 6px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .ticket-type-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .ticket-type-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+        }
+
+        .ticket-type-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .ticket-type-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* ========== BUTTON STYLES ========== */
+        .btn-custom {
+            padding: 0.6rem 1.25rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 20, 60, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .btn-sm {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+        }
+
+        /* ========== STATUS BADGES ========== */
+        .status-badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .status-published {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--success);
+        }
+
+        .status-draft {
+            background-color: rgba(255, 193, 7, 0.1);
+            color: var(--warning);
+        }
+
+        .status-cancelled {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: var(--danger);
+        }
+
+        /* ========== ACTION BUTTONS ========== */
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            font-size: 1.1rem;
+        }
+
+        .action-btn:hover {
+            background-color: var(--bg-secondary);
+        }
+
+        .action-btn.edit:hover {
+            color: var(--info);
+        }
+
+        .action-btn.delete:hover {
+            color: var(--danger);
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 1199px) {
+            :root {
+                --sidebar-width: 250px;
+            }
+        }
+
+        @media (max-width: 991px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-wrapper {
+                margin-left: 0;
+            }
+
+            .search-box {
+                max-width: 100%;
+            }
+
+            .user-info {
+                display: none;
+            }
+
+            .event-header {
+                flex-direction: column;
+            }
+
+            .event-info {
+                flex-direction: column;
+            }
+
+            .event-stats {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-content {
+                padding: 1.5rem 1rem;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .event-title {
+                font-size: 1.5rem;
+            }
+
+            .event-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .event-stats {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .tabs-list {
+                flex-direction: column;
+            }
+
+            .tab-item {
+                flex: none;
+            }
+
+            .form-row {
+                flex-direction: column;
+            }
+
+            .form-col {
+                min-width: 100%;
+            }
+
+            .ticket-type-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .ticket-type-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .top-header {
+                padding: 1rem;
+            }
+
+            .search-box input {
+                font-size: 0.85rem;
+                padding: 0.65rem 1rem 0.65rem 2.5rem;
+            }
+
+            .header-right {
+                gap: 0.5rem;
+            }
+
+            .header-icon {
+                font-size: 1.2rem;
+            }
+
+            .event-header {
+                padding: 1.5rem;
+            }
+
+            .content-card {
+                padding: 1.5rem;
+            }
+
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        /* ========== OVERLAY FOR MOBILE SIDEBAR ========== */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ========== SIDEBAR ========== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <a href="/">
+                <i class="bi bi-lightning-charge-fill"></i>
+                Blog<span>Admin</span>
+            </a>
+        </div>
+
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-speedometer2"></i>
+                    Dashboard
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-file-earmark-text"></i>
+                    Posts
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link active">
+                    <i class="bi bi-calendar-event"></i>
+                    Events
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-ticket-perforated"></i>
+                    Tickets
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-people"></i>
+                    Users
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-section-title">Analytics</div>
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-graph-up"></i>
+                    Analytics
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-bar-chart"></i>
+                    Reports
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-section-title">Settings</div>
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-gear"></i>
+                    Settings
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-palette"></i>
+                    Appearance
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-box-arrow-right"></i>
+                    Logout
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- ========== SIDEBAR OVERLAY ========== -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <div class="main-wrapper" id="mainWrapper">
+        <!-- ========== TOP HEADER ========== -->
+        <header class="top-header">
+            <div class="header-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="bi bi-list"></i>
+                </button>
+                <div class="search-box">
+                    <i class="bi bi-search"></i>
+                    <input type="text" placeholder="Search events...">
+                </div>
+            </div>
+
+            <div class="header-right">
+                <button class="header-icon" id="themeToggle" aria-label="Toggle dark mode">
+                    <i class="bi bi-sun-fill" id="themeIcon"></i>
+                </button>
+                <button class="header-icon">
+                    <i class="bi bi-bell"></i>
+                    <span class="badge">3</span>
+                </button>
+                <div class="user-menu">
+                    <div class="user-avatar">JD</div>
+                    <div class="user-info">
+                        <div class="user-name">John Doe</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                    <i class="bi bi-chevron-down" style="color: var(--text-secondary);"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- ========== DASHBOARD CONTENT ========== -->
+        <main class="dashboard-content">
+            <div class="d-flex justify-content-between align-items-start mb-4">
+                <div>
+                    <h1 class="page-title">Manage Event</h1>
+                    <p class="page-subtitle">Edit event details, manage tickets, and track performance.</p>
+                </div>
+                <div class="d-flex gap-2">
+                    <a href="#" class="btn-custom btn-secondary">
+                        <i class="bi bi-arrow-left"></i>
+                        Back to Events
+                    </a>
+                    <button class="btn-custom btn-primary">
+                        <i class="bi bi-check-lg"></i>
+                        Save Changes
+                    </button>
+                </div>
+            </div>
+
+            <!-- ========== EVENT HEADER ========== -->
+            <div class="event-header">
+                <div class="event-info">
+                    <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=240&h=180&fit=crop" alt="Tech Conference" class="event-thumbnail">
+                    <div class="event-details">
+                        <h2 class="event-title">Tech Conference 2024</h2>
+                        <div class="event-meta">
+                            <span><i class="bi bi-calendar-event"></i> June 15-17, 2024</span>
+                            <span><i class="bi bi-geo-alt"></i> San Francisco Convention Center</span>
+                            <span><i class="bi bi-people"></i> 1,200+ Attendees</span>
+                            <span class="status-badge status-published">Published</span>
+                        </div>
+                        <p class="event-description">
+                            Join us for the biggest technology conference of the year featuring industry leaders,
+                            cutting-edge workshops, and networking opportunities with professionals from around the globe.
+                        </p>
+                    </div>
+                </div>
+                <div class="event-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">1,248</div>
+                        <div class="stat-label">Total Tickets</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">842</div>
+                        <div class="stat-label">Sold</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">406</div>
+                        <div class="stat-label">Available</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">$42,580</div>
+                        <div class="stat-label">Revenue</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== TABS NAVIGATION ========== -->
+            <div class="tabs-navigation">
+                <ul class="tabs-list">
+                    <li class="tab-item">
+                        <a href="#details" class="tab-link active">Event Details</a>
+                    </li>
+                    <li class="tab-item">
+                        <a href="#tickets" class="tab-link">Tickets</a>
+                    </li>
+                    <li class="tab-item">
+                        <a href="#attendees" class="tab-link">Attendees</a>
+                    </li>
+                    <li class="tab-item">
+                        <a href="#analytics" class="tab-link">Analytics</a>
+                    </li>
+                    <li class="tab-item">
+                        <a href="#settings" class="tab-link">Settings</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- ========== EVENT DETAILS TAB ========== -->
+            <div id="details" class="tab-content">
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Basic Information</h3>
+                    </div>
+                    <form>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label class="form-label">Event Title</label>
+                                    <input type="text" class="form-control" value="Tech Conference 2024">
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label class="form-label">Event Status</label>
+                                    <select class="form-control">
+                                        <option value="published" selected>Published</option>
+                                        <option value="draft">Draft</option>
+                                        <option value="cancelled">Cancelled</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Event Description</label>
+                            <textarea class="form-control" rows="4">Join us for the biggest technology conference of the year featuring industry leaders, cutting-edge workshops, and networking opportunities with professionals from around the globe.</textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label class="form-label">Start Date & Time</label>
+                                    <input type="datetime-local" class="form-control" value="2024-06-15T09:00">
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label class="form-label">End Date & Time</label>
+                                    <input type="datetime-local" class="form-control" value="2024-06-17T18:00">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label class="form-label">Venue Name</label>
+                                    <input type="text" class="form-control" value="San Francisco Convention Center">
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label class="form-label">Venue Address</label>
+                                    <input type="text" class="form-control" value="747 Howard St, San Francisco, CA 94103">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Featured Image</label>
+                            <div class="d-flex align-items-center gap-3">
+                                <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=120&h=90&fit=crop" alt="Event" class="event-thumbnail">
+                                <div>
+                                    <button type="button" class="btn-custom btn-secondary">
+                                        <i class="bi bi-upload"></i>
+                                        Change Image
+                                    </button>
+                                    <div class="form-text">Recommended size: 1200x800 pixels</div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- ========== TICKETS TAB ========== -->
+            <div id="tickets" class="tab-content" style="display: none;">
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Ticket Types</h3>
+                        <button class="btn-custom btn-primary">
+                            <i class="bi bi-plus-lg"></i>
+                            Add Ticket Type
+                        </button>
+                    </div>
+
+                    <div class="ticket-types">
+                        <div class="ticket-type-card">
+                            <div class="ticket-type-info">
+                                <div class="ticket-type-badge">VIP</div>
+                                <div class="ticket-type-details">
+                                    <div class="ticket-type-name">VIP All-Access Pass</div>
+                                    <div class="ticket-type-meta">
+                                        <span><strong>$299</strong></span>
+                                        <span>250 tickets</span>
+                                        <span>84 sold</span>
+                                        <span class="status-badge status-published">Available</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ticket-type-actions">
+                                <button class="btn-custom btn-secondary btn-sm">
+                                    <i class="bi bi-pencil"></i>
+                                    Edit
+                                </button>
+                                <button class="btn-custom btn-danger btn-sm">
+                                    <i class="bi bi-trash"></i>
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="ticket-type-card">
+                            <div class="ticket-type-info">
+                                <div class="ticket-type-badge">GA</div>
+                                <div class="ticket-type-details">
+                                    <div class="ticket-type-name">General Admission</div>
+                                    <div class="ticket-type-meta">
+                                        <span><strong>$149</strong></span>
+                                        <span>800 tickets</span>
+                                        <span>642 sold</span>
+                                        <span class="status-badge status-published">Available</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ticket-type-actions">
+                                <button class="btn-custom btn-secondary btn-sm">
+                                    <i class="bi bi-pencil"></i>
+                                    Edit
+                                </button>
+                                <button class="btn-custom btn-danger btn-sm">
+                                    <i class="bi bi-trash"></i>
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="ticket-type-card">
+                            <div class="ticket-type-info">
+                                <div class="ticket-type-badge">ST</div>
+                                <div class="ticket-type-details">
+                                    <div class="ticket-type-name">Student Pass</div>
+                                    <div class="ticket-type-meta">
+                                        <span><strong>$79</strong></span>
+                                        <span>200 tickets</span>
+                                        <span>116 sold</span>
+                                        <span class="status-badge status-published">Available</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ticket-type-actions">
+                                <button class="btn-custom btn-secondary btn-sm">
+                                    <i class="bi bi-pencil"></i>
+                                    Edit
+                                </button>
+                                <button class="btn-custom btn-danger btn-sm">
+                                    <i class="bi bi-trash"></i>
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== ATTENDEES TAB ========== -->
+            <div id="attendees" class="tab-content" style="display: none;">
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Attendee List</h3>
+                        <button class="btn-custom btn-secondary">
+                            <i class="bi bi-download"></i>
+                            Export List
+                        </button>
+                    </div>
+                    <p>Attendee management interface would go here with search, filters, and attendee details.</p>
+                </div>
+            </div>
+
+            <!-- ========== ANALYTICS TAB ========== -->
+            <div id="analytics" class="tab-content" style="display: none;">
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Event Analytics</h3>
+                    </div>
+                    <p>Analytics dashboard with charts and metrics for ticket sales, revenue, and attendance would go here.</p>
+                </div>
+            </div>
+
+            <!-- ========== SETTINGS TAB ========== -->
+            <div id="settings" class="tab-content" style="display: none;">
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Event Settings</h3>
+                    </div>
+                    <form>
+                        <div class="form-group">
+                            <label class="form-label">Registration Settings</label>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="allowRegistrations" checked>
+                                <label class="form-check-label" for="allowRegistrations">
+                                    Allow new registrations
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="waitingList" checked>
+                                <label class="form-check-label" for="waitingList">
+                                    Enable waiting list for sold-out tickets
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="automaticConfirmation">
+                                <label class="form-check-label" for="automaticConfirmation">
+                                    Send automatic confirmation emails
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Cancellation Policy</label>
+                            <textarea class="form-control" rows="3">Tickets are non-refundable but transferable up to 7 days before the event.</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Custom Fields</label>
+                            <div class="form-text">Add custom fields to your registration form</div>
+                            <button type="button" class="btn-custom btn-secondary mt-2">
+                                <i class="bi bi-plus-lg"></i>
+                                Add Custom Field
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // ========== SIDEBAR TOGGLE ==========
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const mainWrapper = document.getElementById('mainWrapper');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            sidebarOverlay.classList.toggle('active');
+        });
+
+        sidebarOverlay.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
+        });
+
+        // Close sidebar when clicking a link on mobile
+        document.querySelectorAll('.sidebar-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 991) {
+                    sidebar.classList.remove('active');
+                    sidebarOverlay.classList.remove('active');
+                }
+            });
+        });
+
+        // ========== THEME TOGGLE ==========
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const body = document.body;
+
+        function updateThemeIcon(isDark) {
+            if (isDark) {
+                themeIcon.classList.remove('bi-sun-fill');
+                themeIcon.classList.add('bi-moon-stars-fill');
+            } else {
+                themeIcon.classList.remove('bi-moon-stars-fill');
+                themeIcon.classList.add('bi-sun-fill');
+            }
+        }
+
+        function initTheme() {
+            const savedTheme = localStorage.getItem('admin_theme');
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+                updateThemeIcon(true);
+            } else if (savedTheme === 'light') {
+                body.classList.remove('dark-mode');
+                updateThemeIcon(false);
+            } else {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (prefersDark) {
+                    body.classList.add('dark-mode');
+                    updateThemeIcon(true);
+                }
+            }
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            updateThemeIcon(isDark);
+            localStorage.setItem('admin_theme', isDark ? 'dark' : 'light');
+        });
+
+        initTheme();
+
+        // ========== TAB FUNCTIONALITY ==========
+        const tabLinks = document.querySelectorAll('.tab-link');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                // Remove active class from all tabs
+                tabLinks.forEach(tab => tab.classList.remove('active'));
+                tabContents.forEach(content => content.style.display = 'none');
+
+                // Add active class to clicked tab
+                this.classList.add('active');
+
+                // Show corresponding content
+                const targetId = this.getAttribute('href').substring(1);
+                document.getElementById(targetId).style.display = 'block';
+            });
+        });
+
+        // ========== RESPONSIVE HANDLING ==========
+        function handleResize() {
+            if (window.innerWidth > 991) {
+                sidebar.classList.remove('active');
+                sidebarOverlay.classList.remove('active');
+            }
+        }
+
+        window.addEventListener('resize', handleResize);
+    </script>
+</body>
+
+</html>
