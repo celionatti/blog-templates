@@ -1,0 +1,1817 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Escrow Management - BlogName">
+    <title>Escrow Management - BlogName Admin</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ========== CSS VARIABLES & THEME ========== */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-tertiary: #e9ecef;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6c757d;
+            --accent: #dc143c;
+            --accent-hover: #b01030;
+            --accent-light: rgba(220, 20, 60, 0.1);
+            --border-color: #dee2e6;
+            --card-shadow: rgba(0, 0, 0, 0.1);
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --info: #17a2b8;
+            --sidebar-width: 280px;
+            --font-heading: 'Inter', sans-serif;
+            --font-brand: 'Dancing Script', cursive;
+        }
+
+        .dark-mode {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #f5f5f5;
+            --text-secondary: #b0b0b0;
+            --accent: #ff4f5a;
+            --accent-hover: #ff6b75;
+            --accent-light: rgba(255, 79, 90, 0.15);
+            --border-color: #333;
+            --card-shadow: rgba(255, 255, 255, 0.05);
+            --success: #4caf50;
+            --warning: #ffb300;
+            --danger: #f44336;
+            --info: #29b6f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            font-family: var(--font-heading);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            line-height: 1.6;
+        }
+
+        /* ========== SIDEBAR ========== */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: var(--sidebar-width);
+            background-color: var(--bg-primary);
+            border-right: 1px solid var(--border-color);
+            padding: 1.5rem 0;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar.hidden {
+            transform: translateX(-100%);
+        }
+
+        .sidebar-brand {
+            padding: 0 1.5rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-brand a {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-family: var(--font-brand);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sidebar-brand span {
+            color: var(--accent);
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-nav-item {
+            margin-bottom: 0.25rem;
+        }
+
+        .sidebar-nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.875rem 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            font-weight: 500;
+        }
+
+        .sidebar-nav-link i {
+            font-size: 1.2rem;
+            margin-right: 1rem;
+            min-width: 24px;
+        }
+
+        .sidebar-nav-link:hover {
+            background-color: var(--accent-light);
+            color: var(--accent);
+        }
+
+        .sidebar-nav-link.active {
+            background-color: var(--accent-light);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .sidebar-nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: var(--accent);
+        }
+
+        .sidebar-section-title {
+            padding: 1.5rem 1.5rem 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+        }
+
+        /* ========== MAIN CONTENT ========== */
+        .main-wrapper {
+            margin-left: var(--sidebar-width);
+            transition: margin-left 0.3s ease;
+        }
+
+        .main-wrapper.expanded {
+            margin-left: 0;
+        }
+
+        /* ========== TOP HEADER ========== */
+        .top-header {
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: color 0.3s ease;
+            display: none;
+        }
+
+        .menu-toggle:hover {
+            color: var(--accent);
+        }
+
+        .search-box {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-icon {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .header-icon:hover {
+            color: var(--accent);
+            transform: scale(1.1);
+        }
+
+        .header-icon .badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: var(--danger);
+            color: white;
+            font-size: 0.65rem;
+            padding: 0.2rem 0.4rem;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--bg-secondary);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .user-menu:hover {
+            background-color: var(--accent-light);
+        }
+
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* ========== ESCROW CONTENT ========== */
+        .escrow-content {
+            padding: 2rem 1.5rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        /* ========== STATS CARDS ========== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px var(--card-shadow);
+        }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .stat-icon.blue {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .stat-icon.green {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .stat-icon.orange {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .stat-icon.purple {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .stat-change {
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+        }
+
+        .stat-change.up {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--success);
+        }
+
+        .stat-change.down {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: var(--danger);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* ========== BUTTON STYLES ========== */
+        .btn-custom {
+            padding: 0.6rem 1.25rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 20, 60, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+
+        .btn-warning {
+            background-color: var(--warning);
+            color: black;
+        }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+        }
+
+        /* ========== ESCROW TABLE ========== */
+        .table-card {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .table-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .table-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        /* ========== TABLE CONTAINER ========== */
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Custom Scrollbar */
+        .table-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .table-container::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        .table-container::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        .table-container::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table thead {
+            background-color: var(--bg-secondary);
+        }
+
+        .data-table th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        .data-table tbody tr {
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.2s ease;
+        }
+
+        .data-table tbody tr:hover {
+            background-color: var(--accent-light);
+        }
+
+        .data-table td {
+            padding: 1rem;
+            white-space: nowrap;
+            font-weight: 400;
+        }
+
+        .escrow-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .escrow-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .escrow-icon.pending {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .escrow-icon.active {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .escrow-icon.completed {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .escrow-icon.disputed {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .escrow-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .escrow-title {
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        .escrow-meta {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .status-badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .status-pending {
+            background-color: rgba(255, 193, 7, 0.1);
+            color: var(--warning);
+        }
+
+        .status-active {
+            background-color: rgba(23, 162, 184, 0.1);
+            color: var(--info);
+        }
+
+        .status-completed {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--success);
+        }
+
+        .status-disputed {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: var(--danger);
+        }
+
+        .amount {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            font-size: 1.1rem;
+        }
+
+        .action-btn:hover {
+            background-color: var(--bg-secondary);
+        }
+
+        .action-btn.approve:hover {
+            color: var(--success);
+        }
+
+        .action-btn.dispute:hover {
+            color: var(--warning);
+        }
+
+        .action-btn.release:hover {
+            color: var(--info);
+        }
+
+        .action-btn.cancel:hover {
+            color: var(--danger);
+        }
+
+        /* ========== MODAL STYLES ========== */
+        .modal-content {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-primary);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            border-top: 1px solid var(--border-color);
+            padding: 1.5rem;
+        }
+
+        /* ========== FORM STYLES ========== */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .form-text {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-check {
+            margin-bottom: 0.75rem;
+        }
+
+        .form-check-input:checked {
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        /* ========== ESCROW DETAILS CARD ========== */
+        .escrow-details-card {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .escrow-details-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .escrow-details-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .escrow-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .detail-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .detail-value {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        /* ========== TIMELINE ========== */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0.5rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--border-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: -1.5rem;
+            top: 0;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            background-color: var(--accent);
+            border: 3px solid var(--bg-primary);
+        }
+
+        .timeline-content {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-date {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 1199px) {
+            :root {
+                --sidebar-width: 250px;
+            }
+        }
+
+        @media (max-width: 991px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-wrapper {
+                margin-left: 0;
+            }
+
+            .search-box {
+                max-width: 100%;
+            }
+
+            .user-info {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .escrow-content {
+                padding: 1.5rem 1rem;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .table-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .table-actions {
+                width: 100%;
+            }
+
+            .btn-custom {
+                flex: 1;
+                justify-content: center;
+            }
+
+            .escrow-info {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .escrow-details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .top-header {
+                padding: 1rem;
+            }
+
+            .search-box input {
+                font-size: 0.85rem;
+                padding: 0.65rem 1rem 0.65rem 2.5rem;
+            }
+
+            .header-right {
+                gap: 0.5rem;
+            }
+
+            .header-icon {
+                font-size: 1.2rem;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+            }
+
+            .table-header {
+                padding: 1rem;
+            }
+
+            .table-title {
+                font-size: 1.1rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+
+        /* ========== OVERLAY FOR MOBILE SIDEBAR ========== */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ========== SIDEBAR ========== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <a href="/">
+                <i class="bi bi-lightning-charge-fill"></i>
+                Blog<span>Admin</span>
+            </a>
+        </div>
+
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-speedometer2"></i>
+                    Dashboard
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-file-earmark-text"></i>
+                    Posts
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-folder"></i>
+                    Categories
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-chat-dots"></i>
+                    Comments
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-people"></i>
+                    Users
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-collection"></i>
+                    Resources
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link active">
+                    <i class="bi bi-shield-check"></i>
+                    Escrow
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-section-title">Analytics</div>
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-graph-up"></i>
+                    Analytics
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-bar-chart"></i>
+                    Reports
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-section-title">Settings</div>
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-gear"></i>
+                    Settings
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-palette"></i>
+                    Appearance
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a href="#" class="sidebar-nav-link">
+                    <i class="bi bi-box-arrow-right"></i>
+                    Logout
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- ========== SIDEBAR OVERLAY ========== -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <div class="main-wrapper" id="mainWrapper">
+        <!-- ========== TOP HEADER ========== -->
+        <header class="top-header">
+            <div class="header-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="bi bi-list"></i>
+                </button>
+                <div class="search-box">
+                    <i class="bi bi-search"></i>
+                    <input type="text" placeholder="Search escrow transactions...">
+                </div>
+            </div>
+
+            <div class="header-right">
+                <button class="header-icon" id="themeToggle" aria-label="Toggle dark mode">
+                    <i class="bi bi-sun-fill" id="themeIcon"></i>
+                </button>
+                <button class="header-icon">
+                    <i class="bi bi-bell"></i>
+                    <span class="badge">3</span>
+                </button>
+                <div class="user-menu">
+                    <div class="user-avatar">JD</div>
+                    <div class="user-info">
+                        <div class="user-name">John Doe</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                    <i class="bi bi-chevron-down" style="color: var(--text-secondary);"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- ========== ESCROW CONTENT ========== -->
+        <main class="escrow-content">
+            <h1 class="page-title">Escrow Management</h1>
+            <p class="page-subtitle">Monitor and manage secure financial transactions between users.</p>
+
+            <!-- ========== STATS CARDS ========== -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon blue">
+                            <i class="bi bi-clock-history"></i>
+                        </div>
+                        <div class="stat-change up">
+                            <i class="bi bi-arrow-up"></i> 12.5%
+                        </div>
+                    </div>
+                    <div class="stat-value">24</div>
+                    <div class="stat-label">Pending Transactions</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon green">
+                            <i class="bi bi-arrow-left-right"></i>
+                        </div>
+                        <div class="stat-change up">
+                            <i class="bi bi-arrow-up"></i> 8.2%
+                        </div>
+                    </div>
+                    <div class="stat-value">156</div>
+                    <div class="stat-label">Active Transactions</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon orange">
+                            <i class="bi bi-currency-dollar"></i>
+                        </div>
+                        <div class="stat-change up">
+                            <i class="bi bi-arrow-up"></i> 15.3%
+                        </div>
+                    </div>
+                    <div class="stat-value">$42,580</div>
+                    <div class="stat-label">Total in Escrow</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon purple">
+                            <i class="bi bi-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-change down">
+                            <i class="bi bi-arrow-down"></i> 6.7%
+                        </div>
+                    </div>
+                    <div class="stat-value">7</div>
+                    <div class="stat-label">Disputed Transactions</div>
+                </div>
+            </div>
+
+            <!-- ========== ESCROW DETAILS CARD ========== -->
+            <div class="escrow-details-card">
+                <div class="escrow-details-header">
+                    <h2 class="escrow-details-title">Transaction Details</h2>
+                    <div class="action-buttons">
+                        <button class="btn-custom btn-success" data-bs-toggle="modal" data-bs-target="#releaseFundsModal">
+                            <i class="bi bi-check-circle"></i>
+                            Release Funds
+                        </button>
+                        <button class="btn-custom btn-warning" data-bs-toggle="modal" data-bs-target="#disputeModal">
+                            <i class="bi bi-exclamation-triangle"></i>
+                            Mark as Disputed
+                        </button>
+                        <button class="btn-custom btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal">
+                            <i class="bi bi-x-circle"></i>
+                            Cancel Transaction
+                        </button>
+                    </div>
+                </div>
+                <div class="escrow-details-grid">
+                    <div class="detail-item">
+                        <span class="detail-label">Transaction ID</span>
+                        <span class="detail-value">ESC-2024-00158</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Amount</span>
+                        <span class="detail-value">$1,250.00</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Status</span>
+                        <span class="status-badge status-active">Active</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Created</span>
+                        <span class="detail-value">March 15, 2024</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Buyer</span>
+                        <span class="detail-value">Sarah Johnson</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Seller</span>
+                        <span class="detail-value">Michael Chen</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Service/Product</span>
+                        <span class="detail-value">Website Development Package</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Due Date</span>
+                        <span class="detail-value">April 30, 2024</span>
+                    </div>
+                </div>
+
+                <!-- Transaction Timeline -->
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Transaction Created</div>
+                            <div class="timeline-date">March 15, 2024 - 10:30 AM</div>
+                            <p>Buyer initiated the transaction and funds were placed in escrow.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Seller Accepted</div>
+                            <div class="timeline-date">March 16, 2024 - 02:15 PM</div>
+                            <p>Seller accepted the terms and began work on the project.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Milestone 1 Completed</div>
+                            <div class="timeline-date">March 25, 2024 - 11:45 AM</div>
+                            <p>Seller completed the first milestone and submitted for review.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Buyer Approved Milestone</div>
+                            <div class="timeline-date">March 28, 2024 - 09:20 AM</div>
+                            <p>Buyer approved the first milestone and released partial payment.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== ESCROW TABLE ========== -->
+            <div class="table-card">
+                <div class="table-header">
+                    <h2 class="table-title">All Escrow Transactions</h2>
+                    <div class="table-actions">
+                        <button class="btn-custom btn-primary" data-bs-toggle="modal" data-bs-target="#newEscrowModal">
+                            <i class="bi bi-plus-lg"></i>
+                            New Escrow
+                        </button>
+                        <button class="btn-custom btn-secondary">
+                            <i class="bi bi-filter"></i>
+                            Filter
+                        </button>
+                        <button class="btn-custom btn-secondary">
+                            <i class="bi bi-download"></i>
+                            Export
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Transaction</th>
+                                <th>Buyer</th>
+                                <th>Seller</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Created</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="escrow-info">
+                                        <div class="escrow-icon active">
+                                            <i class="bi bi-arrow-left-right"></i>
+                                        </div>
+                                        <div class="escrow-details">
+                                            <div class="escrow-title">Website Development Package</div>
+                                            <div class="escrow-meta">ESC-2024-00158</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Sarah Johnson</td>
+                                <td>Michael Chen</td>
+                                <td class="amount">$1,250.00</td>
+                                <td>
+                                    <span class="status-badge status-active">Active</span>
+                                </td>
+                                <td>Mar 15, 2024</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="action-btn release" title="Release Funds">
+                                            <i class="bi bi-check-circle"></i>
+                                        </button>
+                                        <button class="action-btn dispute" title="Mark as Disputed">
+                                            <i class="bi bi-exclamation-triangle"></i>
+                                        </button>
+                                        <button class="action-btn cancel" title="Cancel Transaction">
+                                            <i class="bi bi-x-circle"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="escrow-info">
+                                        <div class="escrow-icon pending">
+                                            <i class="bi bi-clock-history"></i>
+                                        </div>
+                                        <div class="escrow-details">
+                                            <div class="escrow-title">Logo Design Service</div>
+                                            <div class="escrow-meta">ESC-2024-00159</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Robert Williams</td>
+                                <td>Emma Davis</td>
+                                <td class="amount">$350.00</td>
+                                <td>
+                                    <span class="status-badge status-pending">Pending</span>
+                                </td>
+                                <td>Mar 18, 2024</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="action-btn approve" title="Approve Transaction">
+                                            <i class="bi bi-check-circle"></i>
+                                        </button>
+                                        <button class="action-btn cancel" title="Cancel Transaction">
+                                            <i class="bi bi-x-circle"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="escrow-info">
+                                        <div class="escrow-icon completed">
+                                            <i class="bi bi-check-circle"></i>
+                                        </div>
+                                        <div class="escrow-details">
+                                            <div class="escrow-title">Content Writing Package</div>
+                                            <div class="escrow-meta">ESC-2024-00157</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Jennifer Lee</td>
+                                <td>David Wilson</td>
+                                <td class="amount">$800.00</td>
+                                <td>
+                                    <span class="status-badge status-completed">Completed</span>
+                                </td>
+                                <td>Mar 10, 2024</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="action-btn" title="View Details">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="escrow-info">
+                                        <div class="escrow-icon disputed">
+                                            <i class="bi bi-exclamation-triangle"></i>
+                                        </div>
+                                        <div class="escrow-details">
+                                            <div class="escrow-title">E-commerce Store Setup</div>
+                                            <div class="escrow-meta">ESC-2024-00156</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Thomas Brown</td>
+                                <td>Lisa Garcia</td>
+                                <td class="amount">$2,100.00</td>
+                                <td>
+                                    <span class="status-badge status-disputed">Disputed</span>
+                                </td>
+                                <td>Mar 5, 2024</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="action-btn" title="Resolve Dispute">
+                                            <i class="bi bi-hammer"></i>
+                                        </button>
+                                        <button class="action-btn" title="View Details">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ========== NEW ESCROW MODAL ========== -->
+    <div class="modal fade" id="newEscrowModal" tabindex="-1" aria-labelledby="newEscrowModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newEscrowModalLabel">Create New Escrow Transaction</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="newEscrowForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="buyerSelect" class="form-label">Buyer</label>
+                                    <select class="form-control" id="buyerSelect">
+                                        <option value="">Select Buyer</option>
+                                        <option value="user1">Sarah Johnson</option>
+                                        <option value="user2">Robert Williams</option>
+                                        <option value="user3">Jennifer Lee</option>
+                                        <option value="user4">Thomas Brown</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="sellerSelect" class="form-label">Seller</label>
+                                    <select class="form-control" id="sellerSelect">
+                                        <option value="">Select Seller</option>
+                                        <option value="user5">Michael Chen</option>
+                                        <option value="user6">Emma Davis</option>
+                                        <option value="user7">David Wilson</option>
+                                        <option value="user8">Lisa Garcia</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="transactionTitle" class="form-label">Transaction Title</label>
+                            <input type="text" class="form-control" id="transactionTitle" placeholder="Enter transaction title">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="transactionDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="transactionDescription" rows="3" placeholder="Describe the service or product"></textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="transactionAmount" class="form-label">Amount</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" class="form-control" id="transactionAmount" placeholder="0.00" step="0.01" min="0">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="dueDate" class="form-label">Due Date</label>
+                                    <input type="date" class="form-control" id="dueDate">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="milestones" class="form-label">Milestones (Optional)</label>
+                            <textarea class="form-control" id="milestones" rows="2" placeholder="Add project milestones separated by commas"></textarea>
+                            <div class="form-text">Example: Design phase, Development, Testing, Deployment</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="terms" class="form-label">Terms & Conditions</label>
+                            <textarea class="form-control" id="terms" rows="3" placeholder="Specify any special terms or conditions"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-custom btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn-custom btn-primary" id="createEscrowBtn">Create Escrow</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== RELEASE FUNDS MODAL ========== -->
+    <div class="modal fade" id="releaseFundsModal" tabindex="-1" aria-labelledby="releaseFundsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="releaseFundsModalLabel">Release Funds</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to release funds for transaction <strong>ESC-2024-00158</strong>?</p>
+                    <div class="form-group">
+                        <label for="releaseAmount" class="form-label">Amount to Release</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" id="releaseAmount" value="1250.00" step="0.01" min="0" max="1250">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="releaseNotes" class="form-label">Release Notes (Optional)</label>
+                        <textarea class="form-control" id="releaseNotes" rows="2" placeholder="Add any notes about this release"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-custom btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn-custom btn-success" id="confirmReleaseBtn">Release Funds</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== DISPUTE MODAL ========== -->
+    <div class="modal fade" id="disputeModal" tabindex="-1" aria-labelledby="disputeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="disputeModalLabel">Mark as Disputed</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to mark transaction <strong>ESC-2024-00158</strong> as disputed?</p>
+                    <div class="form-group">
+                        <label for="disputeReason" class="form-label">Reason for Dispute</label>
+                        <select class="form-control" id="disputeReason">
+                            <option value="">Select reason</option>
+                            <option value="quality">Quality Issues</option>
+                            <option value="delivery">Late Delivery</option>
+                            <option value="scope">Scope Change</option>
+                            <option value="communication">Communication Issues</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="disputeDetails" class="form-label">Dispute Details</label>
+                        <textarea class="form-control" id="disputeDetails" rows="3" placeholder="Provide details about the dispute"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-custom btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn-custom btn-warning" id="confirmDisputeBtn">Mark as Disputed</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== CANCEL MODAL ========== -->
+    <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cancelModalLabel">Cancel Transaction</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to cancel transaction <strong>ESC-2024-00158</strong>?</p>
+                    <div class="form-group">
+                        <label for="cancelReason" class="form-label">Reason for Cancellation</label>
+                        <select class="form-control" id="cancelReason">
+                            <option value="">Select reason</option>
+                            <option value="mutual">Mutual Agreement</option>
+                            <option value="buyer">Buyer Request</option>
+                            <option value="seller">Seller Request</option>
+                            <option value="violation">Terms Violation</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cancelDetails" class="form-label">Cancellation Details</label>
+                        <textarea class="form-control" id="cancelDetails" rows="3" placeholder="Provide details about the cancellation"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-custom btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn-custom btn-danger" id="confirmCancelBtn">Cancel Transaction</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // ========== SIDEBAR TOGGLE ==========
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const mainWrapper = document.getElementById('mainWrapper');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            sidebarOverlay.classList.toggle('active');
+        });
+
+        sidebarOverlay.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
+        });
+
+        // Close sidebar when clicking a link on mobile
+        document.querySelectorAll('.sidebar-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 991) {
+                    sidebar.classList.remove('active');
+                    sidebarOverlay.classList.remove('active');
+                }
+            });
+        });
+
+        // ========== THEME TOGGLE ==========
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const body = document.body;
+
+        function updateThemeIcon(isDark) {
+            if (isDark) {
+                themeIcon.classList.remove('bi-sun-fill');
+                themeIcon.classList.add('bi-moon-stars-fill');
+            } else {
+                themeIcon.classList.remove('bi-moon-stars-fill');
+                themeIcon.classList.add('bi-sun-fill');
+            }
+        }
+
+        function initTheme() {
+            const savedTheme = localStorage.getItem('admin_theme');
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+                updateThemeIcon(true);
+            } else if (savedTheme === 'light') {
+                body.classList.remove('dark-mode');
+                updateThemeIcon(false);
+            } else {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (prefersDark) {
+                    body.classList.add('dark-mode');
+                    updateThemeIcon(true);
+                }
+            }
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            updateThemeIcon(isDark);
+            localStorage.setItem('admin_theme', isDark ? 'dark' : 'light');
+        });
+
+        initTheme();
+
+        // ========== MODAL FUNCTIONALITY ==========
+        const createEscrowBtn = document.getElementById('createEscrowBtn');
+        const confirmReleaseBtn = document.getElementById('confirmReleaseBtn');
+        const confirmDisputeBtn = document.getElementById('confirmDisputeBtn');
+        const confirmCancelBtn = document.getElementById('confirmCancelBtn');
+
+        createEscrowBtn.addEventListener('click', () => {
+            const buyer = document.getElementById('buyerSelect').value;
+            const seller = document.getElementById('sellerSelect').value;
+            const title = document.getElementById('transactionTitle').value;
+            const amount = document.getElementById('transactionAmount').value;
+
+            if (!buyer || !seller || !title || !amount) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            // In a real application, this would create a new escrow transaction
+            alert('Escrow transaction created successfully!');
+            console.log('New escrow created');
+
+            // Close modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('newEscrowModal'));
+            modal.hide();
+
+            // Reset form
+            document.getElementById('newEscrowForm').reset();
+        });
+
+        confirmReleaseBtn.addEventListener('click', () => {
+            // In a real application, this would release funds
+            alert('Funds released successfully!');
+            console.log('Funds released');
+
+            // Close modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('releaseFundsModal'));
+            modal.hide();
+        });
+
+        confirmDisputeBtn.addEventListener('click', () => {
+            const reason = document.getElementById('disputeReason').value;
+            if (!reason) {
+                alert('Please select a reason for the dispute.');
+                return;
+            }
+
+            // In a real application, this would mark transaction as disputed
+            alert('Transaction marked as disputed!');
+            console.log('Transaction disputed');
+
+            // Close modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('disputeModal'));
+            modal.hide();
+        });
+
+        confirmCancelBtn.addEventListener('click', () => {
+            const reason = document.getElementById('cancelReason').value;
+            if (!reason) {
+                alert('Please select a reason for cancellation.');
+                return;
+            }
+
+            // In a real application, this would cancel the transaction
+            alert('Transaction cancelled successfully!');
+            console.log('Transaction cancelled');
+
+            // Close modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('cancelModal'));
+            modal.hide();
+        });
+
+        // ========== TABLE ACTION BUTTONS ==========
+        document.querySelectorAll('.action-btn.release').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // In a real application, this would open the release funds modal for the specific transaction
+                const releaseModal = new bootstrap.Modal(document.getElementById('releaseFundsModal'));
+                releaseModal.show();
+            });
+        });
+
+        document.querySelectorAll('.action-btn.dispute').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // In a real application, this would open the dispute modal for the specific transaction
+                const disputeModal = new bootstrap.Modal(document.getElementById('disputeModal'));
+                disputeModal.show();
+            });
+        });
+
+        document.querySelectorAll('.action-btn.cancel').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // In a real application, this would open the cancel modal for the specific transaction
+                const cancelModal = new bootstrap.Modal(document.getElementById('cancelModal'));
+                cancelModal.show();
+            });
+        });
+
+        document.querySelectorAll('.action-btn.approve').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const transactionId = this.closest('tr').querySelector('.escrow-meta').textContent;
+                if (confirm(`Are you sure you want to approve transaction ${transactionId}?`)) {
+                    // In a real application, this would approve the transaction
+                    this.closest('tr').querySelector('.status-badge').className = 'status-badge status-active';
+                    this.closest('tr').querySelector('.status-badge').textContent = 'Active';
+                    this.closest('tr').querySelector('.escrow-icon').className = 'escrow-icon active';
+                    alert('Transaction approved successfully!');
+                    console.log('Transaction approved');
+                }
+            });
+        });
+
+        // ========== RESPONSIVE HANDLING ==========
+        function handleResize() {
+            if (window.innerWidth > 991) {
+                sidebar.classList.remove('active');
+                sidebarOverlay.classList.remove('active');
+            }
+        }
+
+        window.addEventListener('resize', handleResize);
+    </script>
+</body>
+
+</html>
